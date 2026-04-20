@@ -16,13 +16,12 @@ import {
     // HelpCircle,
     ShieldAlert,
     // Newspaper,
-    FileText,
     Wallet,
-    ReceiptText,
     MessageSquare,
     ListOrdered,
     Calculator, // Calculator bu yerda import qilingan
-    Search
+    Search,
+    Package,
 } from "lucide-react";
 import TrackCodeTab from "./dashboard/TrackCodeTab";
 import {
@@ -36,6 +35,9 @@ import { toast } from "sonner";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
 import { ActionButton, type ActionItemData } from "@/components/user_page/ActionButtons";
 import { useTranslation } from 'react-i18next';
+import { AnimatePresence, motion } from "framer-motion";
+import { AKBLogo } from "@/components/user_panel/AKBLogo";
+import { useProfile } from "@/hooks/useProfile";
 
 interface CarouselItemData {
     id: number;
@@ -76,27 +78,27 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         type: "feature",
         titleKey: "dashboard.carousel.prohibited.title",
         subKey: "dashboard.carousel.prohibited.sub",
-        gradient: "from-red-900 to-red-600",
+        gradient: "from-rose-900 to-rose-700",
         bgIcon: <ShieldAlert className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
-        mainIcon: <ShieldOff className="text-white/90" style={{ width: 32, height: 32 }} />,
+        mainIcon: <ShieldOff style={{ width: 32, height: 32 }} />,
     },
     {
         id: 2,
         type: "feature",
         titleKey: "dashboard.carousel.id.title",
         subKey: "dashboard.carousel.id.sub",
-        gradient: "from-blue-900 to-blue-600",
+        gradient: "from-zinc-900 to-zinc-700",
         bgIcon: <IdCard className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
-        mainIcon: <IdCard className="text-white/90" style={{ width: 32, height: 32 }} />,
+        mainIcon: <IdCard style={{ width: 32, height: 32 }} />,
     },
     {
         id: 3,
         type: "feature",
         titleKey: "dashboard.carousel.delivery.title",
         subKey: "dashboard.carousel.delivery.sub",
-        gradient: "from-purple-900 to-purple-600",
+        gradient: "from-cyan-900 to-cyan-700",
         bgIcon: <Rocket className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
-        mainIcon: <Plane className="text-white/90" style={{ width: 32, height: 32 }} />,
+        mainIcon: <Plane style={{ width: 32, height: 32 }} />,
     },
     // {
     //     id: 4,
@@ -109,37 +111,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
     // },
 ];
 
-const MAIN_ACTIONS: (Omit<ActionItemData, 'label' | 'desc' | 'badge' | 'actionLabel'> & { labelKey: string; descKey: string; badgeKey: string; actionLabelKey: string })[] = [
-    {
-        id: "calculator",
-        icon: <Calculator className="w-5 h-5" />,
-        bgIcon: <Calculator style={{ width: 80, height: 80 }} />,
-        labelKey: "dashboard.actions.calculator.desc",
-        descKey: "dashboard.actions.calculator.label",
-        badgeKey: "dashboard.actions.calculator.badge",
-        actionLabelKey: "dashboard.actions.calculator.action",
-        theme: "cyan",
-    },
-    {
-        id: "china",
-        icon: <MapPin className="w-5 h-5" />,
-        bgIcon: <MapPin style={{ width: 80, height: 80 }} />,
-        labelKey: "dashboard.actions.china.label",
-        descKey: "dashboard.actions.china.desc",
-        badgeKey: "dashboard.actions.china.badge",
-        actionLabelKey: "dashboard.actions.china.action",
-        theme: "amber",
-    },
-    // {
-    //     id: "schedule",
-    //     icon: <Calendar className="w-5 h-5" />,
-    //     bgIcon: <Calendar style={{ width: 80, height: 80 }} />,
-    //     labelKey: "dashboard.actions.schedule.label",
-    //     descKey: "dashboard.actions.schedule.desc",
-    //     badgeKey: "dashboard.actions.schedule.badge",
-    //     actionLabelKey: "dashboard.actions.schedule.action",
-    //     theme: "sky",
-    // },
+const PRIMARY_ACTIONS: (Omit<ActionItemData, 'label' | 'desc' | 'badge' | 'actionLabel'> & { labelKey: string; descKey: string; badgeKey: string; actionLabelKey: string })[] = [
     {
         id: "request",
         icon: <Edit3 className="w-5 h-5" />,
@@ -148,17 +120,19 @@ const MAIN_ACTIONS: (Omit<ActionItemData, 'label' | 'desc' | 'badge' | 'actionLa
         descKey: "dashboard.actions.request.desc",
         badgeKey: "dashboard.actions.request.badge",
         actionLabelKey: "dashboard.actions.request.action",
-        theme: "emerald",
+        theme: "blue",
+        priority: "primary",
     },
     {
-        id: "delivery_history",
-        icon: <ListOrdered className="w-5 h-5" />,
-        bgIcon: <ListOrdered style={{ width: 80, height: 80 }} />,
-        labelKey: "dashboard.actions.history.label",
-        descKey: "dashboard.actions.history.desc",
+        id: "report",
+        icon: <Package className="w-5 h-5" />,
+        bgIcon: <Package style={{ width: 80, height: 80 }} />,
+        labelKey: "dashboard.sections.myCargo",
+        descKey: "dashboard.sections.cargoReport",
         badgeKey: "dashboard.actions.history.badge",
         actionLabelKey: "dashboard.actions.history.action",
-        theme: "violet",
+        theme: "cyan",
+        priority: "primary",
     },
     {
         id: "payment",
@@ -168,9 +142,78 @@ const MAIN_ACTIONS: (Omit<ActionItemData, 'label' | 'desc' | 'badge' | 'actionLa
         descKey: "dashboard.actions.payment.desc",
         badgeKey: "dashboard.actions.payment.badge",
         actionLabelKey: "dashboard.actions.payment.action",
-        theme: "rose",
+        theme: "green",
+        priority: "primary",
+    },
+    {
+        id: "china",
+        icon: <MapPin className="w-5 h-5" />,
+        bgIcon: <MapPin style={{ width: 80, height: 80 }} />,
+        labelKey: "dashboard.actions.china.label",
+        descKey: "dashboard.actions.china.desc",
+        badgeKey: "dashboard.actions.china.badge",
+        actionLabelKey: "dashboard.actions.china.action",
+        theme: "slate",
+        priority: "primary",
     },
 ];
+
+const SECONDARY_ACTIONS: (Omit<ActionItemData, 'label' | 'desc' | 'badge' | 'actionLabel'> & { labelKey: string; descKey: string; badgeKey: string; actionLabelKey: string })[] = [
+    {
+        id: "calculator",
+        icon: <Calculator className="w-5 h-5" />,
+        bgIcon: <Calculator style={{ width: 72, height: 72 }} />,
+        labelKey: "dashboard.actions.calculator.label",
+        descKey: "dashboard.actions.calculator.desc",
+        badgeKey: "dashboard.actions.calculator.badge",
+        actionLabelKey: "dashboard.actions.calculator.action",
+        theme: "cyan",
+        priority: "secondary",
+    },
+    {
+        id: "schedule",
+        icon: <Calendar className="w-5 h-5" />,
+        bgIcon: <Calendar style={{ width: 72, height: 72 }} />,
+        labelKey: "dashboard.actions.schedule.label",
+        descKey: "dashboard.actions.schedule.desc",
+        badgeKey: "dashboard.actions.schedule.badge",
+        actionLabelKey: "dashboard.actions.schedule.action",
+        theme: "blue",
+        priority: "secondary",
+    },
+    {
+        id: "delivery_history",
+        icon: <ListOrdered className="w-5 h-5" />,
+        bgIcon: <ListOrdered style={{ width: 72, height: 72 }} />,
+        labelKey: "dashboard.actions.history.label",
+        descKey: "dashboard.actions.history.desc",
+        badgeKey: "dashboard.actions.history.badge",
+        actionLabelKey: "dashboard.actions.history.action",
+        theme: "slate",
+        priority: "secondary",
+    },
+];
+
+const cubeCardVariants = {
+    enter: (direction: number) => ({
+        opacity: 0,
+        x: direction > 0 ? 38 : -38,
+        rotateY: direction > 0 ? 30 : -30,
+        scale: 0.96,
+    }),
+    center: {
+        opacity: 1,
+        x: 0,
+        rotateY: 0,
+        scale: 1,
+    },
+    exit: (direction: number) => ({
+        opacity: 0,
+        x: direction > 0 ? -38 : 38,
+        rotateY: direction > 0 ? -30 : 30,
+        scale: 0.96,
+    }),
+};
 
 const CarouselCard = memo(({ item, onView }: { item: CarouselItemData; onView?: () => void }) => {
     const { t } = useTranslation();
@@ -200,42 +243,48 @@ const CarouselCard = memo(({ item, onView }: { item: CarouselItemData; onView?: 
             <div
                 ref={cardRef}
                 className="
-                    flex-shrink-0 w-[85%] sm:w-[45%] lg:w-full
-                    h-40 rounded-3xl relative overflow-hidden
-                    snap-start cursor-pointer hover:scale-[0.98] transition-all duration-200
-                    border border-white/10 shadow-lg group
+                    h-full w-full rounded-lg relative overflow-hidden text-left
+                    cursor-pointer transition-all duration-300
+                    border border-sky-100/20 bg-sky-950 shadow-[0_18px_38px_rgba(15,23,42,0.22)] group
+                    hover:border-sky-300/60 dark:border-white/10 dark:hover:border-sky-300/40
                 "
             >
-                {item.mediaType === "video" ? (
-                    <video
-                        src={item.mediaUrl}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                    />
-                ) : (
-                    <img
-                        src={item.mediaUrl}
-                        alt={item.title || "Ad"}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
+                {item.mediaUrl && (
+                    item.mediaType === "video" ? (
+                        <video
+                            src={item.mediaUrl}
+                            className="absolute inset-y-0 right-0 h-full w-[72%] object-cover opacity-85 transition-transform duration-700 group-hover:scale-105"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                        />
+                    ) : (
+                        <img
+                            src={item.mediaUrl}
+                            alt={item.title || "Ad"}
+                            className="absolute inset-y-0 right-0 h-full w-[72%] object-cover opacity-85 transition-transform duration-700 group-hover:scale-105"
+                        />
+                    )
                 )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,#082f49_0%,rgba(8,47,73,0.92)_42%,rgba(8,47,73,0.18)_100%)]" />
+                <div className="absolute left-0 top-0 h-full w-1 bg-sky-300" />
+                <div className="absolute left-4 top-4 rounded-md border border-white/15 bg-white/10 px-2 py-1 text-[10px] font-semibold uppercase text-sky-100">
+                    {t('dashboard.carousel.badge', 'Yangilik')}
+                </div>
 
-                <div className="absolute inset-0 p-5 flex flex-col justify-end">
+                <div className="absolute inset-0 p-5 sm:p-6 flex max-w-[74%] flex-col justify-end">
                     {title && (
-                        <h3
-                            className="font-bold text-xl leading-tight mb-0.5"
+            <h3
+                className="font-semibold text-lg sm:text-xl leading-tight mb-2"
                             style={{ color: item.textColor || "white" }}
                         >
                             {title}
                         </h3>
                     )}
                     {sub && (
-                        <p className="text-white/80 text-sm font-medium flex items-center gap-1">
+                    <p className="text-white/75 text-sm font-medium leading-snug flex items-center gap-1">
                             {sub} <ChevronRight className="w-4 h-4" />
                         </p>
                     )}
@@ -249,55 +298,54 @@ return (
     <div
         ref={cardRef}
         className={`
-            flex-shrink-0 w-[85%] sm:w-[45%] md:w-[280px] lg:w-[300px]
-            h-40 rounded-3xl relative overflow-hidden
-            snap-start cursor-pointer hover:scale-[0.98] transition-transform duration-200
-            border border-white/10 shadow-lg
-            ${item.gradientStyle ? '' : `bg-gradient-to-br ${item.gradient}`}
+            h-full w-full rounded-lg relative overflow-hidden
+            cursor-pointer transition-all duration-300
+            border border-sky-100 bg-white shadow-[0_16px_34px_rgba(14,165,233,0.13)]
+            hover:border-sky-300
         `}
-        style={item.gradientStyle ? { background: item.gradientStyle } : undefined}
     >
-        {item?.bgIcon}
         {/* Background media — faqat mediaUrl bo'lib, mainIcon bo'lmaganda */}
         {item.mediaUrl && !item.mainIcon && (
             <>
                 <img
                     src={item.mediaUrl}
                     alt={item.title || "Feature"}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-y-0 right-0 h-full w-[72%] object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,#082f49_0%,rgba(8,47,73,0.92)_44%,rgba(8,47,73,0.18)_100%)]" />
             </>
         )}
 
         {/* Content */}
-        <div className="h-full flex flex-col justify-between relative z-10 p-5">
+        <div className="absolute inset-x-0 top-0 h-1 bg-[#0b4edb]" />
+        <div className="absolute right-4 top-4 h-16 w-16 rotate-12 rounded-lg border border-sky-100 bg-sky-50/80" />
+        <div className="h-full flex flex-col justify-between relative z-10 p-5 sm:p-6">
             {/* Top: icon yoki thumbnail */}
             {item.mainIcon ? (
-                <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center backdrop-blur-sm">
+                <div className="w-12 h-12 rounded-lg border border-sky-100 bg-sky-50 text-sky-700 flex items-center justify-center [&_svg]:h-6 [&_svg]:w-6 [&_svg]:text-current">
                     {item.mainIcon}
                 </div>
             ) : item.mediaUrl ? (
                 // mediaUrl bor, mainIcon yo'q — top-left badge
-                <div className="self-start px-2 py-0.5 rounded-md bg-white/15 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wide">
-                    Yangilik
+                <div className="self-start px-2 py-1 rounded-md bg-white/15 text-white text-[10px] font-bold uppercase tracking-wide">
+                    {t('dashboard.carousel.badge', 'Yangilik')}
                 </div>
             ) : (
                 <div /> // spacer — text pastda qolsin
             )}
 
             {/* Bottom: title + sub */}
-            <div>
+            <div className={item.mediaUrl && !item.mainIcon ? "max-w-[72%]" : ""}>
                 <h3
-                    className="font-bold text-xl leading-tight mb-1 drop-shadow-sm"
-                    style={{ color: item.textColor || "white" }}
+                    className={`font-semibold text-lg sm:text-xl leading-tight mb-2 ${item.mediaUrl && !item.mainIcon ? "text-white" : "text-[#07182f]"}`}
+                    style={item.mediaUrl && !item.mainIcon ? { color: item.textColor || "white" } : undefined}
                 >
                     {title}
                 </h3>
                 {sub && (
                     <p
-                        className="text-sm font-medium drop-shadow-sm"
-                        style={{ color: item.textColor ? `${item.textColor}b3` : "rgba(255,255,255,0.7)" }}
+                        className={`text-sm font-medium leading-snug ${item.mediaUrl && !item.mainIcon ? "text-white/75" : "text-[#63758a]"}`}
+                        style={item.mediaUrl && !item.mainIcon && item.textColor ? { color: `${item.textColor}b3` } : undefined}
                     >
                         {sub}
                     </p>
@@ -309,304 +357,91 @@ return (
 });
 
 const UniqueBackground = () => (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 dark:block hidden">
-        <div className="absolute inset-0 bg-[#0d0a04]" />
-        <svg
-            className="absolute inset-0 w-full h-full opacity-[0.035]"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <defs>
-                <pattern id="diag-grid" width="60" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
-                    <line x1="0" y1="0" x2="0" y2="60" stroke="#f59e0b" strokeWidth="0.5" />
-                    <line x1="0" y1="0" x2="60" y2="0" stroke="#f59e0b" strokeWidth="0.5" />
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#diag-grid)" />
-        </svg>
-
-        <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
-            <filter id="grain">
-                <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch" />
-                <feColorMatrix type="saturate" values="0" />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#grain)" />
-        </svg>
-
-        <div
-            className="absolute"
-            style={{
-                bottom: "-8%",
-                left: "-5%",
-                width: "480px",
-                height: "480px",
-                background: "radial-gradient(circle, rgba(245,158,11,0.18) 0%, rgba(180,83,9,0.10) 45%, transparent 70%)",
-                filter: "blur(60px)",
-                borderRadius: "50%",
-            }}
-        />
-
-        <div
-            className="absolute"
-            style={{
-                top: "-5%",
-                right: "-8%",
-                width: "420px",
-                height: "420px",
-                background: "radial-gradient(circle, rgba(194,120,40,0.14) 0%, rgba(120,53,15,0.08) 50%, transparent 70%)",
-                filter: "blur(80px)",
-                borderRadius: "50%",
-            }}
-        />
-
-        <div
-            className="absolute"
-            style={{
-                top: "40%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: "600px",
-                height: "300px",
-                background: "radial-gradient(ellipse, rgba(251,191,36,0.04) 0%, transparent 65%)",
-                filter: "blur(40px)",
-            }}
-        />
-
-        <svg
-            className="absolute opacity-[0.06]"
-            style={{ bottom: "5%", right: "3%", width: "320px", height: "320px" }}
-            viewBox="0 0 320 320"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <circle cx="160" cy="160" r="140" fill="none" stroke="#f59e0b" strokeWidth="1" strokeDasharray="6 10" />
-            <circle cx="160" cy="160" r="100" fill="none" stroke="#f59e0b" strokeWidth="0.5" />
-            <circle cx="160" cy="160" r="60" fill="none" stroke="#f59e0b" strokeWidth="0.5" strokeDasharray="3 8" />
-        </svg>
-
-        <svg
-            className="absolute opacity-[0.03]"
-            style={{ top: "8%", left: "-2%", width: "280px", height: "280px" }}
-            viewBox="0 0 100 100"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <rect x="15" y="35" width="70" height="50" rx="3" fill="none" stroke="#f59e0b" strokeWidth="2" />
-            <polyline points="15,35 50,15 85,35" fill="none" stroke="#f59e0b" strokeWidth="2" />
-            <line x1="50" y1="15" x2="50" y2="85" stroke="#f59e0b" strokeWidth="1.5" />
-            <line x1="15" y1="55" x2="85" y2="55" stroke="#f59e0b" strokeWidth="1" />
-        </svg>
-
-        <div
-            className="absolute left-0 right-0 h-px opacity-[0.06]"
-            style={{
-                top: "38%",
-                background: "linear-gradient(to right, transparent 0%, rgba(245,158,11,0.8) 30%, rgba(245,158,11,0.8) 70%, transparent 100%)",
-            }}
-        />
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#f7fbff_0%,#f3f8fd_48%,#eef5fb_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-[#cfe0f1]" />
     </div>
 );
 
-function useDarkMode() {
-    const [dark, setDark] = useState(
-        () => document.documentElement.classList.contains("dark")
-    );
-    useState(() => {
-        const obs = new MutationObserver(() =>
-            setDark(document.documentElement.classList.contains("dark"))
-        );
-        obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-        return () => obs.disconnect();
-    });
-    return dark;
-}
-
-// --- Beta Badge Component ---
-const BetaBadge = memo(() => {
-    const [isOpen, setIsOpen] = useState(false);
-    const { t } = useTranslation();
+const SectionTitle = memo(({
+    children,
+    tone = "cyan",
+    index,
+    accessory,
+}: {
+    children: React.ReactNode;
+    tone?: "cyan" | "emerald" | "rose";
+    index: string;
+    accessory?: React.ReactNode;
+}) => {
+    const toneLine = {
+        cyan: "bg-blue-600",
+        emerald: "bg-emerald-500",
+        rose: "bg-rose-500",
+    }[tone];
 
     return (
-        <div className="absolute top-4 right-4 sm:top-8 sm:right-4 z-50 mt-12">
-            {/* The Badge Button */}
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="group relative flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:border-amber-500/40 backdrop-blur-md transition-all shadow-sm active:scale-95"
-            >
-                {/* Ping Animation Dot */}
-                <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500 border-2 border-white dark:border-[#0d0a04]"></span>
-                </span>
-                
-                <ShieldAlert className="w-3.5 h-3.5" />
-                <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase">
-                    {t('beta.badge', 'Beta')}
-                </span>
-            </button>
-
-            {/* The Popup Content */}
-            {isOpen && (
-                <>
-                    {/* Backdrop for closing when clicked outside */}
-                    <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)} />
-                    
-                    <div className="absolute right-0 top-12 w-72 sm:w-80 p-5 bg-white/95 dark:bg-[#1a1814]/95 backdrop-blur-xl border border-amber-100 dark:border-amber-900/30 rounded-2xl shadow-2xl z-[70] animate-in fade-in slide-in-from-top-2 zoom-in-95 duration-200">
-                        <div className="flex justify-between items-start mb-3">
-                            <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                <ShieldAlert className="w-4 h-4 text-amber-500" />
-                                {t('beta.title', 'Beta Versiya')}
-                            </h3>
-                            <button 
-                                onClick={() => setIsOpen(false)} 
-                                className="p-1 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
-                            >
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                            </button>
-                        </div>
-                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-                            {t('beta.desc', 'Platforma hozirda sinov (beta) rejimida ishlamoqda. Ayrim xatoliklar yoki kamchiliklar kuzatilishi mumkin. Agar biron muammoga duch kelsangiz, iltimos bizga xabar bering.')}
-                        </p>
-                        <button 
-                            onClick={() => window.open("https://t.me/mandarin_admin", "_blank")}
-                            className="flex items-center justify-center gap-2 w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all active:scale-[0.98]"
-                        >
-                            <MessageSquare className="w-4 h-4" />
-                            {t('beta.action', 'Adminga yozish')}
-                        </button>
-                    </div>
-                </>
-            )}
+        <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="min-w-0">
+                <div className="mb-1 flex items-center gap-2">
+                    <span className={`h-1 w-6 rounded-lg ${toneLine}`} />
+                    <span className="text-[10px] font-bold uppercase tracking-normal text-[#7d91a8]">
+                        {index}
+                    </span>
+                </div>
+                <h2 className="text-lg font-semibold leading-tight tracking-normal text-[#07182f]">
+                    {children}
+                </h2>
+            </div>
+            {accessory}
         </div>
     );
 });
 
-// --- Premium Tab Component ---
+SectionTitle.displayName = "SectionTitle";
+
+// --- Compact Subpage Tab Component ---
 const HeaderTabs = memo(({ activeTab, setActiveTab }: { activeTab: string; setActiveTab: (t: string) => void }) => {
-    const isHome = activeTab === "home";
-    const dark = useDarkMode();
     const { t } = useTranslation();
-
-    const indicatorStyle: React.CSSProperties = dark
-        ? {
-            position: "absolute",
-            top: "4px",
-            bottom: "4px",
-            left: isHome ? "4px" : "calc(50% + 2px)",
-            right: isHome ? "calc(50% + 2px)" : "4px",
-            borderRadius: "10px",
-            background: "linear-gradient(135deg, rgba(245,158,11,0.25) 0%, rgba(234,88,12,0.15) 100%)",
-            boxShadow: "0 2px 16px rgba(245,158,11,0.2), inset 0 0 0 1px rgba(245,158,11,0.3)",
-            transition: "all 300ms cubic-bezier(0.34,1.56,0.64,1)",
-        }
-        : {
-            position: "absolute",
-            top: "4px",
-            bottom: "4px",
-            left: isHome ? "4px" : "calc(50% + 2px)",
-            right: isHome ? "calc(50% + 2px)" : "4px",
-            borderRadius: "10px",
-            background: "#ffffff",
-            boxShadow: "0 1px 8px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)",
-            transition: "all 300ms cubic-bezier(0.34,1.56,0.64,1)",
-        };
-
-    const wrapperStyle: React.CSSProperties = dark
-        ? {
-            background: "rgba(26,18,8,0.85)",
-            border: "1px solid rgba(180,83,9,0.35)",
-            boxShadow: "0 0 0 1px rgba(245,158,11,0.08), 0 8px 32px rgba(0,0,0,0.5)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-        }
-        : {
-            background: "rgba(255,255,255,0.9)",
-            border: "1px solid rgba(0,0,0,0.08)",
-            boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-        };
-
-    const activeTextClass = dark ? "text-amber-300" : "text-gray-900";
-    const inactiveTextClass = dark
-        ? "text-white/35 hover:text-white/55"
-        : "text-gray-400 hover:text-gray-600";
+    const trackLabel = activeTab === 'track'
+        ? t('dashboard.tabs.track')
+        : activeTab === 'schedule'
+            ? t('dashboard.tabs.schedule')
+            : activeTab === 'request'
+                ? t('dashboard.tabs.request')
+                : activeTab === 'delivery_history'
+                    ? t('dashboard.tabs.history')
+                    : t('dashboard.tabs.track');
 
     return (
-        <div className="relative mt-14 mb-6 z-10">
-            <div className="relative flex rounded-2xl p-1 gap-1" style={wrapperStyle}>
-
-                <div style={indicatorStyle} />
-
+        <div className="relative mb-5 z-10">
+            <div className="grid grid-cols-[1fr_1.35fr] items-center gap-2 rounded-lg border border-[#dbe8f4] bg-white p-1.5 shadow-sm">
                 <button
                     onClick={() => setActiveTab("home")}
-                    className={`
-                        relative z-10 flex-1 flex items-center justify-center gap-2
-                        py-[11px] px-4 rounded-[10px] text-sm font-semibold
-                        transition-colors duration-200 select-none outline-none
-                        ${isHome ? activeTextClass : inactiveTextClass}
-                    `}
+                    className="relative flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md px-3 text-sm font-semibold text-[#63758a] transition-colors hover:bg-[#eef6ff] hover:text-[#0b4edb]"
                 >
-                    <Home
-                        className="transition-all duration-300"
-                        style={{
-                            width: 16,
-                            height: 16,
-                            transform: isHome ? "scale(1.15)" : "scale(1)",
-                            strokeWidth: isHome ? 2.5 : 2,
-                        }}
-                    />
-                    <span>{t('dashboard.tabs.home')}</span>
+                    <Home className="h-4 w-4" />
+                    <span className="relative z-10">{t('dashboard.tabs.home')}</span>
                 </button>
 
-                <button
-                    onClick={() => setActiveTab("track")}
-                    className={`
-                        relative z-10 flex-1 flex items-center justify-center gap-2
-                        py-[11px] px-4 rounded-[10px] text-sm font-semibold
-                        transition-colors duration-200 select-none outline-none
-                        ${!isHome ? activeTextClass : inactiveTextClass}
-                    `}
+                <div
+                    className="relative flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-[#0b4edb] px-3 text-sm font-semibold text-white shadow-sm"
                 >
-                    {activeTab === 'track' ? <ScanBarcode
-                        className="transition-all duration-300"
-                        style={{
-                            width: 16,
-                            height: 16,
-                            transform: !isHome ? "scale(1.15)" : "scale(1)",
-                            strokeWidth: !isHome ? 2.5 : 2,
-                        }}
-                    /> : activeTab === 'schedule' ? <Calendar
-                        className="transition-all duration-300"
-                        style={{
-                            width: 16,
-                            height: 16,
-                            transform: !isHome ? "scale(1.15)" : "scale(1)",
-                            strokeWidth: !isHome ? 2.5 : 2,
-                        }}
-                    /> : <ScanBarcode
-                        className="transition-all duration-300"
-                        style={{
-                            width: 16,
-                            height: 16,
-                            transform: !isHome ? "scale(1.15)" : "scale(1)",
-                            strokeWidth: !isHome ? 2.5 : 2,
-                        }}
-                    />}
-                    <span>{activeTab === 'track' ? t('dashboard.tabs.track') : activeTab === 'schedule' ? t('dashboard.tabs.schedule') : activeTab === 'request' ? t('dashboard.tabs.request') : activeTab === 'delivery_history' ? t('dashboard.tabs.history') : t('dashboard.tabs.track')}</span>
-                </button>
+                    {activeTab === 'track' ? (
+                        <ScanBarcode className="relative z-10 h-4 w-4" />
+                    ) : activeTab === 'schedule' ? (
+                        <Calendar className="relative z-10 h-4 w-4" />
+                    ) : activeTab === 'request' ? (
+                        <Edit3 className="relative z-10 h-4 w-4" />
+                    ) : activeTab === 'delivery_history' ? (
+                        <ListOrdered className="relative z-10 h-4 w-4" />
+                    ) : (
+                        <ScanBarcode className="relative z-10 h-4 w-4" />
+                    )}
+                    <span className="relative z-10">{trackLabel}</span>
+                </div>
             </div>
 
-            {dark && (
-                <div
-                    style={{
-                        position: "absolute",
-                        bottom: "-10px",
-                        left: isHome ? "15%" : "55%",
-                        width: isHome ? "25%" : "30%",
-                        height: "1px",
-                        background: "linear-gradient(to right, transparent, rgba(245,158,11,0.7), transparent)",
-                        transition: "all 400ms cubic-bezier(0.34,1.56,0.64,1)",
-                    }}
-                />
-            )}
         </div>
     );
 });
@@ -616,46 +451,134 @@ const PageLoadingFallback = memo(() => {
     return (
         <div className="min-h-[60vh] flex flex-col items-center justify-center w-full animate-in fade-in duration-300">
             <div className="w-16 h-16 relative flex items-center justify-center">
-                <div className="absolute inset-0 rounded-full border-4 border-gray-100 dark:border-white/5"></div>
-                <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 border-r-blue-500 dark:border-t-amber-500 dark:border-r-amber-500 animate-spin"></div>
-                <Plane className="w-6 h-6 text-blue-500 dark:text-amber-500 animate-pulse absolute" />
+                <div className="absolute inset-0 rounded-full border-4 border-[#dbe8f4]"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-cyan-500 border-r-cyan-500 animate-spin"></div>
+                <Plane className="w-6 h-6 text-cyan-500 animate-pulse absolute" />
             </div>
-            <p className="mt-4 text-sm font-medium text-gray-500 dark:text-gray-400 animate-pulse">
+            <p className="mt-4 text-sm font-medium text-[#63758a] animate-pulse">
                 {t('dashboard.loading')}
             </p>
         </div>
     );
 });
 
-const QuickSearchBar = memo(({ onClick }: { onClick: () => void }) => {
-    const { t } = useTranslation();
+const LanguageSwitcher = memo(() => {
+    const { i18n } = useTranslation();
+    const language = i18n.language || "uz";
+
     return (
-        <div
-            onClick={onClick}
-            className="
-                relative flex items-center gap-3 w-full
-                px-4 py-3 rounded-2xl cursor-text
-                bg-white dark:bg-white/8
-                border border-gray-200/80 dark:border-white/10
-                shadow-sm hover:shadow-md hover:border-purple-300 dark:hover:border-purple-500/40
-                transition-all duration-200 group mb-5
-            "
-        >
-            <Search className="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0 group-hover:text-purple-500 transition-colors duration-200" />
-            <span className="text-xs text-gray-400 dark:text-gray-500 font-sans select-none flex-1">
-                {t('tracking.placeholder', 'Kargo kodini kiriting...')}
-            </span>
-            <div className="
-                flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold
-                bg-purple-50 dark:bg-purple-500/15
-                text-purple-600 dark:text-purple-400
-                border border-purple-100 dark:border-purple-500/20
-                group-hover:bg-purple-100 dark:group-hover:bg-purple-500/25 transition-colors
-            ">
-                <ScanBarcode className="w-3.5 h-3.5" />
-                {t('dashboard.tabs.track', 'Track')}
-            </div>
+        <div className="flex items-center rounded-lg border border-[#dbe8f4] bg-white p-1 shadow-sm">
+            {(["uz", "ru"] as const).map((lng) => (
+                <button
+                    key={lng}
+                    type="button"
+                    onClick={() => i18n.changeLanguage(lng)}
+                    className={`h-8 rounded-md px-2.5 text-xs font-bold uppercase transition-colors ${
+                        language.startsWith(lng)
+                            ? "bg-[#0b4edb] text-white"
+                            : "text-[#63758a] hover:bg-[#eef6ff] hover:text-[#0b4edb]"
+                    }`}
+                >
+                    {lng}
+                </button>
+            ))}
         </div>
+    );
+});
+
+const DashboardHeader = memo(({ name }: { name?: string }) => {
+    const { t } = useTranslation();
+    const firstName = name?.trim().split(/\s+/)[0];
+
+    return (
+        <header className="mb-4 space-y-4">
+            <div className="flex items-center justify-between gap-3">
+                <AKBLogo />
+                <div className="flex items-center gap-2">
+                    <LanguageSwitcher />
+                    <NotificationCenter />
+                </div>
+            </div>
+
+            <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-sm">
+                <p className="text-xs font-medium text-[#63758a]">{t('dashboard.greeting', 'Assalomu alaykum,')}</p>
+                <h1 className="mt-1 text-xl font-semibold leading-tight text-[#07182f]">
+                    {firstName || t('dashboard.customer', 'AKB Cargo mijozi')}
+                </h1>
+                <p className="mt-2 text-sm leading-snug text-[#63758a]">
+                    {t('dashboard.heroSubtitle', 'Yukingizni kuzating, zayavka qoldiring va to‘lovlarni boshqaring.')}
+                </p>
+            </div>
+        </header>
+    );
+});
+
+const QuickTrackSearch = memo(({
+    onSubmit,
+    onCargoClick,
+}: {
+    onSubmit: (code: string) => void;
+    onCargoClick?: () => void;
+}) => {
+    const { t } = useTranslation();
+    const [value, setValue] = useState("");
+
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        const clean = value.trim().toUpperCase();
+        if (clean.length < 3) {
+            toast.error(t('tracking.validation'));
+            return;
+        }
+        onSubmit(clean);
+    };
+
+    return (
+        <section className="mb-5 rounded-lg border border-[#cfe0f1] bg-white p-4 shadow-[0_10px_24px_rgba(15,47,87,0.07)]">
+            <div className="mb-3 flex items-start justify-between gap-3">
+                <div>
+                    <p className="text-xs font-bold uppercase text-[#0b84e5]">
+                        {t('dashboard.trackModule.kicker', 'Tezkor qidiruv')}
+                    </p>
+                    <h2 className="mt-1 text-lg font-semibold text-[#07182f]">
+                        {t('tracking.title')}
+                    </h2>
+                </div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#eef6ff] text-[#0b4edb]">
+                    <ScanBarcode className="h-5 w-5" />
+                </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="grid grid-cols-[1fr_auto] gap-2">
+                <div className="relative min-w-0">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#7d91a8]" />
+                    <input
+                        value={value}
+                        onChange={(event) => setValue(event.target.value.toUpperCase())}
+                        placeholder={t('tracking.placeholder', 'Trek-kodni kiriting')}
+                        className="h-12 w-full rounded-lg border border-[#cfe0f1] bg-[#f8fbfe] pl-9 pr-3 font-mono text-base font-semibold text-[#07182f] placeholder:font-sans placeholder:text-sm placeholder:font-medium placeholder:text-[#7d91a8] focus:border-[#0b84e5] focus:outline-none focus:ring-2 focus:ring-[#37c5f3]/20"
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="h-12 rounded-lg bg-[#0b4edb] px-4 text-sm font-semibold text-white shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-colors hover:bg-[#073fba] active:bg-[#063493]"
+                >
+                    {t('tracking.search', 'Qidirish')}
+                </button>
+            </form>
+
+            <button
+                type="button"
+                onClick={onCargoClick}
+                className="mt-3 flex w-full items-center justify-between rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] px-3 py-2.5 text-sm font-semibold text-[#0b4edb] transition-colors hover:bg-[#eef6ff]"
+            >
+                <span className="flex items-center gap-2">
+                    <Package className="h-4 w-4" />
+                    {t('dashboard.sections.myCargo')}
+                </span>
+                <ChevronRight className="h-4 w-4" />
+            </button>
+        </section>
     );
 });
 
@@ -686,9 +609,11 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
     const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
     const [isProhibitedModalOpen, setIsProhibitedModalOpen] = useState(false);
     const [trackAutoFocus, setTrackAutoFocus] = useState(false);
+    const [initialTrackQuery, setInitialTrackQuery] = useState<string | undefined>();
     const [mediaModalItem, setMediaModalItem] = useState<CarouselItemData | null>(null);
 
     const { t } = useTranslation();
+    const { data: profile } = useProfile();
 
     const { data: apiCarouselItems } = useQuery({
         queryKey: ['carousel-items'],
@@ -708,7 +633,7 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                     type: item.type as "ad" | "feature",
                     title: item.title ?? undefined,
                     sub: item.sub_title ?? undefined,
-                    gradientStyle: item.gradient ?? 'linear-gradient(135deg, #1a1a2e, #16213e)',
+                    gradientStyle: item.gradient ?? 'linear-gradient(135deg, #18181b, #27272a)',
                     mediaType: item.media_type,
                     mediaUrl: item.media_url,
                     actionUrl: item.action_url ?? undefined,
@@ -728,28 +653,51 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
     
     const touchStartX = useRef<number | null>(null);
     const touchStartY = useRef<number | null>(null);
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const [isPaused, setIsPaused] = useState(false);
+    const carouselTouchStartX = useRef<number | null>(null);
+    const carouselTouchStartY = useRef<number | null>(null);
+    const viewedCarouselIdsRef = useRef<Set<number>>(new Set());
+    const [activeCarouselIndex, setActiveCarouselIndex] = useState(0);
+    const [carouselDirection, setCarouselDirection] = useState(1);
+    const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+
+    const boundedCarouselIndex = sortedCarouselItems.length > 0
+        ? Math.min(activeCarouselIndex, sortedCarouselItems.length - 1)
+        : 0;
+    const activeCarouselItem = sortedCarouselItems[boundedCarouselIndex];
+
+    const handleCarouselStep = useCallback((direction: 1 | -1) => {
+        if (sortedCarouselItems.length <= 1) {
+            return;
+        }
+
+        setCarouselDirection(direction);
+        setActiveCarouselIndex((currentIndex) => {
+            return (currentIndex + direction + sortedCarouselItems.length) % sortedCarouselItems.length;
+        });
+    }, [sortedCarouselItems.length]);
 
     useEffect(() => {
-        if (activeTab !== "home" || isPaused) return;
+        if (!activeCarouselItem?.fromApi || activeTab !== "home") {
+            return;
+        }
+
+        if (viewedCarouselIdsRef.current.has(activeCarouselItem.id)) {
+            return;
+        }
+
+        viewedCarouselIdsRef.current.add(activeCarouselItem.id);
+        trackCarouselView(activeCarouselItem.id);
+    }, [activeCarouselItem?.fromApi, activeCarouselItem?.id, activeTab]);
+
+    useEffect(() => {
+        if (activeTab !== "home" || isCarouselPaused || sortedCarouselItems.length <= 1) return;
 
         const interval = setInterval(() => {
-            if (scrollRef.current) {
-                const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
-
-                const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 50;
-
-                if (isAtEnd) {
-                    scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
-                } else {
-                    scrollRef.current.scrollBy({ left: clientWidth * 0.6, behavior: "smooth" });
-                }
-            }
-        }, 4000); 
+            handleCarouselStep(1);
+        }, 4500);
 
         return () => clearInterval(interval);
-    }, [activeTab, isPaused]);
+    }, [activeTab, handleCarouselStep, isCarouselPaused, sortedCarouselItems.length]);
 
     const handleSetActiveTab = useCallback((tab: string) => {
         setActiveTab(tab);
@@ -762,8 +710,9 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
         window.history.replaceState(null, "", url.toString());
     }, []);
 
-    const handleQuickSearch = () => {
-        setTrackAutoFocus(true);
+    const handleHomeTrackSearch = (code: string) => {
+        setTrackAutoFocus(false);
+        setInitialTrackQuery(code);
         handleSetActiveTab("track");
     };
 
@@ -788,7 +737,7 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
     const onTouchStart = (e: React.TouchEvent) => {
         touchStartX.current = e.targetTouches[0].clientX;
         touchStartY.current = e.targetTouches[0].clientY;
-        setIsPaused(true); 
+        setIsCarouselPaused(true);
     };
 
     const onTouchEnd = (e: React.TouchEvent) => {
@@ -813,7 +762,36 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
         touchStartX.current = null;
         touchStartY.current = null;
 
-        setTimeout(() => setIsPaused(false), 3000);
+        setTimeout(() => setIsCarouselPaused(false), 3000);
+    };
+
+    const onCarouselTouchStart = (e: React.TouchEvent) => {
+        e.stopPropagation();
+        carouselTouchStartX.current = e.targetTouches[0].clientX;
+        carouselTouchStartY.current = e.targetTouches[0].clientY;
+        setIsCarouselPaused(true);
+    };
+
+    const onCarouselTouchEnd = (e: React.TouchEvent) => {
+        e.stopPropagation();
+
+        if (carouselTouchStartX.current === null || carouselTouchStartY.current === null) {
+            setTimeout(() => setIsCarouselPaused(false), 3000);
+            return;
+        }
+
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const distanceX = carouselTouchStartX.current - touchEndX;
+        const distanceY = carouselTouchStartY.current - touchEndY;
+
+        if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > 36) {
+            handleCarouselStep(distanceX > 0 ? 1 : -1);
+        }
+
+        carouselTouchStartX.current = null;
+        carouselTouchStartY.current = null;
+        setTimeout(() => setIsCarouselPaused(false), 3000);
     };
 
     const handleActionClick = (id: string) => {
@@ -848,22 +826,17 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
 
     return (
         <div
-            className="min-h-screen bg-gray-50 dark:bg-[#0d0a04] text-gray-900 dark:text-white pb-24 transition-colors duration-300 font-sans selection:bg-orange-500/30"
+            className="min-h-screen bg-[#f4f8fc] text-[#07182f] pb-24 transition-colors duration-300 font-sans selection:bg-[#37c5f3]/20"
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
         >
             <UniqueBackground />
 
-            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-12 sm:pt-16">
-                
-                {/* Yopiladigan Beta Badge Shu Yerga Qo'yildi */}
-                
-                <BetaBadge />
+            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-4 sm:pt-6">
+                <DashboardHeader name={profile?.full_name} />
 
-                <HeaderTabs activeTab={activeTab} setActiveTab={handleSetActiveTab} />
-
-                {activeTab === "home" && (
-                    <QuickSearchBar onClick={handleQuickSearch} />
+                {activeTab !== "home" && (
+                    <HeaderTabs activeTab={activeTab} setActiveTab={handleSetActiveTab} />
                 )}
 
                 {activeTab === 'schedule' && (
@@ -892,116 +865,110 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                 )}
 
                 {activeTab === "home" ? (
-                    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <QuickTrackSearch
+                            onSubmit={handleHomeTrackSearch}
+                            onCargoClick={onNavigateToReports}
+                        />
 
                         <section>
-                            <div className="flex items-center justify-between mb-4 ml-1">
-                                <h2 className="text-lg font-bold flex items-center gap-2">
-                                    <span className="w-1 h-5 bg-blue-500 rounded-full inline-block"></span>
-                                    {t('dashboard.sections.important')}
-                                </h2>
+                            <SectionTitle index="01" tone="cyan">
+                                {t('dashboard.sections.mainActions', 'Asosiy amallar')}
+                            </SectionTitle>
 
-                                <div className="hidden md:flex items-center gap-2">
-                                    <button
-                                        onClick={() => scrollRef.current?.scrollBy({ left: -320, behavior: "smooth" })}
-                                        className="p-1.5 rounded-full bg-gray-200 dark:bg-white/10 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 transition-colors active:scale-95"
-                                    >
-                                        <ChevronLeft className="w-5 h-5" />
-                                    </button>
-                                    <button
-                                        onClick={() => scrollRef.current?.scrollBy({ left: 320, behavior: "smooth" })}
-                                        className="p-1.5 rounded-full bg-gray-200 dark:bg-white/10 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 transition-colors active:scale-95"
-                                    >
-                                        <ChevronRight className="w-5 h-5" />
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div
-                                ref={scrollRef}
-                                className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scrollbar-hide lg:mx-0 lg:px-0 lg:pb-4"
-                                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                                onTouchStart={(e) => { e.stopPropagation(); setIsPaused(true); }}
-                                onTouchEnd={(e) => { e.stopPropagation(); setTimeout(() => setIsPaused(false), 3000); }}
-                                onMouseEnter={() => setIsPaused(true)}
-                                onMouseLeave={() => setIsPaused(false)}
-                            >
-                                {sortedCarouselItems.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className="group contents cursor-pointer"
-                                        onClick={() => handleCarouselItemClick(item)}
-                                    >
-                                        <CarouselCard
-                                            item={item}
-                                            onView={item.fromApi
-                                                ? () => { trackCarouselView(item.id); }
-                                                : undefined
-                                            }
-                                        />
-                                    </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                {PRIMARY_ACTIONS.map((action) => (
+                                    <ActionButton
+                                        key={action.id}
+                                        item={{
+                                            ...action,
+                                            label: t(action.labelKey),
+                                            desc: t(action.descKey),
+                                            badge: t(action.badgeKey),
+                                            actionLabel: t(action.actionLabelKey),
+                                        }}
+                                        onClick={() => handleActionClick(action.id)}
+                                    />
                                 ))}
                             </div>
                         </section>
 
-                        <section className="mb-4">
-                            <div className="flex items-center justify-between mb-3 ml-1 mr-1">
-                                <h2 className="text-lg font-bold flex items-center gap-2">
-                                    <span className="w-1 h-5 bg-emerald-500 rounded-full inline-block"></span>
-                                    {t('dashboard.sections.reportsAndPayments')}
-                                </h2>
-                            </div>
+                        <section>
+                            <SectionTitle index="02" tone="emerald" accessory={
+                                <div className="hidden md:flex items-center gap-2">
+                                    <button
+                                        onClick={() => handleCarouselStep(-1)}
+                                        disabled={sortedCarouselItems.length <= 1}
+                                        className="p-1.5 rounded-lg bg-white text-[#0b4edb] border border-[#dbe8f4] hover:bg-[#0b4edb] hover:text-white disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#0b4edb] transition-colors active:scale-95"
+                                    >
+                                        <ChevronLeft className="w-5 h-5" />
+                                    </button>
+                                    <button
+                                        onClick={() => handleCarouselStep(1)}
+                                        disabled={sortedCarouselItems.length <= 1}
+                                        className="p-1.5 rounded-lg bg-white text-[#0b4edb] border border-[#dbe8f4] hover:bg-[#0b4edb] hover:text-white disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#0b4edb] transition-colors active:scale-95"
+                                    >
+                                        <ChevronRight className="w-5 h-5" />
+                                    </button>
+                                </div>
+                            }>
+                                {t('dashboard.sections.important')}
+                            </SectionTitle>
 
-                            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                                <button
-                                    onClick={onNavigateToReports}
-                                    className="relative overflow-hidden rounded-3xl p-3 sm:p-4 text-left border border-white/15 bg-white/80 dark:bg-white/5 backdrop-blur-xl shadow-lg transition hover:-translate-y-[2px] active:scale-[0.99]"
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-amber-400/30 via-orange-400/10 to-transparent dark:from-amber-500/30 dark:via-orange-500/10" />
-                                    <div className="absolute inset-0 pointer-events-none opacity-25 blur-3xl bg-amber-200/60 dark:bg-amber-500/30" />
+                            <div
+                                className="relative -mx-1 px-1 pb-4 sm:mx-0 sm:px-0"
+                                onTouchStart={onCarouselTouchStart}
+                                onTouchEnd={onCarouselTouchEnd}
+                                onMouseEnter={() => setIsCarouselPaused(true)}
+                                onMouseLeave={() => setIsCarouselPaused(false)}
+                            >
+                                <div className="relative h-[178px] overflow-hidden rounded-lg bg-white shadow-sm sm:h-[204px] [perspective:1200px]">
+                                    <AnimatePresence initial={false} custom={carouselDirection}>
+                                        {activeCarouselItem && (
+                                            <motion.button
+                                                type="button"
+                                                key={`${activeCarouselItem.fromApi ? "api" : "static"}-${activeCarouselItem.id}`}
+                                                custom={carouselDirection}
+                                                variants={cubeCardVariants}
+                                                initial="enter"
+                                                animate="center"
+                                                exit="exit"
+                                                transition={{ type: "spring", stiffness: 230, damping: 27, mass: 0.72 }}
+                                                className="group absolute inset-0 h-full w-full text-left outline-none [transform-style:preserve-3d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                                                onClick={() => handleCarouselItemClick(activeCarouselItem)}
+                                            >
+                                                <CarouselCard item={activeCarouselItem} />
+                                            </motion.button>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
 
-                                    <div className="relative flex flex-col items-center text-center gap-2 sm:gap-3">
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center bg-white/70 dark:bg-white/10 text-amber-600 dark:text-amber-300 shadow-inner shrink-0">
-                                            <FileText className="w-5 h-5 sm:w-6 sm:h-6" />
-                                        </div>
-                                        <div className="space-y-0.5 min-w-0 w-full">
-                                            <h3 className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white truncate">{t('dashboard.sections.myCargo')}</h3>
-                                            <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-300/70 leading-snug line-clamp-2">{t('dashboard.sections.cargoReport')}</p>
-                                        </div>
+                                {sortedCarouselItems.length > 1 && (
+                                    <div className="mt-3 flex items-center justify-center gap-1.5">
+                                        {sortedCarouselItems.map((item, index) => (
+                                            <button
+                                                key={`${item.fromApi ? "api" : "static"}-dot-${item.id}`}
+                                                type="button"
+                                                onClick={() => {
+                                                    setCarouselDirection(index > boundedCarouselIndex ? 1 : -1);
+                                                    setActiveCarouselIndex(index);
+                                                }}
+                                                className={`h-1.5 rounded-full transition-all duration-300 ${index === boundedCarouselIndex ? "w-6 bg-[#0b4edb]" : "w-1.5 bg-[#cfe0f1] hover:bg-[#9edcf0]"}`}
+                                                aria-label={`${index + 1}`}
+                                            />
+                                        ))}
                                     </div>
-                                </button>
-
-                                <button
-                                    onClick={onNavigateToHistory}
-                                    className="relative overflow-hidden rounded-3xl p-3 sm:p-4 text-left border border-white/15 bg-white/80 dark:bg-white/5 backdrop-blur-xl shadow-lg transition hover:-translate-y-[2px] active:scale-[0.99]"
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-sky-500/25 via-indigo-500/15 to-transparent dark:from-sky-500/25 dark:via-indigo-500/20" />
-                                    <div className="absolute inset-0 pointer-events-none opacity-25 blur-3xl bg-sky-200/50 dark:bg-indigo-600/25" />
-
-                                    <div className="relative flex flex-col items-center text-center gap-2 sm:gap-3">
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center bg-white/70 dark:bg-white/10 text-sky-600 dark:text-indigo-200 shadow-inner shrink-0">
-                                            <ReceiptText className="w-5 h-5 sm:w-6 sm:h-6" />
-                                        </div>
-                                        <div className="space-y-0.5 min-w-0 w-full">
-                                            <h3 className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white truncate">{t('dashboard.sections.paymentHistory')}</h3>
-                                            <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-300/70 leading-snug line-clamp-2">{t('dashboard.sections.receipts')}</p>
-                                        </div>
-                                    </div>
-                                </button>
+                                )}
                             </div>
                         </section>
 
-                        <section className="mb-6">
-                            <div className="flex items-center justify-between mb-4 ml-1 mr-1">
-                                <h2 className="text-lg font-bold flex items-center gap-2">
-                                    <span className="w-1 h-5 bg-amber-500 rounded-full inline-block"></span>
-                                    {t('dashboard.sections.services')}
-                                </h2>
-                                <NotificationCenter />
-                            </div>
+                        <section>
+                            <SectionTitle index="03" tone="cyan">
+                                {t('dashboard.sections.services')}
+                            </SectionTitle>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                {MAIN_ACTIONS.map((action) => (
+                            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                                {SECONDARY_ACTIONS.map((action) => (
                                     <ActionButton
                                         key={action.id}
                                         item={{
@@ -1020,39 +987,41 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                         <section className="pb-8 px-1">
                             <button
                                 className="
-                                    w-full relative overflow-hidden rounded-2xl p-4 flex items-center justify-between
-                                    bg-gradient-to-r from-gray-50 to-gray-100 dark:from-white/5 dark:to-white/10
-                                    border border-gray-200 dark:border-white/10
-                                    active:scale-[0.98] transition-all duration-200 group shadow-sm hover:shadow-md
+                                    group relative grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 overflow-hidden rounded-lg p-3
+                                    bg-[#07182f] text-white
+                                    border border-[#07182f]
+                                    active:scale-[0.98] transition-all duration-300 shadow-sm hover:-translate-y-1
                                 "
                                 onClick={() => window.open("https://t.me/mandarin_admin", "_blank")}
                             >
-                                <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-white dark:bg-white/10 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform text-blue-500 dark:text-blue-400">
-                                        <MessageSquare className="w-5 h-5" />
-                                    </div>
-                                    <div className="text-left">
-                                        <h3 className="text-sm font-bold text-gray-900 dark:text-white">{t('dashboard.sections.feedback')}</h3>
-                                        <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">
-                                            {t('dashboard.sections.contactUs')}
-                                        </p>
-                                    </div>
+                                <div className="absolute inset-y-2 left-2 w-1 rounded-lg bg-blue-500" />
+                                <div className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center transition-transform group-hover:scale-105">
+                                    <MessageSquare className="w-5 h-5" />
                                 </div>
-                                <ChevronRight className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:translate-x-1 transition-transform" />
+                                <div className="min-w-0 text-left">
+                                    <h3 className="text-sm font-bold">{t('dashboard.sections.feedback')}</h3>
+                                    <p className="text-[10px] text-white/65 font-medium">
+                                        {t('dashboard.sections.contactUs')}
+                                    </p>
+                                </div>
+                                <div className="h-9 w-9 rounded-lg bg-[#0b4edb] text-white flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                                    <ChevronRight className="w-5 h-5" />
+                                </div>
                             </button>
 
                             <div className="text-center mt-6">
-                                <p className="text-[10px] text-gray-300 dark:text-white/10 font-mono">
-                                    v2.0
+                                <p className="text-[10px] text-[#9fb7cc] font-mono">
+                                    v2.0 - AKB Cargo
                                 </p>
                             </div>
                         </section>
 
                     </div>
                 ) : activeTab === "track" ? (
-                        <TrackCodeTab 
-                            key={initialTrackView} 
+                        <TrackCodeTab
+                            key={`${initialTrackView}-${initialTrackQuery ?? "empty"}`}
                             initialView={initialTrackView}
+                            initialQuery={initialTrackQuery}
                             autoFocus={trackAutoFocus}
                             onFocusConsumed={() => setTrackAutoFocus(false)}
                         />

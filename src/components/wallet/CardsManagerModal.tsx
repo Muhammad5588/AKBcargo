@@ -129,7 +129,7 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-md bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl border-white/20 overflow-hidden h-[90vh] sm:h-auto flex flex-col">
+            <DialogContent className="sm:max-w-md bg-white border-[#dbe8f4] overflow-hidden h-[90vh] sm:h-auto flex flex-col rounded-lg">
                 <DialogHeader>
                     <div className="flex items-center gap-2">
                         {isAdding && (
@@ -160,20 +160,20 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                 className="space-y-4 col-start-1 row-start-1 w-full h-full bg-transparent px-1 overflow-y-auto"
                             >
                                 <div className="space-y-4 pb-6">
-                                    <div className="p-6 rounded-xl bg-gradient-to-br from-gray-900 to-gray-800 text-white shadow-xl mb-6">
+                                    <div className="p-6 rounded-lg bg-[#07182f] text-white shadow-sm mb-6 border border-[#0b2b53]">
                                         <div className="flex justify-between items-start mb-8">
                                             <div className="h-8 w-12 rounded bg-white/20" />
-                                            <CreditCard className="h-6 w-6 text-gray-400" />
+                                            <CreditCard className="h-6 w-6 text-[#9ee8ff]" />
                                         </div>
                                         <div className="space-y-4">
                                             <div>
-                                                <p className="text-xs text-gray-400 uppercase mb-1">{t('wallet.cards.cardNumber', "Karta raqami")}</p>
-                                                <p className="font-mono text-base sm:text-xl tracking-widest truncate">{cardNumber || '0000 0000 0000 0000'}</p>
+                                                <p className="text-xs text-white/60 uppercase mb-1">{t('wallet.cards.cardNumber', "Karta raqami")}</p>
+                                                <p className="font-mono text-base sm:text-xl tracking-normal truncate">{cardNumber || '0000 0000 0000 0000'}</p>
                                             </div>
                                             <div className="flex justify-between">
                                                 <div>
-                                                    <p className="text-xs text-gray-400 uppercase mb-1">{t('wallet.cards.cardHolder', "Egasi")}</p>
-                                                    <p className="font-medium uppercase tracking-wide truncate max-w-[200px]">{cardHolder || 'ISMI FAMILIYASI'}</p>
+                                                    <p className="text-xs text-white/60 uppercase mb-1">{t('wallet.cards.cardHolder', "Egasi")}</p>
+                                                    <p className="font-medium uppercase tracking-normal truncate max-w-[200px]">{cardHolder || 'ISMI FAMILIYASI'}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -186,7 +186,7 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                             value={cardNumber}
                                             onChange={handleCardNumberChange}
                                             maxLength={19}
-                                            className="h-12 font-mono"
+                                            className="h-12 font-mono rounded-lg border-[#dbe8f4] bg-[#f8fbfe] text-[#07182f] focus:border-[#0b84e5] focus:ring-[#37c5f3]/25"
                                             inputMode="numeric"
                                         />
                                     </div>
@@ -197,14 +197,14 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                             placeholder="ISMI FAMILIYASI"
                                             value={cardHolder}
                                             onChange={(e) => setCardHolder(e.target.value.toUpperCase())}
-                                            className="h-12"
+                                            className="h-12 rounded-lg border-[#dbe8f4] bg-[#f8fbfe] text-[#07182f] focus:border-[#0b84e5] focus:ring-[#37c5f3]/25"
                                         />
                                     </div>
 
                                     <Button
                                         onClick={handleAddCard}
                                         disabled={addCardMutation.isPending}
-                                        className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/20"
+                                            className="w-full h-12 rounded-lg bg-[#0b4edb] hover:bg-[#073fba] text-white shadow-sm"
                                     >
                                         {addCardMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
                                         {addCardMutation.isPending ? t('wallet.cards.saving', "Saqlanmoqda...") : t('wallet.cards.save', "Saqlash")}
@@ -232,14 +232,14 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                     </div>
                                 ) : cardsData?.cards.length === 0 ? (
                                     <div className="text-center py-12 text-gray-500 flex flex-col items-center">
-                                        <div className="h-16 w-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                                        <div className="h-16 w-16 bg-[#eef6ff] rounded-lg flex items-center justify-center mb-4">
                                             <CreditCard className="h-8 w-8 text-gray-400" />
                                         </div>
                                         <p className="font-medium mb-1">{t('wallet.cards.noCards', "Hozircha kartalar yo'q")}</p>
                                         <p className="text-sm text-gray-400 mb-6 max-w-xs">{t('wallet.cards.addPrompt', "To'lovlarni tezroq amalga oshirish uchun karta qo'shing")}</p>
                                         <Button
                                             onClick={() => setIsAdding(true)}
-                                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6"
+                                            className="bg-[#0b4edb] hover:bg-[#073fba] text-white rounded-lg px-6"
                                         >
                                             <Plus className="h-4 w-4 mr-2" />
                                             {t('wallet.cards.addCard', "Karta qo'shish")}
@@ -253,16 +253,12 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: index * 0.1 }}
-                                                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-900 to-gray-800 p-5 text-white shadow-lg border border-white/5"
+                                                className="group relative overflow-hidden rounded-lg bg-[#07182f] p-5 text-white shadow-sm border border-[#0b2b53]"
                                             >
-                                                {/* Card Background Patterns */}
-                                                <div className="absolute top-0 right-0 h-32 w-32 translate-x-12 translate-y-[-2rem] rounded-full bg-white/5 blur-3xl" />
-                                                <div className="absolute bottom-0 left-0 h-24 w-24 translate-x-[-2rem] translate-y-12 rounded-full bg-blue-500/10 blur-2xl" />
-
                                                 <div className="relative z-10 flex justify-between items-start">
                                                     <div>
-                                                        <p className="font-mono text-xl tracking-widest">{card.masked_number}</p>
-                                                        <p className="mt-4 text-xs font-medium text-gray-400 uppercase tracking-wide">
+                                                        <p className="font-mono text-xl tracking-normal">{card.masked_number}</p>
+                                                        <p className="mt-4 text-xs font-medium text-white/60 uppercase tracking-normal">
                                                             {card.holder_name}
                                                         </p>
                                                     </div>
@@ -272,7 +268,7 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                                 <Button
                                                     variant="destructive"
                                                     size="icon"
-                                                    className="absolute top-2 right-2 h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-red-900/50 dark:hover:bg-red-900 backdrop-blur-sm"
+                                                    className="absolute top-2 right-2 h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100 bg-[#c44747] hover:bg-[#a93636]"
                                                     onClick={() => handleDeleteCard(card.id)}
                                                 >
                                                     <Trash2 className="h-4 w-4" />
@@ -282,7 +278,7 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
 
                                         <Button
                                             variant="outline"
-                                            className="w-full border-dashed border-2 py-6 text-gray-500 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors mt-4"
+                                            className="w-full border-dashed border-2 py-6 text-[#63758a] hover:border-[#0b84e5] hover:text-[#0b4edb] hover:bg-[#eef6ff] transition-colors mt-4 rounded-lg"
                                             onClick={() => setIsAdding(true)}
                                         >
                                             <Plus className="h-4 w-4 mr-2" />

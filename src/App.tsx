@@ -23,7 +23,6 @@ import FlightsPage from "./components/FlightsPage";
 import CargoListPage from "./components/CargoListPage";
 import AddCargoForm from "./components/AddCargoForm";
 import StatisticsDashboard from "./components/StatisticsDashboard";
-import TelegramWebAppGuard from "./components/TelegramWebAppGuard";
 import ClientSearchPage from "./pages/ClientSearchPage";
 import ClientProfilePage from "./pages/ClientProfilePage";
 import TransactionsPage from "./pages/TransactionsPage";
@@ -653,15 +652,9 @@ function AppContent() {
       className={`min-h-screen relative overflow-hidden transition-colors duration-300 ${
         isAdminArea
           ? "bg-[#f5f5f4] dark:bg-[#09090b]"
-          : "bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100 dark:from-[#0d0a04] dark:via-[#1a1612] dark:to-[#0d0a04]"
+          : "bg-[#f5f5f7] dark:bg-[#111214]"
       }`}
     >
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-orange-300/20 dark:bg-orange-500/10 rounded-full blur-3xl animate-blob" />
-        <div className="absolute top-40 right-10 w-96 h-96 bg-amber-300/20 dark:bg-amber-500/10 rounded-full blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-20 left-1/2 w-80 h-80 bg-orange-200/20 dark:bg-orange-400/10 rounded-full blur-3xl animate-blob animation-delay-4000" />
-      </div>
-
       {!isAdminArea && (
         <>
           <NavigationBar
@@ -697,7 +690,7 @@ function AppContent() {
 
       {isCheckingAuth ? (
         <div className="flex h-[60vh] items-center justify-center">
-          <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 rounded-full border-4 border-zinc-900 border-t-transparent animate-spin dark:border-white dark:border-t-transparent" />
         </div>
       ) : isSuperAdminPages && canAccessAdminPanel ? (
         <AdminLayout
@@ -929,8 +922,8 @@ function AppContent() {
 
 export default function App() {
   return (
-    <TelegramWebAppGuard>
+    // <TelegramWebAppGuard>
       <AppContent />
-    </TelegramWebAppGuard>
+    // {/* </TelegramWebAppGuard> */}
   );
 }

@@ -30,13 +30,13 @@ const ReminderCard = memo(({ reminder, idx, onPay }: { reminder: PaymentReminder
       <Card
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
-          "relative overflow-hidden border-0 shadow-md bg-white dark:bg-[#1a1625] dark:border-white/5 transition-all cursor-pointer group",
-          isExpanded ? "ring-2 ring-red-500/20 shadow-xl" : "hover:shadow-lg"
+          "relative overflow-hidden border border-[#dbe8f4] shadow-sm bg-white transition-all cursor-pointer group rounded-lg",
+          isExpanded ? "ring-2 ring-[#c44747]/20 shadow-md" : "hover:shadow-md"
         )}
       >
         <div className={cn(
           "absolute left-0 top-0 bottom-0 w-1.5 transition-colors duration-300",
-          isExpanded ? "bg-red-500" : "bg-gray-300 dark:bg-gray-700 group-hover:bg-red-400"
+          isExpanded ? "bg-[#c44747]" : "bg-[#cfe0f1] group-hover:bg-[#c44747]"
         )} />
 
         <CardContent className="p-5 pl-6">
@@ -44,14 +44,14 @@ const ReminderCard = memo(({ reminder, idx, onPay }: { reminder: PaymentReminder
           {/* --- ALWAYS VISIBLE HEADER --- */}
           <div className="flex justify-between items-start">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-blue-50 dark:bg-blue-500/10 rounded-xl text-blue-600 dark:text-blue-400">
+              <div className="p-2.5 bg-[#eef6ff] rounded-lg text-[#0b4edb]">
                 <Plane className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 dark:text-white text-lg leading-tight">
+                <h4 className="font-bold text-[#07182f] text-lg leading-tight">
                   {reminder.flight}
                 </h4>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mt-0.5">
+                <p className="text-xs text-[#63758a] font-medium mt-0.5">
                   {t('profile.payments.cargoPayment')}
                 </p>
               </div>
@@ -67,14 +67,14 @@ const ReminderCard = memo(({ reminder, idx, onPay }: { reminder: PaymentReminder
 
           {/* --- COMPACT SUMMARY --- */}
           <div className="mt-4 flex justify-between items-end">
-            <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200 dark:bg-white/5 dark:border-white/10 dark:text-gray-400 gap-1.5 py-1 px-2.5">
+            <Badge variant="outline" className="bg-[#f8fbfe] text-[#63758a] border-[#dbe8f4] gap-1.5 py-1 px-2.5">
               <Calendar className="w-3 h-3" />
               {reminder.deadline}
             </Badge>
 
             <div className="text-right">
-              <span className="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">{t('profile.payments.remaining')}</span>
-              <span className="text-lg font-black text-red-600 dark:text-red-500">
+              <span className="text-[10px] uppercase font-bold text-[#7d91a8] block mb-0.5">{t('profile.payments.remaining')}</span>
+              <span className="text-lg font-black text-[#c44747]">
                 {reminder.remaining.toLocaleString()} UZS
               </span>
             </div>
@@ -90,19 +90,19 @@ const ReminderCard = memo(({ reminder, idx, onPay }: { reminder: PaymentReminder
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="overflow-hidden"
               >
-                <div className="pt-4 mt-4 border-t border-dashed border-gray-100 dark:border-white/10 space-y-3">
+                <div className="pt-4 mt-4 border-t border-dashed border-[#dbe8f4] space-y-3">
 
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500 dark:text-gray-400">{t('profile.payments.totalCharged')}</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">{reminder.total.toLocaleString()}</span>
+                    <span className="text-[#63758a]">{t('profile.payments.totalCharged')}</span>
+                    <span className="font-semibold text-[#07182f]">{reminder.total.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500 dark:text-gray-400">{t('profile.payments.totalPaid')}</span>
-                    <span className="font-semibold text-green-600 dark:text-green-400">{reminder.paid.toLocaleString()}</span>
+                    <span className="text-[#63758a]">{t('profile.payments.totalPaid')}</span>
+                    <span className="font-semibold text-[#15835b]">{reminder.paid.toLocaleString()}</span>
                   </div>
 
                   <div className="pt-2">
-                    <Button className="w-full rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-500/20 h-10 font-semibold" onClick={(e) => {
+                    <Button className="w-full rounded-lg bg-[#0b4edb] hover:bg-[#073fba] text-white shadow-sm h-10 font-semibold" onClick={(e) => {
                       e.stopPropagation();
                       onPay(reminder.flight);
                     }}>
@@ -132,7 +132,7 @@ const PaymentRemindersSkeleton = () => (
     </div>
     <div className="flex gap-4 overflow-hidden">
       {[1, 2].map((i) => (
-        <Skeleton key={i} className="h-40 min-w-[90vw] sm:min-w-[350px] rounded-2xl" />
+        <Skeleton key={i} className="h-40 min-w-[90vw] sm:min-w-[350px] rounded-lg" />
       ))}
     </div>
   </div>
@@ -154,16 +154,16 @@ export const PaymentReminders = memo(() => {
       {/* Section Header */}
       <div className="flex items-center justify-between px-1 mb-4">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-red-100 dark:bg-red-500/10 rounded-lg">
-            <Wallet className="w-5 h-5 text-red-600 dark:text-red-400" />
+          <div className="p-1.5 bg-[#fff1f1] rounded-lg">
+            <Wallet className="w-5 h-5 text-[#c44747]" />
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+          <h3 className="text-lg font-bold text-[#07182f]">
             {t('profile.payments.title')}
           </h3>
         </div>
 
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800">
-          <span className="w-1.5 h-1.5 rounded-full bg-red-600 mr-1.5 animate-pulse" />
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#fff1f1] text-[#c44747] border border-[#f3caca]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#c44747] mr-1.5 animate-pulse" />
           {t('profile.payments.count', { count: data.reminders.length })}
         </span>
       </div>

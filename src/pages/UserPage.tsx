@@ -44,15 +44,15 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
    if (!images || images.length === 0) {
       return (
          <div className="
-            relative overflow-hidden rounded-3xl p-6 text-center
-            bg-white/80 dark:bg-white/5 border border-white/20 dark:border-white/10
-            backdrop-blur-md shadow-sm
+            relative overflow-hidden rounded-lg p-6 text-center
+            bg-white border border-[#dbe8f4]
+            shadow-sm
          ">
-            <div className="w-12 h-12 bg-gray-100 dark:bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3 text-gray-400 dark:text-gray-500">
+            <div className="w-12 h-12 bg-[#eef6ff] rounded-lg flex items-center justify-center mx-auto mb-3 text-[#0b4edb]">
                <ShieldCheck className="w-6 h-6" />
             </div>
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">{t('profile.documents.noDocuments')}</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <h3 className="font-semibold text-[#07182f] mb-1">{t('profile.documents.noDocuments')}</h3>
+            <p className="text-xs text-[#63758a]">
                {t('profile.documents.noDocumentsDesc')}
             </p>
          </div>
@@ -62,8 +62,8 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
    return (
       <>
          <div className="space-y-3">
-            <h3 className="text-sm font-bold text-gray-900 dark:text-gray-200 ml-1 flex items-center gap-2">
-               <span className="w-1 h-4 bg-emerald-500 rounded-full inline-block"></span>
+            <h3 className="text-sm font-semibold tracking-normal text-[#07182f] ml-1 flex items-center gap-2">
+               <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-[#0b4edb] px-1.5 text-[9px] font-black text-white">ID</span>
                {t('profile.documents.title')}
             </h3>
 
@@ -72,9 +72,9 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
                   <div
                      key={idx}
                      className="
-                        flex-shrink-0 relative overflow-hidden rounded-2xl
-                        w-40 sm:w-48 aspect-[3/2] snap-start
-                        bg-gray-100 dark:bg-white/5 border border-white/20 dark:border-white/10
+                        flex-shrink-0 relative overflow-hidden
+                        w-40 sm:w-48 aspect-[3/2] snap-start rounded-lg
+                        bg-[#f8fbfe] border border-[#dbe8f4]
                         shadow-sm group cursor-pointer
                      "
                      onClick={() => setSelectedImage(src)}
@@ -84,8 +84,8 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
                         alt={`Passport ${idx + 1}`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                      />
-                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                     <div className="absolute bottom-2 right-2 p-1.5 bg-black/40 backdrop-blur-md rounded-lg text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                     <div className="absolute inset-0 bg-[#07182f]/0 group-hover:bg-[#07182f]/10 transition-colors duration-300" />
+                     <div className="absolute bottom-2 right-2 p-1.5 bg-[#07182f]/80 rounded-lg text-white opacity-0 group-hover:opacity-100 transition-opacity">
                         <FileImage className="w-4 h-4" />
                      </div>
                   </div>
@@ -102,7 +102,7 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
                      animate={{ opacity: 1 }}
                      exit={{ opacity: 0 }}
                      onClick={() => setSelectedImage(null)}
-                     className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4"
+                     className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#07182f]/95 p-4"
                   >
                      <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
@@ -117,7 +117,7 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
                               absolute -top-16 right-0 md:right-auto md:-top-16 md:relative md:self-end md:mb-4
                               p-3 text-white/80 hover:text-white 
                               bg-white/10 hover:bg-white/20 
-                              rounded-full backdrop-blur-md 
+                              rounded-lg
                               transition-colors
                               z-50
                            "
@@ -132,7 +132,7 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
                               max-h-[80vh] md:max-h-[85vh] 
                               max-w-full md:max-w-[90vw] 
                               object-contain 
-                              rounded-2xl shadow-2xl 
+                              rounded-lg shadow-2xl
                               border border-white/10
                            "
                         />
@@ -183,20 +183,20 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
 
    if (isError || !user) {
       return (
-         <div className="flex w-full flex-col items-center justify-center min-h-[100vh] p-6 text-center bg-gray-50 dark:bg-[#0d0a04] pt-20">
+         <div className="flex w-full flex-col items-center justify-center min-h-[100vh] p-6 text-center bg-[#f4f8fc] pt-20">
             <UniqueBackground />
             <div className="relative z-10">
-               <div className="w-20 h-20 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-6 animate-pulse mx-auto">
-                  <LogOut className="h-8 w-8 text-red-500" />
+               <div className="w-20 h-20 bg-[#fff1f1] rounded-full flex items-center justify-center mb-6 animate-pulse mx-auto">
+                  <LogOut className="h-8 w-8 text-[#c44747]" />
                </div>
-               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('profile.error.title')}</h2>
-               <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-xs mx-auto">
+               <h2 className="text-2xl font-bold text-[#07182f] mb-2">{t('profile.error.title')}</h2>
+               <p className="text-[#63758a] mb-8 max-w-xs mx-auto">
                   {t('profile.error.description')}
                </p>
                <Button
                   onClick={handleRefetch}
                   size="lg"
-                  className="rounded-xl bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/20"
+                  className="rounded-lg bg-[#0b4edb] hover:bg-[#073fba] text-white shadow-sm"
                >
                   <RefreshCw className="mr-2 h-5 w-5" />
                   {t('profile.error.retry')}
@@ -207,7 +207,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
    }
 
    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0d0a04] text-gray-900 dark:text-white transition-colors duration-500 font-sans">
+      <div className="min-h-screen bg-[#f4f8fc] text-[#07182f] transition-colors duration-500 font-sans">
          <UniqueBackground />
 
          <AnimatePresence mode="wait">
@@ -219,12 +219,11 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
             >
                {/* Desktop Container Wrapper */}
                <div className="md:container md:mx-auto md:max-w-7xl md:p-6 lg:p-8">
-                  <div className="flex flex-col md:grid md:grid-cols-12 md:gap-8 md:items-start md:mt-12 pb-10">
+                  <div className="flex flex-col md:grid md:grid-cols-12 md:gap-8 md:items-start pb-10 pt-6 md:pt-8">
 
                      {/* LEFT COLUMN (Desktop): Profile Hero & Quick Actions */}
                      <aside className="w-full md:col-span-5 lg:col-span-4 md:sticky md:top-8 self-start z-30">
-                        {/* Hero Section - Glass Effect */}
-                        <div className="relative overflow-hidden rounded-b-[2.5rem] md:rounded-[2.5rem] shadow-2xl border-b border-white/10 md:border md:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-xl">
+                        <div className="relative overflow-hidden">
                            <ProfileHero user={user} onBalanceClick={() => setIsWalletModalOpen(true)} />
                         </div>
 
@@ -242,7 +241,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                            <div className="space-y-3">
                               <Button
                                  variant="outline"
-                                 className="w-full h-14 rounded-2xl text-lg font-medium shadow-sm border-gray-200 dark:border-white/10 bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 active:scale-95 transition-all text-gray-700 dark:text-gray-200"
+                                 className="w-full h-14 rounded-lg text-lg font-medium shadow-sm border-[#dbe8f4] bg-white hover:bg-[#eef6ff] active:scale-95 transition-all text-[#0b4edb]"
                                  onClick={handleEditOpen}
                               >
                                  {isModalLoading ? <RefreshCw className="mr-2 h-5 w-5 animate-spin" /> : <UserCog className="mr-2 h-5 w-5" />}
@@ -250,13 +249,13 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                               </Button>
                               <Button
                                  variant="destructive"
-                                 className="w-full h-14 rounded-2xl text-lg font-medium shadow-lg shadow-red-500/20 hover:bg-red-600 transition-all active:scale-95"
+                                 className="w-full h-14 rounded-lg text-lg font-medium shadow-sm bg-[#c44747] hover:bg-[#a83a3a] transition-all active:scale-95"
                                  onClick={() => setIsLogoutModalOpen(true)}
                               >
                                  <LogOut className="mr-2 h-5 w-5" />
                                  {t('profile.logout')}
                               </Button>
-                              <p className="text-center text-xs text-gray-400 mt-2">
+                              <p className="text-center text-xs text-[#7d91a8] mt-2">
                                  {t('profile.version')}
                               </p>
                            </div>
@@ -290,7 +289,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                            <div className="md:hidden max-w-md mx-auto space-y-3 pt-4 px-4">
                               <Button
                                  variant="outline"
-                                 className="w-full h-14 rounded-2xl text-lg font-medium shadow-sm border-gray-200 dark:border-white/10 bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 active:scale-95 transition-all text-gray-700 dark:text-gray-200"
+                                 className="w-full h-14 rounded-lg text-lg font-medium shadow-sm border-[#dbe8f4] bg-white hover:bg-[#eef6ff] active:scale-95 transition-all text-[#0b4edb]"
                                  onClick={handleEditOpen}
                               >
                                  {isModalLoading ? <RefreshCw className="mr-2 h-5 w-5 animate-spin" /> : <UserCog className="mr-2 h-5 w-5" />}
@@ -298,13 +297,13 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                               </Button>
                               <Button
                                  variant="destructive"
-                                 className="w-full h-14 rounded-2xl text-lg font-medium shadow-lg shadow-red-500/20 hover:bg-red-600 transition-all active:scale-95"
+                                 className="w-full h-14 rounded-lg text-lg font-medium shadow-sm bg-[#c44747] hover:bg-[#a83a3a] transition-all active:scale-95"
                                  onClick={() => setIsLogoutModalOpen(true)}
                               >
                                  <LogOut className="mr-2 h-5 w-5" />
                                  {t('profile.logout')}
                               </Button>
-                              <p className="text-center text-xs text-gray-400 mt-4 pb-8">
+                              <p className="text-center text-xs text-[#7d91a8] mt-4 pb-8">
                                  {t('profile.version')}
                               </p>
                            </div>
@@ -347,7 +346,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                            animate={{ opacity: 1 }}
                            exit={{ opacity: 0 }}
                            onClick={() => setIsLogoutModalOpen(false)}
-                           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                           className="absolute inset-0 bg-[#07182f]/35"
                         />
                         
                         {/* Modal Content */}
@@ -355,30 +354,30 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
                            animate={{ opacity: 1, scale: 1, y: 0 }}
                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                           className="relative w-full max-w-sm bg-white dark:bg-[#120e09] border border-gray-100 dark:border-white/10 rounded-3xl p-6 shadow-2xl overflow-hidden"
+                           className="relative w-full max-w-sm bg-white border border-[#dbe8f4] rounded-lg p-6 shadow-2xl overflow-hidden"
                         >
                            <div className="flex flex-col items-center text-center">
-                              <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
-                                 <LogOut className="w-8 h-8 text-red-500" />
+                              <div className="w-16 h-16 bg-[#fff1f1] rounded-lg flex items-center justify-center mb-4">
+                                 <LogOut className="w-8 h-8 text-[#c44747]" />
                               </div>
-                              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                              <h3 className="text-xl font-bold text-[#07182f] mb-2">
                                  {t('profile.logoutConfirm.title', 'Tizimdan chiqish')}
                               </h3>
-                              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                              <p className="text-sm text-[#63758a] mb-6">
                                  {t('profile.logoutConfirm.description', 'Haqiqatan ham hisobingizdan chiqmoqchimisiz?')}
                               </p>
                               
                               <div className="flex w-full gap-3">
                                  <Button
                                     variant="outline"
-                                    className="flex-1 h-12 rounded-xl bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10"
+                                    className="flex-1 h-12 rounded-lg bg-white border-[#dbe8f4] text-[#63758a] hover:bg-[#eef6ff]"
                                     onClick={() => setIsLogoutModalOpen(false)}
                                  >
                                     {t('profile.logoutConfirm.cancel', 'Bekor qilish')}
                                  </Button>
                                  <Button
                                     variant="destructive"
-                                    className="flex-1 h-12 rounded-xl bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/20"
+                                    className="flex-1 h-12 rounded-lg bg-[#c44747] hover:bg-[#a83a3a] shadow-sm"
                                     onClick={handleLogout}
                                  >
                                     {t('profile.logoutConfirm.confirm', 'Chiqish')}
@@ -397,8 +396,8 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
 
 const ProfileSkeleton = memo(() => {
    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0d0a04]">
-         <div className="bg-[#1e1a45]/50 pt-25 pb-24 px-6 rounded-b-[3rem] h-80 relative mb-24 overflow-hidden">
+      <div className="min-h-screen bg-[#f4f8fc]">
+         <div className="bg-[#e8eff6] pt-25 pb-24 px-6 rounded-b-lg h-80 relative mb-24 overflow-hidden">
             <div className="flex flex-col items-center relative z-10">
                <Skeleton className="w-28 h-28 rounded-full mb-4 bg-white/10" />
                <Skeleton className="h-8 w-48 bg-white/10 mb-2 rounded-lg" />
@@ -408,16 +407,16 @@ const ProfileSkeleton = memo(() => {
 
          <div className="container max-w-md mx-auto px-6 -mt-16 relative z-10 space-y-8">
             <div className="grid grid-cols-3 gap-4">
-               <Skeleton className="h-24 w-full rounded-2xl bg-gray-200 dark:bg-white/5" />
-               <Skeleton className="h-24 w-full rounded-2xl bg-gray-200 dark:bg-white/5" />
-               <Skeleton className="h-24 w-full rounded-2xl bg-gray-200 dark:bg-white/5" />
+               <Skeleton className="h-24 w-full rounded-lg bg-[#e8eff6]" />
+               <Skeleton className="h-24 w-full rounded-lg bg-[#e8eff6]" />
+               <Skeleton className="h-24 w-full rounded-lg bg-[#e8eff6]" />
             </div>
 
             <div className="space-y-4">
-               <Skeleton className="h-6 w-40 bg-gray-200 dark:bg-white/5 rounded-lg" />
+               <Skeleton className="h-6 w-40 bg-[#e8eff6] rounded-lg" />
                <div className="space-y-3">
                   {[1, 2, 3].map((i) => (
-                     <Skeleton key={i} className="h-20 w-full rounded-2xl bg-gray-200 dark:bg-white/5" />
+                     <Skeleton key={i} className="h-20 w-full rounded-lg bg-[#e8eff6]" />
                   ))}
                </div>
             </div>

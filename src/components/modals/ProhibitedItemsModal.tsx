@@ -1,11 +1,10 @@
 import { useEffect, useRef, memo } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Ban, ChevronRight, AlertTriangle, ChevronLeft } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
-// --- Types ---
 interface ProhibitedItem {
   id: number;
   title: string;
@@ -23,7 +22,6 @@ interface ProhibitedDataResponse {
   };
 }
 
-// --- Mock Fetcher (replace with real API call) ---
 const fetchProhibitedItems = async (): Promise<ProhibitedDataResponse> => {
   await new Promise((resolve) => setTimeout(resolve, 800));
 
@@ -34,92 +32,47 @@ const fetchProhibitedItems = async (): Promise<ProhibitedDataResponse> => {
         "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=800&auto=format&fit=crop",
       ],
-      header_title: "🚫 AVIADA YUBORISH TAQIQLANGAN MAHSULOTLAR ‼️",
+      header_title: "Aviada yuborish taqiqlangan mahsulotlar",
       header_subtitle:
         "DIQQAT! Quyidagi tovarlar havo yo'li orqali yuborilishi taqiqlanadi. Qoidabuzarlik uchun javobgarlik yuboruvchiga yuklatiladi.",
       items: [
-        {
-          id: 1,
-          title: "Batareyalar va quvvat manbalari",
-          examples: "(masalan: powerbank, lithium batareyalar, akkumulyatorlar)",
-        },
-        {
-          id: 2,
-          title: "Portlovchi va yonuvchi moddalar",
-          examples: "(masalan: benzin, gaz ballonlar, pirotexnika, o'q-dorilar)",
-        },
-        {
-          id: 3,
-          title: "Magnitli buyumlar",
-          examples: "(masalan: karnay, magnitli o'yinchoqlar)",
-        },
-        {
-          id: 4,
-          title: "O'tkir va kesuvchi buyumlar",
-          examples: "(masalan: pichoqlar, qaychilar, arra)",
-        },
-        {
-          id: 5,
-          title: "Kukun va changsimon moddalar",
-          examples: "(masalan: un, kukun bo'yoqlar, tozalash vositalari)",
-        },
-        {
-          id: 6,
-          title: "Oziq-ovqat mahsulotlari",
-          examples: "(masalan: go'sht, baliq, sut mahsulotlari, mevalar)",
-        },
-        {
-          id: 7,
-          title: "Suyuqliklar",
-          examples: "(masalan: atir, spirtli ichimliklar, kimyoviy eritma)",
-        },
-        {
-          id: 8,
-          title: "Kosmetika va parfyumeriya",
-          examples: "(masalan: лак, atseton, sprey, aerozollar)",
-        },
-        {
-          id: 9,
-          title: "Qimmatbaho buyumlar",
-          examples: "(masalan: soatlar, quloqchinlar, oltin, kumush buyumlar)",
-        },
-        {
-          id: 10,
-          title: "Tibbiy preparatlar va dorilar",
-          examples: "(masalan: tabletkalar, siroplar, in'yeksiyalar)",
-        },
+        { id: 1, title: "Batareyalar va quvvat manbalari", examples: "(masalan: powerbank, lithium batareyalar, akkumulyatorlar)" },
+        { id: 2, title: "Portlovchi va yonuvchi moddalar", examples: "(masalan: benzin, gaz ballonlar, pirotexnika, o'q-dorilar)" },
+        { id: 3, title: "Magnitli buyumlar", examples: "(masalan: karnay, magnitli o'yinchoqlar)" },
+        { id: 4, title: "O'tkir va kesuvchi buyumlar", examples: "(masalan: pichoqlar, qaychilar, arra)" },
+        { id: 5, title: "Kukun va changsimon moddalar", examples: "(masalan: un, kukun bo'yoqlar, tozalash vositalari)" },
+        { id: 6, title: "Oziq-ovqat mahsulotlari", examples: "(masalan: go'sht, baliq, sut mahsulotlari, mevalar)" },
+        { id: 7, title: "Suyuqliklar", examples: "(masalan: atir, spirtli ichimliklar, kimyoviy eritma)" },
+        { id: 8, title: "Kosmetika va parfyumeriya", examples: "(masalan: lak, atseton, sprey, aerozollar)" },
+        { id: 9, title: "Qimmatbaho buyumlar", examples: "(masalan: soatlar, quloqchinlar, oltin, kumush buyumlar)" },
+        { id: 10, title: "Tibbiy preparatlar va dorilar", examples: "(masalan: tabletkalar, siroplar, in'yeksiyalar)" },
       ],
       footer_note:
-        "📌 Iltimos, yuk jo'natishdan avval ushbu ro'yxat bilan tanishib chiqing. Taqiqlangan yuklar aniqlansa, javobgarlik to'liq yuboruvchiga yuklatiladi.",
+        "Iltimos, yuk jo'natishdan avval ushbu ro'yxat bilan tanishib chiqing. Taqiqlangan yuklar aniqlansa, javobgarlik to'liq yuboruvchiga yuklatiladi.",
     },
   };
 };
 
-// --- Skeleton Loader ---
 const SkeletonLoader = memo(() => (
   <div className="animate-pulse space-y-5 p-5">
-    {/* Image skeleton */}
-    <div className="h-44 rounded-2xl bg-gray-200 dark:bg-white/10" />
-    {/* Header skeleton */}
-    <div className="space-y-2 p-4 rounded-2xl bg-gray-100 dark:bg-white/5">
-      <div className="h-5 w-3/4 rounded-lg bg-gray-200 dark:bg-white/10" />
-      <div className="h-3 w-full rounded bg-gray-200 dark:bg-white/10" />
-      <div className="h-3 w-5/6 rounded bg-gray-200 dark:bg-white/10" />
+    <div className="h-44 rounded-lg bg-[#dbe8f4]" />
+    <div className="space-y-2 rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] p-4">
+      <div className="h-5 w-3/4 rounded-lg bg-[#dbe8f4]" />
+      <div className="h-3 w-full rounded bg-[#dbe8f4]" />
+      <div className="h-3 w-5/6 rounded bg-[#dbe8f4]" />
     </div>
-    {/* List skeletons */}
     {Array.from({ length: 5 }).map((_, i) => (
       <div key={i} className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-gray-200 dark:bg-white/10 shrink-0" />
+        <div className="h-9 w-9 shrink-0 rounded-lg bg-[#dbe8f4]" />
         <div className="flex-1 space-y-2">
-          <div className="h-4 w-2/3 rounded bg-gray-200 dark:bg-white/10" />
-          <div className="h-3 w-4/5 rounded bg-gray-200 dark:bg-white/10" />
+          <div className="h-4 w-2/3 rounded bg-[#dbe8f4]" />
+          <div className="h-3 w-4/5 rounded bg-[#dbe8f4]" />
         </div>
       </div>
     ))}
   </div>
 ));
 
-// --- Image Carousel ---
 const ImageCarousel = memo(({ images }: { images: string[] }) => {
   const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -130,18 +83,18 @@ const ImageCarousel = memo(({ images }: { images: string[] }) => {
     <div className="relative">
       <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide"
+        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 scrollbar-hide"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {images.map((url, i) => (
           <div
             key={i}
-            className="flex-shrink-0 w-[90%] sm:w-full snap-center rounded-2xl overflow-hidden"
+            className="w-[90%] flex-shrink-0 snap-center overflow-hidden rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] sm:w-full"
           >
             <img
               src={url}
-              alt={t('prohibitedItems.imageAlt', { index: i + 1 })}
-              className="w-full h-44 sm:h-52 object-cover"
+              alt={t("prohibitedItems.imageAlt", { index: i + 1 })}
+              className="h-44 w-full object-cover sm:h-52"
               loading="lazy"
             />
           </div>
@@ -149,22 +102,17 @@ const ImageCarousel = memo(({ images }: { images: string[] }) => {
       </div>
       {images.length > 1 && (
         <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
-          {/* Scroll arrows for desktop */}
           <button
-            onClick={() =>
-              scrollRef.current?.scrollBy({ left: -300, behavior: "smooth" })
-            }
-            className="hidden sm:flex w-7 h-7 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-black/60 transition"
+            onClick={() => scrollRef.current?.scrollBy({ left: -300, behavior: "smooth" })}
+            className="hidden h-7 w-7 items-center justify-center rounded-lg bg-[#07182f]/80 text-white transition hover:bg-[#07182f] sm:flex"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="h-4 w-4" />
           </button>
           <button
-            onClick={() =>
-              scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" })
-            }
-            className="hidden sm:flex w-7 h-7 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-black/60 transition"
+            onClick={() => scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" })}
+            className="hidden h-7 w-7 items-center justify-center rounded-lg bg-[#07182f]/80 text-white transition hover:bg-[#07182f] sm:flex"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       )}
@@ -172,13 +120,11 @@ const ImageCarousel = memo(({ images }: { images: string[] }) => {
   );
 });
 
-// --- Props ---
 interface ProhibitedItemsModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// --- Modal Component ---
 const ProhibitedItemsModal = ({ isOpen, onClose }: ProhibitedItemsModalProps) => {
   const { t } = useTranslation();
   const { data, isLoading, isError, refetch } = useQuery({
@@ -188,17 +134,13 @@ const ProhibitedItemsModal = ({ isOpen, onClose }: ProhibitedItemsModalProps) =>
     staleTime: 10 * 60 * 1000,
   });
 
-  // Scroll lock
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    }
+    if (isOpen) document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
 
-  // Close on Escape
   useEffect(() => {
     if (!isOpen) return;
     const handler = (e: KeyboardEvent) => {
@@ -219,111 +161,96 @@ const ProhibitedItemsModal = ({ isOpen, onClose }: ProhibitedItemsModalProps) =>
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[999] flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-[999] flex items-end justify-center bg-[#07182f]/35 sm:items-center"
           onClick={onClose}
         >
-          {/* Modal Panel */}
           <motion.div
             key="prohibited-modal"
             initial={{ opacity: 0, y: "100%" }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 350 }}
-            className="
-              w-full max-h-[90vh] flex flex-col
-              bg-white dark:bg-[#151010]
-              rounded-t-[32px]
-              sm:w-[450px] sm:max-w-[90vw] sm:max-h-[85vh]
-              sm:rounded-3xl
-              shadow-2xl border border-gray-200/50 dark:border-white/10
-              overflow-hidden
-            "
+            className="flex max-h-[90vh] w-full flex-col overflow-hidden rounded-t-lg border border-[#dbe8f4] bg-white shadow-2xl sm:max-h-[85vh] sm:w-[450px] sm:max-w-[90vw] sm:rounded-lg"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Sticky Header */}
-            <div className="sticky top-0 z-20 bg-white/90 dark:bg-[#151010]/90 backdrop-blur-xl border-b border-gray-100 dark:border-white/10">
-              {/* Drag handle (mobile) */}
+            <div className="sticky top-0 z-20 border-b border-[#dbe8f4] bg-white">
               <div className="flex justify-center pt-3 sm:hidden">
-                <div className="w-10 h-1 rounded-full bg-gray-300 dark:bg-white/20" />
+                <div className="h-1 w-10 rounded-full bg-[#cfe0f1]" />
               </div>
 
               <div className="flex items-center justify-between px-5 py-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-red-500/15 flex items-center justify-center">
-                    <Ban className="w-5 h-5 text-red-500" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#fff1f1]">
+                    <Ban className="h-5 w-5 text-[#c44747]" />
                   </div>
-                  <h2 className="text-base font-bold text-gray-900 dark:text-white">
-                    {t('prohibitedItems.title')}
+                  <h2 className="text-base font-bold text-[#07182f]">
+                    {t("prohibitedItems.title")}
                   </h2>
                 </div>
                 <button
                   onClick={onClose}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-colors active:scale-95"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] transition-colors active:scale-95 hover:bg-[#eef6ff]"
                 >
-                  <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <X className="h-5 w-5 text-[#63758a]" />
                 </button>
               </div>
             </div>
 
-            {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto overscroll-contain">
               {isLoading && <SkeletonLoader />}
 
               {isError && (
-                <div className="flex flex-col items-center justify-center p-10 gap-4 text-center">
-                  <div className="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center">
-                    <AlertTriangle className="w-7 h-7 text-red-500" />
+                <div className="flex flex-col items-center justify-center gap-4 p-10 text-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-[#fff1f1]">
+                    <AlertTriangle className="h-7 w-7 text-[#c44747]" />
                   </div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                    {t('prohibitedItems.error')}
+                  <p className="text-sm font-medium text-[#63758a]">
+                    {t("prohibitedItems.error")}
                   </p>
                   <button
                     onClick={() => refetch()}
-                    className="px-5 py-2 rounded-xl text-sm font-semibold bg-red-500 text-white hover:bg-red-600 active:scale-95 transition-all"
+                    className="rounded-lg bg-[#0b4edb] px-5 py-2 text-sm font-semibold text-white transition-all active:scale-95 hover:bg-[#073fba]"
                   >
-                    {t('prohibitedItems.retry')}
+                    {t("prohibitedItems.retry")}
                   </button>
                 </div>
               )}
 
               {items && (
                 <div className="space-y-4 pb-4">
-                  {/* Image Carousel */}
                   {items.images.length > 0 && (
                     <div className="px-4 pt-4">
                       <ImageCarousel images={items.images} />
                     </div>
                   )}
 
-                  {/* Warning Header */}
-                  <div className="mx-4 p-4 rounded-2xl bg-gradient-to-br from-red-50 to-amber-50 dark:from-red-500/10 dark:to-amber-500/10 border border-red-200/60 dark:border-red-500/20">
-                    <h3 className="text-sm font-extrabold text-red-700 dark:text-red-400 leading-snug mb-1.5">
+                  <div className="mx-4 rounded-lg border border-[#f3caca] bg-[#fff1f1] p-4">
+                    <h3 className="mb-1.5 text-sm font-extrabold leading-snug text-[#c44747]">
                       {items.header_title}
                     </h3>
-                    <p className="text-xs leading-relaxed text-red-600/80 dark:text-red-300/70">
+                    <p className="text-xs leading-relaxed text-[#8f3a3a]">
                       {items.header_subtitle}
                     </p>
                   </div>
 
-                  {/* Items List */}
-                  <div className="px-4 space-y-2">
+                  <div className="space-y-2 px-4">
                     {items.items.map((item, index) => (
                       <motion.div
                         key={item.id}
                         initial={{ opacity: 0, x: -12 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.04, duration: 0.25 }}
-                        className="flex items-start gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5"
+                        className="flex items-start gap-3 rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] p-3"
                       >
-                        <div className="w-9 h-9 rounded-xl bg-red-500/10 dark:bg-red-500/15 flex items-center justify-center shrink-0 mt-0.5">
-                          <Ban className="w-4 h-4 text-red-500 dark:text-red-400" />
+                        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#fff1f1]">
+                          <Ban className="h-4 w-4 text-[#c44747]" />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">
+                          <p className="text-sm font-semibold leading-snug text-[#07182f]">
                             {item.title}
                           </p>
                           {item.examples && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">
+                            <p className="mt-0.5 text-xs leading-relaxed text-[#63758a]">
                               {item.examples}
                             </p>
                           )}
@@ -332,9 +259,8 @@ const ProhibitedItemsModal = ({ isOpen, onClose }: ProhibitedItemsModalProps) =>
                     ))}
                   </div>
 
-                  {/* Footer Note */}
-                  <div className="mx-4 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200/60 dark:border-amber-500/20">
-                    <p className="text-xs font-medium text-amber-700 dark:text-amber-300 leading-relaxed">
+                  <div className="mx-4 rounded-lg border border-[#cfe0f1] bg-[#eef6ff] p-4">
+                    <p className="text-xs font-medium leading-relaxed text-[#31506e]">
                       {items.footer_note}
                     </p>
                   </div>
@@ -342,19 +268,12 @@ const ProhibitedItemsModal = ({ isOpen, onClose }: ProhibitedItemsModalProps) =>
               )}
             </div>
 
-            {/* Sticky Footer Button */}
-            <div className="sticky bottom-0 z-20 p-4 bg-white/90 dark:bg-[#151010]/90 backdrop-blur-xl border-t border-gray-100 dark:border-white/10">
+            <div className="sticky bottom-0 z-20 border-t border-[#dbe8f4] bg-white p-4">
               <button
                 onClick={onClose}
-                className="
-                  w-full py-3.5 rounded-2xl text-sm font-bold
-                  bg-gradient-to-r from-red-500 to-red-600 text-white
-                  hover:from-red-600 hover:to-red-700
-                  active:scale-[0.98] transition-all duration-200
-                  shadow-lg shadow-red-500/20
-                "
+                className="w-full rounded-lg bg-[#0b4edb] py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 active:scale-[0.98] hover:bg-[#073fba]"
               >
-                {t('prohibitedItems.understood')}
+                {t("prohibitedItems.understood")}
               </button>
             </div>
           </motion.div>

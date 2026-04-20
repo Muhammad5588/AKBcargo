@@ -19,8 +19,8 @@ const LanguageToggle = ({ isDark }: { isDark: boolean }) => {
 
   const wrapStyle: React.CSSProperties = isDark
     ? {
-      backgroundColor: "rgba(22,15,5,0.72)",
-      borderColor: "rgba(180,83,9,0.35)",
+      backgroundColor: "rgba(24,24,27,0.72)",
+      borderColor: "rgba(255,255,255,0.14)",
       backdropFilter: "blur(16px)",
       WebkitBackdropFilter: "blur(16px)",
     }
@@ -33,7 +33,7 @@ const LanguageToggle = ({ isDark }: { isDark: boolean }) => {
 
   return (
     <div
-      className="flex items-center p-1 rounded-full border transition-all duration-300 shadow-sm"
+      className="flex items-center p-1 rounded-lg border transition-all duration-300 shadow-sm"
       style={wrapStyle}
     >
       {['uz', 'ru'].map((lang) => {
@@ -42,13 +42,13 @@ const LanguageToggle = ({ isDark }: { isDark: boolean }) => {
         const btnStyle: React.CSSProperties = isActive
           ? isDark
             ? {
-              backgroundColor: "rgba(245,158,11,0.18)",
-              color: "#fcd34d",
-              boxShadow: "0 0 0 1px rgba(245,158,11,0.25)",
+              backgroundColor: "rgba(255,255,255,0.12)",
+              color: "#f4f4f5",
+              boxShadow: "0 0 0 1px rgba(255,255,255,0.16)",
             }
             : {
               backgroundColor: "#ffffff",
-              color: "#ea580c",
+              color: "#18181b",
               boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
             }
           : {
@@ -60,7 +60,7 @@ const LanguageToggle = ({ isDark }: { isDark: boolean }) => {
           <button
             key={lang}
             onClick={() => i18n.changeLanguage(lang)}
-            className="px-2.5 py-1.5 text-xs font-bold rounded-full transition-all duration-200 border-none cursor-pointer"
+            className="px-2.5 py-1.5 text-xs font-bold rounded-md transition-all duration-200 border-none cursor-pointer"
             style={btnStyle}
           >
             {lang.toUpperCase()}
@@ -132,8 +132,8 @@ const NavbarThemeToggle = ({ isDark }: { isDark: boolean }) => {
 
   const wrapStyle: React.CSSProperties = isDark
     ? {
-      backgroundColor: "rgba(22,15,5,0.72)",
-      borderColor: "rgba(180,83,9,0.35)",
+      backgroundColor: "rgba(24,24,27,0.72)",
+      borderColor: "rgba(255,255,255,0.14)",
       backdropFilter: "blur(16px)",
       WebkitBackdropFilter: "blur(16px)",
     }
@@ -146,7 +146,7 @@ const NavbarThemeToggle = ({ isDark }: { isDark: boolean }) => {
 
   return (
     <div
-      className="flex items-center gap-0.5 p-1 rounded-full border transition-all duration-300 shadow-sm"
+      className="flex items-center gap-0.5 p-1 rounded-lg border transition-all duration-300 shadow-sm"
       style={wrapStyle}
     >
       {items.map((item) => {
@@ -155,13 +155,13 @@ const NavbarThemeToggle = ({ isDark }: { isDark: boolean }) => {
         const btnStyle: React.CSSProperties = isActive
           ? isDark
             ? {
-              backgroundColor: "rgba(245,158,11,0.18)",
-              color: "#fcd34d",       // amber-300 — yaxshi ko'rinadi
-              boxShadow: "0 0 0 1px rgba(245,158,11,0.25)",
+              backgroundColor: "rgba(255,255,255,0.12)",
+              color: "#f4f4f5",
+              boxShadow: "0 0 0 1px rgba(255,255,255,0.16)",
             }
             : {
               backgroundColor: "#ffffff",
-              color: "#f59e0b",       // amber-500
+              color: "#18181b",
               boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
             }
           : {
@@ -173,7 +173,7 @@ const NavbarThemeToggle = ({ isDark }: { isDark: boolean }) => {
           <button
             key={item.id}
             onClick={() => setTheme(item.id)}
-            className="p-1.5 rounded-full transition-all duration-200 border-none cursor-pointer hover:opacity-80"
+            className="p-1.5 rounded-md transition-all duration-200 border-none cursor-pointer hover:opacity-80"
             style={btnStyle}
           >
             <item.icon size={14} />
@@ -216,9 +216,9 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
   // rgba(13,10,4,0.78) — Dashboard #0d0a04 bilan bir xil tona, biroz transparent
   const navInlineStyle: React.CSSProperties = isScrolled && isDark
     ? {
-      backgroundColor: "rgba(13,10,4,0.78)",
-      backdropFilter: "blur(28px)",
-      WebkitBackdropFilter: "blur(28px)",
+      backgroundColor: "rgba(17,18,20,0.86)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
     }
     : {};
 
@@ -228,9 +228,9 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
         isScrolled
           ? [
-            "py-3 shadow-sm border-gray-200/50",
-            "bg-white/80 backdrop-blur-xl",
-            "dark:border-amber-900/20 dark:shadow-[0_1px_0_rgba(245,158,11,0.07)]",
+            "py-3 shadow-[0_6px_20px_rgba(15,23,42,0.08)] border-black/[0.08]",
+            "bg-white/88 backdrop-blur-lg",
+            "dark:border-white/10 dark:shadow-none",
           ].join(" ")
           : "bg-transparent border-transparent py-4"
       )}
@@ -242,8 +242,8 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
           {/* ── LOGO ── */}
           <div className="flex items-center gap-2.5 cursor-pointer shrink-0">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center
-              bg-gradient-to-br from-orange-500 to-amber-500 text-white
-              shadow-lg shadow-orange-500/25 shrink-0">
+              bg-zinc-900 text-white dark:bg-white dark:text-zinc-900
+              shadow-[0_6px_14px_rgba(15,23,42,0.16)] shrink-0">
               <LayoutDashboard className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
 
@@ -252,7 +252,7 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
                 "font-bold leading-tight tracking-tight transition-colors duration-300 truncate text-base sm:text-lg",
                 forceLight
                   ? `text-white ${isProfilePage ? "md:text-black dark:text-white" : "md:text-white dark:text-white"}`
-                  : "text-gray-900 dark:text-white"
+                  : "text-zinc-900 dark:text-white"
               )}>
                 Mandarin Cargo
               </span>
@@ -260,7 +260,7 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
                 "font-bold uppercase tracking-widest transition-colors duration-300 truncate text-[8px] sm:text-[10px]",
                 forceLight
                   ? "text-white/70 md:text-black/70 dark:text-white/70"
-                  : "text-gray-500 dark:text-amber-400/60"
+                  : "text-zinc-500 dark:text-zinc-400"
               )}>
                 Foydalanuvchi tizimi
               </span>
@@ -277,9 +277,9 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
                   <button
                     onClick={onVerificationClick}
                     className={cn(
-                      "flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border transition-all cursor-pointer",
-                      "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-orange-600",
-                      "dark:border-amber-900/30 dark:text-white/70 dark:hover:text-amber-300 dark:hover:border-amber-500/40",
+                      "flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg border transition-all cursor-pointer",
+                      "bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:text-zinc-950",
+                      "dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:hover:border-white/20",
                     )}
                     style={isDark ? { backgroundColor: "rgba(22,15,5,0.70)" } : {}}
                   >
@@ -291,9 +291,9 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
                   <button
                     onClick={onStatisticsClick}
                     className={cn(
-                      "flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border transition-all cursor-pointer",
-                      "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-orange-600",
-                      "dark:border-amber-900/30 dark:text-white/70 dark:hover:text-amber-300 dark:hover:border-amber-500/40",
+                      "flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg border transition-all cursor-pointer",
+                      "bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:text-zinc-950",
+                      "dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:hover:border-white/20",
                     )}
                     style={isDark ? { backgroundColor: "rgba(22,15,5,0.70)" } : {}}
                   >
@@ -301,7 +301,7 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
                     <span>{t('navigation.statistics', 'Statistika')}</span>
                   </button>
                 )}
-                <div className="h-8 w-px bg-gray-200 dark:bg-amber-900/40 mx-1" />
+                <div className="h-8 w-px bg-zinc-200 dark:bg-white/10 mx-1" />
               </div>
             )}
 

@@ -4,7 +4,9 @@
     "statistics": "Статистика",
     "home": "Главная",
     "reports": "Мои отчёты",
+    "cargo": "Грузы",
     "history": "История",
+    "payments": "Платежи",
     "profile": "Профиль"
   },
   "form": {
@@ -566,7 +568,7 @@
     },
     "editProfile": "Редактировать профиль",
     "logout": "Выйти из системы",
-    "version": "Версия 2.0 • Mandarin Cargo",
+    "version": "Версия 2.0 - AKB Cargo",
     "logoutConfirm": {
       "title": "Выйти из системы",
       "description": "Вы действительно хотите выйти из своего аккаунта?",
@@ -900,6 +902,12 @@
     "trackCodeNotFound": "Данные трек-кода не найдены"
   },
   "dashboard": {
+    "greeting": "Здравствуйте,",
+    "customer": "клиент AKB Cargo",
+    "heroSubtitle": "Отслеживайте грузы, оставляйте заявки и управляйте платежами.",
+    "trackModule": {
+      "kicker": "Быстрый поиск"
+    },
     "tabs": {
       "home": "Главная",
       "track": "Трек-код",
@@ -931,6 +939,7 @@
       "paymentHistory": "История оплат",
       "receipts": "Чеки и распределение",
       "services": "Услуги",
+      "mainActions": "Основные действия",
       "feedback": "Жалобы и предложения",
       "contactUs": "Свяжитесь с нами"
     },
@@ -979,7 +988,7 @@
     "upcoming": "Ближайшие рейсы",
     "googleCalendar": {
       "title": "Рейс: прибытие {{name}}",
-      "details": "Mandarin Cargo: ожидается прибытие рейса {{name}} {{date}}.",
+      "details": "AKB Cargo: ожидается прибытие рейса {{name}} {{date}}.",
       "tooltip": "Добавить в Google Calendar"
     }
   },
@@ -1060,7 +1069,7 @@
     "types": {
       "uzpost": "UzPost",
       "yandex": "Yandex",
-      "mandarin": "Mandarin",
+      "mandarin": "AKB Доставка",
       "bts": "BTS"
     },
     "status": {
@@ -1162,6 +1171,12 @@
     },
     "loadMore": "Показать ещё ({{current}}/{{total}})",
     "loading": "Загрузка..."
+  },
+  "cargoSummary": {
+    "active": "Активные",
+    "onWay": "В пути",
+    "billing": "Счёт",
+    "delivered": "Доставлено"
   },
   "cargoHistory": {
     "flight": "РЕЙС: {{name}}",

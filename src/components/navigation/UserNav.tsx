@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, FileText, History, UserCircle } from 'lucide-react';
+import { CreditCard, Home, Package, UserCircle } from 'lucide-react';
 import { FloatingNavbar, type FloatingNavItem } from './FloatingNavbar';
 import { useTranslation } from 'react-i18next';
 
@@ -33,14 +33,14 @@ export const UserNav: React.FC<UserNavProps> = ({
         },
         {
             id: 'reports',
-            label: t('navigation.reports'),
-            icon: FileText,
+            label: t('navigation.cargo', 'Yuklarim'),
+            icon: Package,
             page: 'user-reports',
         },
         {
             id: 'history',
-            label: t('navigation.history'),
-            icon: History,
+            label: t('navigation.payments', "To'lovlar"),
+            icon: CreditCard,
             page: 'user-history',
         },
         {
@@ -63,7 +63,7 @@ export const UserNav: React.FC<UserNavProps> = ({
             items={navItems}
             activePage={currentPage}
             onNavigate={handleNavigate}
-            className="mb-6 md:mb-0"
+            className="mb-5 md:mb-0"
             desktopPosition={desktopPosition}
         />
     );

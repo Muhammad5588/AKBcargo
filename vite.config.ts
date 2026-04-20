@@ -14,7 +14,7 @@ export default defineConfig({
     host: true,
     port: 5173,
     allowedHosts: [
-      "blottingly-unobtruded-lloyd.ngrok-free.dev"
+      "nonfelonious-franklin-unshammed.ngrok-free.dev"
     ],
   },
 })

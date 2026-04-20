@@ -119,7 +119,7 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+                        className="fixed inset-0 bg-[#07182f]/35 z-[9999] flex items-center justify-center p-4"
                         style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
                     >
                         {/* Modal Card */}
@@ -129,17 +129,17 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
                             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-white dark:bg-[#1a1b1e] w-full max-w-md max-h-[90vh] rounded-3xl overflow-y-auto shadow-2xl border border-white/10 relative z-[10000]"
+                            className="bg-white w-full max-w-md max-h-[90vh] rounded-lg overflow-y-auto shadow-2xl border border-[#dbe8f4] relative z-[10000]"
                         >
                             {/* Header */}
-                            <div className="sticky top-0 z-10 flex items-center justify-between p-5 border-b border-gray-100 dark:border-white/5 bg-white/80 dark:bg-[#1a1b1e]/80 backdrop-blur-md">
-                                <h2 className="text-xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
-                                    <MapPin className="w-5 h-5 text-orange-500 fill-orange-500/20" />
+                            <div className="sticky top-0 z-10 flex items-center justify-between p-5 border-b border-[#dbe8f4] bg-white">
+                                <h2 className="text-xl font-bold flex items-center gap-2 text-[#07182f]">
+                                    <MapPin className="w-5 h-5 text-[#0b4edb]" />
                                     {t('chinaAddress.title')}
                                 </h2>
                                 <button
                                     onClick={onClose}
-                                    className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/5 transition-colors text-gray-500"
+                                    className="p-2 rounded-lg hover:bg-[#eef6ff] transition-colors text-[#63758a]"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -150,8 +150,8 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                 {/* --- Loading State --- */}
                                 {isLoading && (
                                     <div className="flex flex-col items-center justify-center py-16 gap-3">
-                                        <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
-                                        <p className="text-sm text-gray-400">{t('chinaAddress.loading')}</p>
+                                        <Loader2 className="w-10 h-10 text-[#0b4edb] animate-spin" />
+                                        <p className="text-sm text-[#63758a]">{t('chinaAddress.loading')}</p>
                                     </div>
                                 )}
 
@@ -162,15 +162,15 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                         animate={{ opacity: 1, y: 0 }}
                                         className="flex flex-col items-center justify-center py-12 gap-4"
                                     >
-                                        <div className="p-4 rounded-full bg-red-50 dark:bg-red-500/10">
+                                        <div className="p-4 rounded-lg bg-[#fff1f1]">
                                             <AlertTriangle className="w-8 h-8 text-red-500" />
                                         </div>
-                                        <p className="text-center text-gray-600 dark:text-gray-300 text-sm max-w-xs">
+                                        <p className="text-center text-[#63758a] text-sm max-w-xs">
                                             {error}
                                         </p>
                                         <button
                                             onClick={handleRetry}
-                                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-colors active:scale-95"
+                                            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#0b4edb] hover:bg-[#073fba] text-white font-semibold transition-colors active:scale-95"
                                         >
                                             <RefreshCw className="w-4 h-4" />
                                             {t('chinaAddress.retry')}
@@ -186,31 +186,12 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                         transition={{ delay: 0.1 }}
                                         className="space-y-4"
                                     >
-                                        {/* Client Code Badge */}
-                                        {/* <motion.div
-                                            initial={{ scale: 0.9, opacity: 0 }}
-                                            animate={{ scale: 1, opacity: 1 }}
-                                            transition={{ type: 'spring', damping: 20, stiffness: 260 }}
-                                            className="text-center"
-                                        >
-                                            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 shadow-lg shadow-orange-500/25">
-                                                <span className="text-white/80 text-sm font-medium">{t('chinaAddress.clientCode')}</span>
-                                                <span className="text-white text-2xl font-extrabold tracking-wider">{data.client_code}</span>
-                                            </div>
-                                        </motion.div> */}
-
-                                        {/* Phone */}
-                                        {/* <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5">
-                                            <Phone className="w-4 h-4 text-orange-500 shrink-0" />
-                                            <span className="text-base font-mono font-semibold text-gray-800 dark:text-gray-200">{data.phone}</span>
-                                        </div> */}
-
                                         {/* Address Card */}
-                                        <div className="bg-orange-50 dark:bg-orange-500/10 rounded-2xl p-4 border border-orange-100 dark:border-orange-500/20 space-y-1">
-                                            <p className="text-sm text-gray-500 dark:text-orange-200/70 font-medium">
+                                        <div className="bg-[#eef6ff] rounded-lg p-4 border border-[#cfe0f1] space-y-1">
+                                            <p className="text-sm text-[#63758a] font-medium">
                                                 {t('chinaAddress.fullAddress')}
                                             </p>
-                                            <div className="text-base font-mono font-bold text-gray-900 dark:text-orange-100 leading-relaxed whitespace-pre-wrap break-words">
+                                            <div className="text-base font-mono font-bold text-[#07182f] leading-relaxed whitespace-pre-wrap break-words">
                                                 {data.full_address_string.split('\n').filter(Boolean).map((line, i) => (
                                                     <div key={i} className="mb-1 last:mb-0">{line}</div>
                                                 ))}
@@ -220,7 +201,7 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                         {/* Copy Button — large & obvious */}
                                         <button
                                             onClick={handleCopy}
-                                            className="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold text-lg shadow-lg shadow-orange-500/25 active:scale-[0.97] transition-all flex items-center justify-center gap-3 group"
+                                            className="w-full py-4 rounded-lg bg-[#0b4edb] hover:bg-[#073fba] text-white font-bold text-lg shadow-sm active:scale-[0.97] transition-all flex items-center justify-center gap-3 group"
                                         >
                                             {copied ? (
                                                 <>
@@ -240,15 +221,15 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                             <div className="space-y-3">
                                                 {/* Tab selector */}
                                                 {data.images.length > 1 && (
-                                                    <div className="flex gap-2 p-1 rounded-xl bg-gray-100 dark:bg-white/5">
+                                                    <div className="flex gap-2 p-1 rounded-lg bg-[#eef3f8]">
                                                         {data.images.map((url, i) => (
                                                             <button
                                                                 key={i}
                                                                 onClick={() => setActiveTab(i)}
                                                                 className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold transition-all ${
                                                                     activeTab === i
-                                                                        ? 'bg-white dark:bg-white/10 text-orange-600 dark:text-orange-400 shadow-sm'
-                                                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                                                                        ? 'bg-white text-[#0b4edb] shadow-sm border border-[#dbe8f4]'
+                                                                        : 'text-[#63758a] hover:text-[#07182f]'
                                                                 }`}
                                                             >
                                                                 {getTabLabel(url, i)}
@@ -259,12 +240,12 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
 
                                                 {/* Active image */}
                                                 <div
-                                                    className="relative w-full aspect-[4/3] bg-gray-100 dark:bg-white/5 rounded-2xl overflow-hidden group cursor-pointer"
+                                                    className="relative w-full aspect-[4/3] bg-[#f8fbfe] rounded-lg overflow-hidden group cursor-pointer border border-[#dbe8f4]"
                                                     onClick={() => openPreview(activeTab)}
                                                 >
                                                     {!imageLoaded[activeTab] && (
                                                         <div className="absolute inset-0 flex items-center justify-center">
-                                                            <Loader2 className="w-7 h-7 text-orange-500 animate-spin" />
+                                                            <Loader2 className="w-7 h-7 text-[#0b4edb] animate-spin" />
                                                         </div>
                                                     )}
                                                     <AnimatePresence mode="wait">
@@ -280,8 +261,8 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                                             onLoad={() => setImageLoaded((prev) => ({ ...prev, [activeTab]: true }))}
                                                         />
                                                     </AnimatePresence>
-                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                                        <div className="bg-black/50 p-2 rounded-full text-white backdrop-blur-sm">
+                                                    <div className="absolute inset-0 bg-[#07182f]/0 group-hover:bg-[#07182f]/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                                        <div className="bg-[#07182f]/80 p-2 rounded-lg text-white">
                                                             <ZoomIn className="w-6 h-6" />
                                                         </div>
                                                     </div>
@@ -295,10 +276,10 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                                 initial={{ opacity: 0, y: 8 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: 0.25 }}
-                                                className="flex gap-3 p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20"
+                                                className="flex gap-3 p-4 rounded-lg bg-[#fff1f1] border border-[#f3caca]"
                                             >
                                                 <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                                                <p className="text-sm font-medium text-red-700 dark:text-red-300 leading-relaxed">
+                                                <p className="text-sm font-medium text-[#c44747] leading-relaxed">
                                                     {data.warning_text.replace(/<\/?b>/g, ' ').replace(/⚠/g, '').trim()}
                                                 </p>
                                             </motion.div>
@@ -317,7 +298,7 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 onClick={() => setPreviewOpen(false)}
-                                className="fixed inset-0 bg-black/90 z-[11000] flex items-center justify-center p-4 backdrop-blur-md"
+                                className="fixed inset-0 bg-[#07182f]/95 z-[11000] flex items-center justify-center p-4"
                                 style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
                             >
                                 <button
@@ -334,7 +315,7 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                             <button
                                                 key={i}
                                                 onClick={(e) => { e.stopPropagation(); setPreviewIndex(i); }}
-                                                className={`px-4 py-2 rounded-lg text-sm font-semibold backdrop-blur-lg transition-all ${
+                                                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                                                     previewIndex === i
                                                         ? 'bg-white/20 text-white'
                                                         : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
@@ -349,7 +330,7 @@ const ChinaAddressModal = ({ isOpen, onClose }: ChinaAddressModalProps) => {
                                 <div className="absolute bottom-6 left-0 right-0 px-4 flex items-center justify-center gap-3 z-20">
                                     <button
                                         onClick={(e) => handleDownloadImage(e, data.images[previewIndex])}
-                                        className="px-6 py-3.5 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 backdrop-blur-lg rounded-xl text-white font-medium flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg shadow-orange-500/20"
+                                        className="px-6 py-3.5 bg-[#0b4edb] hover:bg-[#073fba] rounded-lg text-white font-medium flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm"
                                     >
                                         <Download className="w-5 h-5" />
                                         {t('chinaAddress.downloadButton')}

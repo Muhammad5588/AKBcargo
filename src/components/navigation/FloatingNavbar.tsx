@@ -37,24 +37,27 @@ export const FloatingNavbar = <T,>({
         return activePage === item.page;
     };
 
-    // Glassmorphism container style (Dark Mode Supported)
     const containerClasses = cn(
-        "flex items-center gap-1 p-1.5 rounded-full pointer-events-auto",
-        "backdrop-blur-xl shadow-[0_8px_32px_rgba(249,115,22,0.08)]",
-        "bg-white/50 border border-orange-100 ring-1 ring-orange-50", // Light Mode
-        "dark:bg-[#1a1638]/50 dark:border-white/10 dark:ring-white/5 dark:shadow-none" // Dark Mode
+        "grid w-full max-w-[430px] grid-cols-4 gap-1 rounded-lg border border-[#d7e5f2] bg-white p-1.5 shadow-[0_12px_28px_rgba(10,35,70,0.12)] pointer-events-auto",
+        "md:max-w-[460px]"
     );
 
-    const buttonBaseClasses = "relative flex items-center justify-center rounded-full transition-all duration-300";
+    const buttonBaseClasses = "relative flex h-14 min-w-0 flex-col items-center justify-center gap-1 overflow-hidden rounded-md transition-colors duration-200";
 
-    // Light: px-4 py-3 hover:bg-orange-50/50 hover:text-orange-600
-    // Dark:  hover:bg-white/5 hover:text-white
-    const buttonInactiveClasses = "px-4 py-3 text-gray-500 dark:text-gray-400 hover:bg-orange-50/50 dark:hover:bg-white/5 hover:text-orange-600 dark:hover:text-white";
+    const buttonInactiveClasses = cn(
+        "text-[#63758a] hover:bg-[#eef6ff] hover:text-[#0b4edb]"
+    );
 
-    const buttonActiveClasses = "px-5 py-3 text-white";
+    const buttonActiveClasses = cn(
+        "bg-[#eef6ff] text-[#0b4edb]"
+    );
+
+    const activePillClasses = "absolute inset-x-2 bottom-1 h-0.5 rounded-full bg-[#0b84e5]";
+
+    const activeTransition = { type: "spring", stiffness: 240, damping: 28, mass: 0.9 } as const;
 
     const desktopWrapperClasses = cn(
-        "hidden md:flex fixed left-0 right-0 z-40 justify-center pointer-events-none",
+        "hidden md:flex fixed left-0 right-0 z-40 justify-center pointer-events-none px-4",
         desktopPosition === 'top' ? "top-24" : "bottom-8",
         className
     );
@@ -62,7 +65,7 @@ export const FloatingNavbar = <T,>({
     return (
         <>
             {/* Mobile Bottom Wrapper */}
-            <div className={cn("md:hidden fixed bottom-3 left-0 right-0 z-50 flex justify-center pointer-events-none px-4", className)}>
+            <div className={cn("md:hidden fixed bottom-3 left-0 right-0 z-50 flex justify-center pointer-events-none px-3", className)}>
                 <div className={containerClasses}>
                     {items.map((item) => {
                         const active = isItemActive(item);
@@ -73,6 +76,7 @@ export const FloatingNavbar = <T,>({
                                 key={`mobile-${item.id}`}
                                 onClick={() => !disabled && handleNavClick(item)}
                                 disabled={disabled}
+                                aria-label={item.label}
                                 className={cn(
                                     buttonBaseClasses,
                                     active ? buttonActiveClasses : buttonInactiveClasses,
@@ -82,26 +86,18 @@ export const FloatingNavbar = <T,>({
                                 {active && (
                                     <motion.div
                                         layoutId="mobile-nav-pill"
-                                        className="absolute inset-0 bg-gradient-to-tr from-orange-500 to-amber-500 shadow-[0_4px_12px_rgba(249,115,22,0.3)] rounded-full"
+                                        className={activePillClasses}
                                         initial={false}
-                                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                        transition={activeTransition}
                                     />
                                 )}
                                 <span className={cn(
-                                    "relative z-10 flex items-center gap-2 transition-colors duration-200",
-                                    active ? "text-white" : "text-gray-500 dark:text-gray-400"
+                                    "relative z-10 flex flex-col items-center gap-1 transition-colors duration-200"
                                 )}>
-                                    <item.icon className={cn("w-5 h-5", active && "stroke-[2.5px]")} />
-                                    {active && (
-                                        <motion.span
-                                            initial={{ opacity: 0, width: 0 }}
-                                            animate={{ opacity: 1, width: 'auto' }}
-                                            exit={{ opacity: 0, width: 0 }}
-                                            className="text-sm font-semibold whitespace-nowrap overflow-hidden"
-                                        >
-                                            {item.label}
-                                        </motion.span>
-                                    )}
+                                    <item.icon className={cn("h-5 w-5", active && "stroke-[2.5px]")} />
+                                    <span className="max-w-full truncate text-[11px] font-semibold leading-none">
+                                        {item.label}
+                                    </span>
                                 </span>
                             </button>
                         );
@@ -111,7 +107,7 @@ export const FloatingNavbar = <T,>({
 
             {/* Desktop Wrapper */}
             <div className={desktopWrapperClasses}>
-                <div className={cn(containerClasses, "gap-2 p-2")}>
+                <div className={containerClasses}>
                     {items.map((item) => {
                         const active = isItemActive(item);
                         const disabled = item.disabled;
@@ -121,26 +117,26 @@ export const FloatingNavbar = <T,>({
                                 key={`desktop-${item.id}`}
                                 onClick={() => !disabled && handleNavClick(item)}
                                 disabled={disabled}
+                                aria-label={item.label}
                                 className={cn(
                                     buttonBaseClasses,
-                                    active ? "px-6 py-2.5 text-white" : "px-5 py-2.5 text-gray-500 dark:text-gray-400 hover:bg-orange-50/50 dark:hover:bg-white/5 hover:text-orange-600 dark:hover:text-white",
+                                    active ? buttonActiveClasses : buttonInactiveClasses,
                                     disabled ? "opacity-40 cursor-not-allowed grayscale" : "cursor-pointer"
                                 )}
                             >
                                 {active && (
                                     <motion.div
                                         layoutId="desktop-nav-pill"
-                                        className="absolute inset-0 bg-gradient-to-tr from-orange-500 to-amber-500 shadow-[0_4px_12px_rgba(249,115,22,0.3)] rounded-full"
+                                        className={activePillClasses}
                                         initial={false}
-                                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                        transition={activeTransition}
                                     />
                                 )}
                                 <span className={cn(
-                                    "relative z-10 flex items-center gap-2 transition-colors duration-200",
-                                    active ? "text-white" : "text-gray-500 dark:text-gray-400"
+                                    "relative z-10 flex flex-col items-center gap-1 transition-colors duration-200"
                                 )}>
-                                    <item.icon className={cn("w-4 h-4", active && "stroke-[2.5px]")} />
-                                    <span className="font-semibold text-sm">{item.label}</span>
+                                    <item.icon className={cn("h-5 w-5", active && "stroke-[2.5px]")} />
+                                    <span className="text-[11px] font-semibold leading-none">{item.label}</span>
                                 </span>
                             </button>
                         );

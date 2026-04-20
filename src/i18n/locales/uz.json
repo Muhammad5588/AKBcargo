@@ -4,7 +4,9 @@
     "statistics": "Statistika",
     "home": "Bosh sahifa",
     "reports": "Hisobotlarim",
+    "cargo": "Yuklarim",
     "history": "Tarix",
+    "payments": "To'lovlar",
     "profile": "Profil"
   },
   "form": {
@@ -566,7 +568,7 @@
     },
     "editProfile": "Profilni Tahrirlash",
     "logout": "Tizimdan Chiqish",
-    "version": "Versiya 2.0 • Mandarin Cargo",
+    "version": "Versiya 2.0 - AKB Cargo",
     "logoutConfirm": {
       "title": "Tizimdan chiqish",
       "description": "Haqiqatan ham hisobingizdan chiqmoqchimisiz?",
@@ -900,6 +902,12 @@
     "trackCodeNotFound": "Trek-kod ma'lumotlari topilmadi"
   },
   "dashboard": {
+    "greeting": "Assalomu alaykum,",
+    "customer": "AKB Cargo mijozi",
+    "heroSubtitle": "Yukingizni kuzating, zayavka qoldiring va to'lovlarni boshqaring.",
+    "trackModule": {
+      "kicker": "Tezkor qidiruv"
+    },
     "tabs": {
       "home": "Bosh sahifa",
       "track": "Trek-kod",
@@ -931,6 +939,7 @@
       "paymentHistory": "To'lovlar tarixi",
       "receipts": "Cheklar va taqsimot",
       "services": "Xizmatlar",
+      "mainActions": "Asosiy amallar",
       "feedback": "Taklif va shikoyatlar",
       "contactUs": "Biz bilan bog'laning"
     },
@@ -979,7 +988,7 @@
     "upcoming": "Keyingi Reyslar",
     "googleCalendar": {
       "title": "Reys: {{name}} kelishi",
-      "details": "Mandarin Cargo: {{name}} reysi {{date}} kuni yetib kelishi kutilmoqda.",
+      "details": "AKB Cargo: {{name}} reysi {{date}} kuni yetib kelishi kutilmoqda.",
       "tooltip": "Google Calendar ga qo'shish"
     }
   },
@@ -1060,7 +1069,7 @@
     "types": {
       "uzpost": "UzPost",
       "yandex": "Yandex",
-      "mandarin": "Mandarin",
+      "mandarin": "AKB Dostavka",
       "bts": "BTS"
     },
     "status": {
@@ -1162,6 +1171,12 @@
     },
     "loadMore": "Yana ko'rish ({{current}}/{{total}})",
     "loading": "Yuklanmoqda..."
+  },
+  "cargoSummary": {
+    "active": "Aktiv",
+    "onWay": "Yo'lda",
+    "billing": "Hisob",
+    "delivered": "Yetkazilgan"
   },
   "cargoHistory": {
     "flight": "REYS: {{name}}",

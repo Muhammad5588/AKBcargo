@@ -63,23 +63,23 @@ export const EditProfileModal = ({ isOpen, onClose, user }: EditProfileModalProp
     };
 
     const inp = [
-        'h-12 rounded-xl',
-        'border border-gray-200 dark:border-white/10',
-        'bg-gray-50 dark:bg-white/5',
-        'text-gray-900 dark:text-white',
-        'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+        'h-12 rounded-lg',
+        'border border-[#dbe8f4]',
+        'bg-[#f8fbfe]',
+        'text-[#07182f]',
+        'placeholder:text-[#9fb7cc]',
         'transition-colors duration-150',
-        'focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:ring-offset-0 focus:outline-none',
+        'focus:border-[#0b84e5] focus:ring-2 focus:ring-[#37c5f3]/25 focus:ring-offset-0 focus:outline-none',
     ].join(' ');
 
     const currentDistricts = formData.region ? DISTRICTS[formData.region] || [] : [];
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[425px] bg-white dark:bg-[#1e1a45] dark:border-white/10 max-h-[90vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-[425px] bg-white border-[#dbe8f4] max-h-[90vh] overflow-y-auto rounded-lg">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-gray-900 dark:text-white">{t('profile.edit.title')}</DialogTitle>
-                    <DialogDescription className="text-gray-500 dark:text-gray-400">
+                    <DialogTitle className="text-2xl font-bold text-[#07182f]">{t('profile.edit.title')}</DialogTitle>
+                    <DialogDescription className="text-[#63758a]">
                         {t('profile.edit.description')}
                     </DialogDescription>
                 </DialogHeader>
@@ -110,20 +110,20 @@ export const EditProfileModal = ({ isOpen, onClose, user }: EditProfileModalProp
 
                     {/* Region Select */}
                     <div className="space-y-2">
-                        <Label className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-orange-500" />
+                        <Label className="font-semibold text-sm text-[#07182f] tracking-normal flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-[#0b4edb]" />
                             {t('profile.edit.region')}
                         </Label>
                         <Select onValueChange={handleRegionChange} value={formData.region}>
                             <SelectTrigger className={`${inp} w-full`}>
                                 <SelectValue placeholder={t('form.regionPlaceholder')} />
                             </SelectTrigger>
-                            <SelectContent className="dark:bg-[#1a1209] dark:border-orange-500/20 rounded-2xl overflow-hidden shadow-xl max-h-60">
+                            <SelectContent className="bg-white border-[#dbe8f4] rounded-lg overflow-hidden shadow-xl max-h-60">
                                 {regions.map((r) => (
                                     <SelectItem
                                         key={r.value}
                                         value={r.value}
-                                        className="rounded-lg cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-500/10 dark:text-gray-200"
+                                        className="rounded-lg cursor-pointer hover:bg-[#eef6ff] text-[#07182f]"
                                     >
                                         {t(r.label)}
                                     </SelectItem>
@@ -134,8 +134,8 @@ export const EditProfileModal = ({ isOpen, onClose, user }: EditProfileModalProp
 
                     {/* District Select */}
                     <div className="space-y-2">
-                        <Label className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-orange-500 opacity-50" />
+                        <Label className="font-semibold text-sm text-[#07182f] tracking-normal flex items-center gap-2">
+                            <MapPin className="w-4 h-4 text-[#0b4edb] opacity-70" />
                             {t('profile.edit.district')}
                         </Label>
                         <Select
@@ -146,12 +146,12 @@ export const EditProfileModal = ({ isOpen, onClose, user }: EditProfileModalProp
                             <SelectTrigger className={`${inp} w-full`}>
                                 <SelectValue placeholder={t('form.districtPlaceholder')} />
                             </SelectTrigger>
-                            <SelectContent className="dark:bg-[#1a1209] dark:border-orange-500/20 rounded-2xl overflow-hidden shadow-xl max-h-60">
+                            <SelectContent className="bg-white border-[#dbe8f4] rounded-lg overflow-hidden shadow-xl max-h-60">
                                 {currentDistricts.map((d) => (
                                     <SelectItem
                                         key={d.value}
                                         value={d.value}
-                                        className="rounded-lg cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-500/10 dark:text-gray-200"
+                                        className="rounded-lg cursor-pointer hover:bg-[#eef6ff] text-[#07182f]"
                                     >
                                         {t(d.label)}
                                     </SelectItem>
@@ -171,10 +171,10 @@ export const EditProfileModal = ({ isOpen, onClose, user }: EditProfileModalProp
                     </div>
 
                     <DialogFooter className="mt-6">
-                        <Button type="button" variant="outline" onClick={onClose} className="border-gray-200 dark:border-white/10 dark:text-gray-300">
+                        <Button type="button" variant="outline" onClick={onClose} className="border-[#dbe8f4] text-[#63758a] hover:bg-[#f8fbfe]">
                             {t('profile.edit.cancel')}
                         </Button>
-                        <Button type="submit" disabled={isPending} className="bg-orange-500 hover:bg-orange-600 text-white">
+                        <Button type="submit" disabled={isPending} className="bg-[#0b4edb] hover:bg-[#073fba] text-white">
                             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {t('profile.edit.save')}
                         </Button>

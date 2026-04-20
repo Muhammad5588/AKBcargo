@@ -24,17 +24,17 @@ type PaymentStatus = TransactionHistoryItem['payment_status'];
 const statusMeta: Record<PaymentStatus, { labelKey: string; className: string; Icon: typeof CheckCircle2 } > = {
   paid: {
     labelKey: 'paymentHistory.status.paid',
-    className: 'bg-emerald-500/15 text-emerald-500 border-emerald-500/30',
+    className: 'bg-[#effbf5] text-[#15835b] border-[#ccebdc]',
     Icon: CheckCircle2,
   },
   partial: {
     labelKey: 'paymentHistory.status.partial',
-    className: 'bg-amber-500/15 text-amber-500 border-amber-500/30',
+    className: 'bg-[#eef6ff] text-[#0b4edb] border-[#cfe0f1]',
     Icon: Clock,
   },
   pending: {
     labelKey: 'paymentHistory.status.pending',
-    className: 'bg-rose-500/15 text-rose-500 border-rose-500/30',
+    className: 'bg-[#fff1f1] text-[#c44747] border-[#f0cccc]',
     Icon: Clock,
   },
 };
@@ -42,9 +42,9 @@ const statusMeta: Record<PaymentStatus, { labelKey: string; className: string; I
 const formatMoney = (value: number) => `${value.toLocaleString('uz-UZ')} so'm`;
 
 const BreakdownBadge = ({ label, value }: { label: string; value: number }) => (
-  <div className="flex items-center justify-between rounded-2xl bg-white/70 dark:bg-white/5 border border-white/30 dark:border-white/10 px-2.5 sm:px-3 py-2 text-xs font-semibold text-gray-700 dark:text-gray-200">
+  <div className="flex items-center justify-between rounded-lg bg-white border border-[#dbe8f4] px-2.5 sm:px-3 py-2 text-xs font-semibold text-[#334a62]">
     <span className="truncate mr-1">{label}</span>
-    <span className="text-xs sm:text-sm text-gray-900 dark:text-white whitespace-nowrap">{value.toLocaleString('uz-UZ')}</span>
+    <span className="text-xs sm:text-sm text-[#07182f] whitespace-nowrap">{value.toLocaleString('uz-UZ')}</span>
   </div>
 );
 
@@ -68,16 +68,13 @@ const HistoryCard = ({ item }: { item: TransactionHistoryItem }) => {
       layout
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/80 dark:bg-white/5 backdrop-blur-xl shadow-lg p-4 sm:p-5"
+      className="relative overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-sm p-4 sm:p-5"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white/40 to-slate-100 dark:from-white/5 dark:via-white/0 dark:to-white/0" />
-      <div className="absolute inset-x-10 -bottom-12 h-32 bg-gradient-to-br from-orange-400/10 via-amber-400/5 to-transparent blur-3xl" />
-
       <div className="relative flex items-start justify-between gap-3">
         <div className="space-y-1 min-w-0 flex-1">
-          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('paymentHistory.card.flight')}</p>
-          <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-white leading-tight truncate" title={item.flight_name}>{item.flight_name}</h3>
-          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300/80 flex items-center gap-1">
+          <p className="text-xs font-semibold text-[#63758a] uppercase tracking-normal">{t('paymentHistory.card.flight')}</p>
+          <h3 className="text-base sm:text-lg md:text-xl font-bold text-[#07182f] leading-tight truncate" title={item.flight_name}>{item.flight_name}</h3>
+          <p className="text-xs sm:text-sm text-[#63758a] flex items-center gap-1">
             <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             {formatTashkentDateTime(item.created_at, 'uz')}
           </p>
@@ -91,31 +88,31 @@ const HistoryCard = ({ item }: { item: TransactionHistoryItem }) => {
       </div>
 
       <div className="relative mt-4 grid grid-cols-2 gap-2 sm:gap-3">
-        <div className="rounded-2xl bg-white/70 dark:bg-white/5 border border-white/25 dark:border-white/10 p-3">
-          <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-semibold">{t('paymentHistory.card.totalAmount')}</p>
-          <p className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{formatMoney(item.total_amount)}</p>
+        <div className="rounded-lg bg-[#f8fbfe] border border-[#edf3f8] p-3">
+          <p className="text-[11px] sm:text-xs text-[#63758a] font-semibold">{t('paymentHistory.card.totalAmount')}</p>
+          <p className="text-base sm:text-lg font-bold text-[#07182f]">{formatMoney(item.total_amount)}</p>
         </div>
-        <div className="rounded-2xl bg-white/70 dark:bg-white/5 border border-white/25 dark:border-white/10 p-3">
-          <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-semibold">{t('paymentHistory.card.paid')}</p>
-          <p className="text-base sm:text-lg font-bold text-emerald-600 dark:text-emerald-300">{formatMoney(item.paid_amount)}</p>
+        <div className="rounded-lg bg-[#f8fbfe] border border-[#edf3f8] p-3">
+          <p className="text-[11px] sm:text-xs text-[#63758a] font-semibold">{t('paymentHistory.card.paid')}</p>
+          <p className="text-base sm:text-lg font-bold text-[#15835b]">{formatMoney(item.paid_amount)}</p>
         </div>
-        <div className="rounded-2xl bg-white/70 dark:bg-white/5 border border-white/25 dark:border-white/10 p-3">
-          <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-semibold">{t('paymentHistory.card.remaining')}</p>
-          <p className="text-base sm:text-lg font-bold text-amber-600 dark:text-amber-300">{formatMoney(item.remaining_amount)}</p>
+        <div className="rounded-lg bg-[#f8fbfe] border border-[#edf3f8] p-3">
+          <p className="text-[11px] sm:text-xs text-[#63758a] font-semibold">{t('paymentHistory.card.remaining')}</p>
+          <p className="text-base sm:text-lg font-bold text-[#c44747]">{formatMoney(item.remaining_amount)}</p>
         </div>
-        <div className="rounded-2xl bg-white/70 dark:bg-white/5 border border-white/25 dark:border-white/10 p-3">
-          <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-semibold flex items-center gap-1">
+        <div className="rounded-lg bg-[#f8fbfe] border border-[#edf3f8] p-3">
+          <p className="text-[11px] sm:text-xs text-[#63758a] font-semibold flex items-center gap-1">
             <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
             {t('paymentHistory.card.paymentType')}
           </p>
-          <p className="text-sm sm:text-base font-bold text-gray-900 dark:text-white capitalize truncate" title={item.payment_type}>{item.payment_type}</p>
-          <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">{item.is_taken_away ? t('paymentHistory.card.takenAway') : t('paymentHistory.card.notTakenAway')}</p>
+          <p className="text-sm sm:text-base font-bold text-[#07182f] capitalize truncate" title={item.payment_type}>{item.payment_type}</p>
+          <p className="text-[11px] sm:text-xs text-[#63758a] mt-1">{item.is_taken_away ? t('paymentHistory.card.takenAway') : t('paymentHistory.card.notTakenAway')}</p>
         </div>
       </div>
 
       {showBreakdown && (
-        <div className="relative mt-4 p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-white/20 dark:border-white/10">
-          <div className="flex items-center gap-2 mb-3 text-sm sm:text-base font-semibold text-gray-800 dark:text-white">
+        <div className="relative mt-4 p-3 rounded-lg bg-[#f8fbfe] border border-[#edf3f8]">
+          <div className="flex items-center gap-2 mb-3 text-sm sm:text-base font-semibold text-[#07182f]">
             <ReceiptText className="w-4 h-4 sm:w-5 sm:h-5" />
             {t('paymentHistory.card.breakdown')}
           </div>
@@ -131,19 +128,19 @@ const HistoryCard = ({ item }: { item: TransactionHistoryItem }) => {
 };
 
 const SkeletonCard = () => (
-  <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/60 dark:bg-white/5 backdrop-blur-xl shadow-lg p-5">
+  <div className="relative overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-sm p-5">
     <div className="absolute inset-0 bg-gradient-to-br from-white/70 to-white/30 dark:from-white/10 dark:to-white/5 animate-pulse" />
     <div className="relative space-y-4">
-      <div className="h-4 w-2/5 bg-gray-200 dark:bg-white/10 rounded-full" />
-      <div className="h-7 w-3/5 bg-gray-200 dark:bg-white/10 rounded-full" />
+      <div className="h-4 w-2/5 bg-[#e8eff6] rounded-full" />
+      <div className="h-7 w-3/5 bg-[#e8eff6] rounded-full" />
       <div className="grid grid-cols-2 gap-2 sm:gap-3">
         {[...Array(4)].map((_, idx) => (
-          <div key={idx} className="h-14 rounded-2xl bg-gray-200/80 dark:bg-white/10" />
+          <div key={idx} className="h-14 rounded-lg bg-[#e8eff6]" />
         ))}
       </div>
       <div className="grid grid-cols-2 gap-2">
         {[...Array(4)].map((_, idx) => (
-          <div key={idx} className="h-8 rounded-xl bg-gray-200/70 dark:bg-white/10" />
+          <div key={idx} className="h-8 rounded-lg bg-[#e8eff6]" />
         ))}
       </div>
     </div>
@@ -174,7 +171,7 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
   const totalCount = data?.pages?.[0]?.total_count ?? 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0d0a04] text-gray-900 dark:text-white pb-28 pt-24 md:pt-32 relative">
+    <div className="min-h-screen bg-[#f4f8fc] text-[#07182f] pb-28 pt-6 md:pt-8 relative">
       <UniqueBackground />
 
       <div className="container mx-auto px-4 max-w-lg md:max-w-3xl lg:max-w-5xl relative z-10">
@@ -182,21 +179,21 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
           {onBack && (
             <button
               onClick={onBack}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-white/20 bg-white/70 dark:bg-white/5 backdrop-blur-xl text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm hover:-translate-y-[1px] transition"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[#dbe8f4] bg-white text-sm font-semibold text-[#63758a] shadow-sm hover:-translate-y-[1px] hover:text-[#0b4edb] transition"
             >
               <ArrowLeft className="w-4 h-4" />
               {t('paymentHistory.back')}
             </button>
           )}
           <div>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('paymentHistory.subtitle')}</p>
-            <h1 className="text-2xl font-black text-gray-900 dark:text-white">{t('paymentHistory.title')}</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-300/80">{t('paymentHistory.desc')}</p>
+            <p className="text-xs font-semibold text-[#63758a] uppercase tracking-normal">{t('paymentHistory.subtitle')}</p>
+          <h1 className="text-2xl font-semibold text-[#07182f]">{t('paymentHistory.title')}</h1>
+            <p className="text-sm text-[#63758a]">{t('paymentHistory.desc')}</p>
           </div>
         </div>
 
         {isError && (
-          <div className="relative overflow-hidden rounded-3xl border border-rose-200 dark:border-rose-500/20 bg-rose-50/80 dark:bg-rose-500/5 p-4 text-rose-700 dark:text-rose-200 mt-6">
+          <div className="relative overflow-hidden rounded-lg border border-[#f3caca] bg-[#fff1f1] p-4 text-[#c44747] mt-6">
             <div className="flex items-start gap-2">
               <AlertCircle className="w-5 h-5" />
               <div>
@@ -207,14 +204,14 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
             <div className="mt-3 flex gap-2">
               <button
                 onClick={() => refetch()}
-                className="px-3 py-2 rounded-xl bg-rose-600 text-white text-sm font-semibold shadow-sm"
+                className="px-3 py-2 rounded-lg bg-[#c44747] text-white text-sm font-semibold shadow-sm"
               >
                 {t('paymentHistory.error.retry')}
               </button>
               {onBack && (
                 <button
                   onClick={onBack}
-                  className="px-3 py-2 rounded-xl border border-white/30 bg-white/70 dark:bg-white/5 text-sm font-semibold text-gray-700 dark:text-gray-200"
+                  className="px-3 py-2 rounded-lg border border-[#dbe8f4] bg-white text-sm font-semibold text-[#63758a] hover:bg-[#eef6ff]"
                 >
                   {t('paymentHistory.error.home')}
                 </button>
@@ -232,12 +229,12 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
         )}
 
         {!isLoading && !isError && items.length === 0 && (
-          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/80 dark:bg-white/5 backdrop-blur-xl shadow-lg p-8 text-center mt-6">
-            <div className="flex items-center justify-center w-14 h-14 mx-auto rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 mb-3">
+          <div className="relative overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-sm p-8 text-center mt-6">
+            <div className="flex items-center justify-center w-14 h-14 mx-auto rounded-lg bg-[#eef6ff] text-[#0b4edb] mb-3">
               <ReceiptText className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('paymentHistory.emptyState.title')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300/80 mt-1">{t('paymentHistory.emptyState.desc')}</p>
+            <h3 className="text-lg font-bold text-[#07182f]">{t('paymentHistory.emptyState.title')}</h3>
+            <p className="text-sm text-[#63758a] mt-1">{t('paymentHistory.emptyState.desc')}</p>
           </div>
         )}
 
@@ -252,7 +249,7 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
             <button
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0b4edb] text-white font-semibold shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {isFetchingNextPage ? t('paymentHistory.loading') : t('paymentHistory.loadMore', { current: items.length, total: totalCount })}
             </button>

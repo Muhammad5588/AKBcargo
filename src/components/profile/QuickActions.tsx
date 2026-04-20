@@ -14,25 +14,25 @@ export const QuickActions = memo(({ onWalletClick, onCardsClick, onPassportsClic
     return (
         <div className="grid grid-cols-3 gap-3 px-4 mb-6 md:mb-0 md:px-0 md:max-w-none md:gap-4 max-w-lg mx-auto md:mx-0">
             <ActionButton
-                icon={<CreditCard className="h-6 w-6 text-orange-600 dark:text-orange-400" />}
+                icon={<CreditCard className="h-6 w-6 text-[#0b4edb]" />}
                 label={t('profile.quickActions.payments')}
                 onClick={onWalletClick}
                 delay={0.1}
-                bgColor="bg-orange-100 dark:bg-orange-500/20"
+                bgColor="bg-[#eef6ff]"
             />
             <ActionButton
-                icon={<FilePlus className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />}
+                icon={<FilePlus className="h-6 w-6 text-[#15835b]" />}
                 label={t('profile.quickActions.addPassport')}
                 onClick={onPassportsClick}
                 delay={0.2}
-                bgColor="bg-emerald-100 dark:bg-emerald-500/20"
+                bgColor="bg-[#effbf5]"
             />
             <ActionButton
-                icon={<UserCog className="h-6 w-6 text-gray-600 dark:text-gray-400" />}
+                icon={<UserCog className="h-6 w-6 text-[#334a62]" />}
                 label={t('profile.quickActions.myCards')}
                 onClick={onCardsClick}
                 delay={0.3}
-                bgColor="bg-gray-100 dark:bg-gray-500/20"
+                bgColor="bg-[#f2f6fa]"
             />
         </div>
     );
@@ -51,26 +51,26 @@ const ActionButton = memo(({ icon, label, onClick, delay, bgColor }: ActionButto
     return (
         <button
             className="
-                group relative flex flex-col items-center justify-center p-3 h-28 md:h-32 w-full 
-                rounded-3xl transition-all duration-300
-                bg-white dark:bg-white/5 
-                border-2 border-transparent dark:border-white/10
-                shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none
-                hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:bg-white/10
+                group relative flex flex-col items-center justify-center p-3 h-28 md:h-32 w-full
+                rounded-lg transition-all duration-300
+                bg-white
+                border border-[#dbe8f4]
+                shadow-sm
+                hover:border-[#0b84e5] hover:bg-[#f8fbfe]
                 active:scale-95 active:shadow-inner
             "
             onClick={onClick}
             style={{ animationDelay: `${delay}s` }}
         >
             <div className={`
-                w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-3 
+                w-12 h-12 md:w-14 md:h-14 rounded-lg flex items-center justify-center mb-3
                 transition-transform duration-300 group-hover:scale-110 group-active:scale-90
                 ${bgColor}
             `}>
                 {icon}
             </div>
 
-            <span className="text-xs md:text-sm font-bold text-gray-800 dark:text-gray-200 tracking-wide">
+            <span className="text-xs md:text-sm font-bold text-[#07182f] tracking-normal">
                 {label}
             </span>
         </button>

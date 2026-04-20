@@ -15,6 +15,13 @@ import { Calendar } from '@/components/ui/calendar';
 import ImageUpload from './ImageUpload';
 import TranslatedFormMessage from './TranslatedFormMessage';
 import { formSchema, regions, DISTRICTS, type RegistrationFormData } from '@/lib/validation';
+import {
+  premiumHeading,
+  premiumInput,
+  premiumMutedText,
+  premiumPrimaryButton,
+  premiumSurface,
+} from '@/components/user_panel/premium';
 
 interface RegistrationFormProps {
   onNavigateToLogin?: () => void;
@@ -123,15 +130,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
     }
   };
 
-  const inp = [
-    'h-12 rounded-xl',
-    'border border-gray-200 dark:border-white/10',
-    'bg-gray-50 dark:bg-white/5',
-    'text-gray-900 dark:text-white',
-    'placeholder:text-gray-400 dark:placeholder:text-gray-500',
-    'transition-colors duration-150',
-    'focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:ring-offset-0 focus:outline-none',
-  ].join(' ');
+  const inp = premiumInput;
 
   return (
     <>
@@ -143,38 +142,25 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
         />
       )}
 
-      <div className="w-full max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="relative bg-white dark:bg-[#0d0a04] rounded-3xl border border-orange-100/80 dark:border-orange-500/15 overflow-hidden shadow-xl">
-
-          {/* top accent bar */}
-          <div className="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
-
-          {/* dot-grid texture */}
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.022] dark:opacity-[0.04]"
-            style={{
-              backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(249,115,22) 1px, transparent 0)',
-              backgroundSize: '28px 28px',
-            }}
-          />
-
-          <div className="relative p-6 sm:p-8 lg:p-10">
+      <div className="w-full max-w-3xl mx-auto px-5 py-8 sm:px-7 lg:py-12">
+        <div className={`relative overflow-hidden ${premiumSurface}`}>
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent dark:via-white/10" />
+          <div className="relative p-6 sm:p-8 lg:p-9">
 
             {/* Header */}
-            <div className="text-center mb-10">
-              <div className="inline-flex mb-5">
-                <div className="w-18 h-18 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/40">
-                  <Sparkles className="w-8 h-8 text-white" />
+            <div className="mb-8">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black/[0.08] bg-white text-zinc-900 shadow-[0_6px_20px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-zinc-900 dark:text-white">
+                  <Sparkles className="w-6 h-6" />
                 </div>
+                <div className="h-px flex-1 bg-black/[0.08] dark:bg-white/10" />
               </div>
-              <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-orange-500 via-amber-400 to-orange-600 bg-clip-text text-transparent">
+              <h1 className={`text-3xl sm:text-4xl ${premiumHeading}`}>
                 {t('form.title')}
               </h1>
-              <div className="mt-3 flex items-center justify-center gap-2">
-                <div className="h-px w-16 bg-gradient-to-r from-transparent to-orange-400 opacity-50" />
-                <div className="w-2 h-2 rounded-full bg-orange-400" />
-                <div className="h-px w-16 bg-gradient-to-l from-transparent to-orange-400 opacity-50" />
-              </div>
+              <p className={`${premiumMutedText} mt-2 text-sm`}>
+                {t('form.haveAccount')} {t('form.login')}
+              </p>
             </div>
 
             <Form {...form}>
@@ -183,7 +169,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                 {/* Full Name */}
                 <FormField control={form.control} name="fullName" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide">
+                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
                       {t('form.fullName')}
                     </FormLabel>
                     <FormControl>
@@ -197,7 +183,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField control={form.control} name="passportSeries" render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide">
+                      <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
                         {t('form.passportSeries')}
                       </FormLabel>
                       <FormControl>
@@ -215,7 +201,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
 
                   <FormField control={form.control} name="pinfl" render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide">
+                      <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
                         {t('form.pinfl')}
                       </FormLabel>
                       <FormControl>
@@ -235,7 +221,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                 {/* Date of Birth */}
                 <FormField control={form.control} name="dateOfBirth" render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide">
+                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
                       {t('form.dateOfBirth')}
                     </FormLabel>
                     <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
@@ -252,15 +238,15 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-500/10"
+                            className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 rounded-xl hover:bg-zinc-100 dark:hover:bg-white/10"
                           >
-                            <CalendarIcon className="h-4 w-4 text-orange-400" />
+                            <CalendarIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-300" />
                           </Button>
                         </PopoverTrigger>
                       </div>
                       <PopoverContent
                         align="start"
-                        className="w-auto p-0 dark:bg-[#1a1209] dark:border-orange-500/20 rounded-2xl overflow-hidden shadow-xl"
+                        className="w-auto p-0 dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl"
                       >
                         <Calendar
                           mode="single"
@@ -287,8 +273,8 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField control={form.control} name="region" render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-orange-500" />
+                      <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                         {t('form.region')}
                       </FormLabel>
                       <Select onValueChange={(value) => {
@@ -300,12 +286,12 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                             <SelectValue placeholder={t('form.regionPlaceholder')} />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="dark:bg-[#1a1209] dark:border-orange-500/20 rounded-2xl overflow-hidden shadow-xl max-h-60">
+                        <SelectContent className="dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl max-h-60">
                           {regions.map((r) => (
                             <SelectItem
                               key={r.value}
                               value={r.value}
-                              className="rounded-lg cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-500/10 dark:text-gray-200"
+                              className="rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/10 dark:text-zinc-200"
                             >
                               {t(r.label)}
                             </SelectItem>
@@ -318,8 +304,8 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
 
                   <FormField control={form.control} name="district" render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-orange-500 opacity-50" />
+                      <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400 opacity-70" />
                         {t('form.district')}
                       </FormLabel>
                       <Select onValueChange={field.onChange} value={field.value} disabled={!form.watch('region')}>
@@ -328,12 +314,12 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                             <SelectValue placeholder={t('form.districtPlaceholder')} />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="dark:bg-[#1a1209] dark:border-orange-500/20 rounded-2xl overflow-hidden shadow-xl max-h-60">
+                        <SelectContent className="dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl max-h-60">
                           {form.watch('region') && DISTRICTS[form.watch('region')]?.map((d) => (
                             <SelectItem
                               key={d.value}
                               value={d.value}
-                              className="rounded-lg cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-500/10 dark:text-gray-200"
+                              className="rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/10 dark:text-zinc-200"
                             >
                               {t(d.label)}
                             </SelectItem>
@@ -348,7 +334,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                 {/* Address */}
                 <FormField control={form.control} name="address" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide">
+                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
                       {t('form.address')}
                     </FormLabel>
                     <FormControl>
@@ -361,15 +347,15 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                 {/* Phone */}
                 <FormField control={form.control} name="phoneNumber" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-orange-500" />
+                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                       {t('form.phoneNumber')}
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center gap-2">
-                          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">+998</span>
-                          <div className="w-px h-4 bg-gray-300 dark:bg-white/20" />
+                          <span className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">+998</span>
+                          <div className="w-px h-4 bg-zinc-300 dark:bg-white/20" />
                         </div>
                         <Input
                           placeholder={t('form.phoneNumberPlaceholder')}
@@ -386,7 +372,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                 {/* Passport Images */}
                 <FormField control={form.control} name="passportImages" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-base text-gray-700 dark:text-gray-200">
+                    <FormLabel className="font-semibold text-base text-zinc-700 dark:text-zinc-200">
                       {t('form.passportImages')}
                     </FormLabel>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
@@ -421,19 +407,19 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                   <Button
                     type="submit"
                     disabled={submitStatus === 'loading'}
-                    className="w-full h-14 bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90 active:brightness-95 text-white font-bold text-base tracking-wide rounded-xl shadow-md shadow-orange-500/30 transition-opacity duration-150 disabled:opacity-50 disabled:cursor-not-allowed border-0"
+                    className={`w-full text-base ${premiumPrimaryButton}`}
                   >
                     {t('form.submit')}
                   </Button>
                 </div>
 
                 <div className="text-center pb-1">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className={`text-sm ${premiumMutedText}`}>
                     {t('form.haveAccount')}{' '}
                     <button
                       type="button"
                       onClick={onNavigateToLogin}
-                      className="text-orange-500 hover:text-orange-400 font-semibold transition-colors underline underline-offset-2 decoration-orange-400/50"
+                      className="text-cyan-700 hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200 font-semibold transition-colors underline underline-offset-2 decoration-cyan-400/50"
                     >
                       {t('form.login')}
                     </button>

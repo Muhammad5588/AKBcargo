@@ -29,10 +29,10 @@ interface Props {
 // ============================================
 
 const DELIVERY_TYPE_COLORS: Record<string, string> = {
-  uzpost: 'bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400',
-  yandex: 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400',
-  mandarin: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400',
-  bts: 'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400',
+  uzpost: 'bg-[#eef6ff] text-[#0b4edb]',
+  yandex: 'bg-[#fff1f1] text-[#c44747]',
+  mandarin: 'bg-[#effbf5] text-[#15835b]',
+  bts: 'bg-[#eafaff] text-[#0784a6]',
 };
 
 // ============================================
@@ -59,17 +59,17 @@ const StatusBadge = memo(({ status }: { status: string }) => {
     pending: {
       label: t('deliveryHistory.status.pending'),
       icon: <Clock className="w-3.5 h-3.5" />,
-      cls: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
+      cls: 'bg-[#fff8e6] text-[#936b14]',
     },
     approved: {
       label: t('deliveryHistory.status.approved'),
       icon: <CheckCircle2 className="w-3.5 h-3.5" />,
-      cls: 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400',
+      cls: 'bg-[#effbf5] text-[#15835b]',
     },
     rejected: {
       label: t('deliveryHistory.status.rejected'),
       icon: <XCircle className="w-3.5 h-3.5" />,
-      cls: 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400',
+      cls: 'bg-[#fff1f1] text-[#c44747]',
     },
   };
 
@@ -90,17 +90,17 @@ const StatusBadge = memo(({ status }: { status: string }) => {
 // ============================================
 
 const SkeletonCard = () => (
-  <div className="rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-4 space-y-3 animate-pulse backdrop-blur-md">
+  <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 space-y-3 animate-pulse">
     <div className="flex items-center justify-between">
-      <div className="h-5 w-20 rounded-lg bg-gray-200 dark:bg-white/10" />
-      <div className="h-6 w-24 rounded-full bg-gray-200 dark:bg-white/10" />
+      <div className="h-5 w-20 rounded-lg bg-[#dbe8f4]" />
+      <div className="h-6 w-24 rounded-full bg-[#dbe8f4]" />
     </div>
-    <div className="h-4 w-3/4 rounded-lg bg-gray-200 dark:bg-white/10" />
+    <div className="h-4 w-3/4 rounded-lg bg-[#dbe8f4]" />
     <div className="flex gap-2">
-      <div className="h-7 w-20 rounded-xl bg-gray-200 dark:bg-white/10" />
-      <div className="h-7 w-20 rounded-xl bg-gray-200 dark:bg-white/10" />
+      <div className="h-7 w-20 rounded-lg bg-[#dbe8f4]" />
+      <div className="h-7 w-20 rounded-lg bg-[#dbe8f4]" />
     </div>
-    <div className="h-4 w-1/2 rounded-lg bg-gray-200 dark:bg-white/10" />
+    <div className="h-4 w-1/2 rounded-lg bg-[#dbe8f4]" />
   </div>
 );
 
@@ -120,13 +120,13 @@ const EmptyState = memo(() => {
   const { t } = useTranslation();
   return (
   <div className="flex flex-col items-center justify-center py-20 animate-in fade-in duration-500">
-    <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center mb-5">
-      <PackageOpen className="w-10 h-10 text-gray-300 dark:text-white/15" />
+    <div className="w-20 h-20 rounded-lg bg-[#eef6ff] flex items-center justify-center mb-5">
+      <PackageOpen className="w-10 h-10 text-[#0b4edb]" />
     </div>
-    <h3 className="text-lg font-bold text-gray-600 dark:text-gray-300 mb-1">
+    <h3 className="text-lg font-bold text-[#07182f] mb-1">
       {t('deliveryHistory.emptyState.title')}
     </h3>
-    <p className="text-sm text-gray-400 dark:text-gray-500 text-center max-w-xs">
+    <p className="text-sm text-[#63758a] text-center max-w-xs">
       {t('deliveryHistory.emptyState.desc')}
     </p>
   </div>
@@ -143,18 +143,18 @@ const RequestCard = memo(({ item }: { item: DeliveryRequestHistoryItem }) => {
   const typeColor = DELIVERY_TYPE_COLORS[item.delivery_type] ?? DELIVERY_TYPE_COLORS.bts;
 
   return (
-    <div className="rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-4 backdrop-blur-md transition-all hover:shadow-md">
+  <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 transition-all hover:shadow-md">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-gray-400">
+          <div className="w-9 h-9 rounded-lg bg-[#eef6ff] flex items-center justify-center text-[#0b4edb]">
             <Truck className="w-4.5 h-4.5" />
           </div>
           <div>
             <span className={`inline-block px-2 py-0.5 rounded-lg text-xs font-bold ${typeColor}`}>
               {typeLabel}
             </span>
-            <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5 font-medium">
+            <p className="text-[10px] text-[#7d91a8] mt-0.5 font-medium">
               {formatDate(item.created_at)}
             </p>
           </div>
@@ -167,7 +167,7 @@ const RequestCard = memo(({ item }: { item: DeliveryRequestHistoryItem }) => {
         {item.flight_names.map((f) => (
           <span
             key={f}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 text-xs font-semibold"
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#eef6ff] text-[#0b4edb] text-xs font-semibold"
           >
             <Plane className="w-3 h-3" />
             {f}
@@ -177,7 +177,7 @@ const RequestCard = memo(({ item }: { item: DeliveryRequestHistoryItem }) => {
 
       {/* Address */}
       {(item.region || item.address) && (
-        <div className="flex items-start gap-2 text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-start gap-2 text-xs text-[#63758a]">
           <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0" />
           <span className="line-clamp-2">
             {[item.region, item.address].filter(Boolean).join(', ')}
@@ -187,13 +187,13 @@ const RequestCard = memo(({ item }: { item: DeliveryRequestHistoryItem }) => {
 
       {/* Admin comment for rejected */}
       {item.status === 'rejected' && item.admin_comment && (
-        <div className="mt-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 p-3 flex items-start gap-2.5">
-          <AlertTriangle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+        <div className="mt-3 rounded-lg bg-[#fff1f1] border border-[#f0cccc] p-3 flex items-start gap-2.5">
+          <AlertTriangle className="w-4 h-4 text-[#c44747] shrink-0 mt-0.5" />
           <div>
-            <p className="text-xs font-bold text-red-700 dark:text-red-400 mb-0.5">
+            <p className="text-xs font-bold text-[#9f3131] mb-0.5">
               {t('deliveryHistory.card.rejectedReason')}
             </p>
-            <p className="text-xs text-red-600 dark:text-red-300/80">
+            <p className="text-xs text-[#c44747]">
               {item.admin_comment}
             </p>
           </div>
@@ -202,7 +202,7 @@ const RequestCard = memo(({ item }: { item: DeliveryRequestHistoryItem }) => {
 
       {/* Processed date */}
       {item.processed_at && (
-        <p className="mt-2 text-[10px] text-gray-400 dark:text-gray-500 font-medium">
+        <p className="mt-2 text-[10px] text-[#7d91a8] font-medium">
           {t('deliveryHistory.card.processedAt', { date: formatDate(item.processed_at) })}
         </p>
       )}
@@ -261,7 +261,7 @@ export default function DeliveryHistoryPage({ onBack }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [page]);
+  }, [page, t]);
 
   return (
     <div className="pb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -269,7 +269,7 @@ export default function DeliveryHistoryPage({ onBack }: Props) {
       <div className="flex items-center gap-3 mb-6">
         <button
           onClick={onBack}
-          className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-100 dark:bg-white/5 active:scale-90 transition-transform"
+          className="w-10 h-10 rounded-lg flex items-center justify-center bg-white border border-[#dbe8f4] text-[#63758a] active:scale-90 transition-transform"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -281,13 +281,13 @@ export default function DeliveryHistoryPage({ onBack }: Props) {
         <SkeletonList />
       ) : error ? (
         <div className="text-center py-16">
-          <div className="w-16 h-16 mx-auto rounded-full bg-red-100 dark:bg-red-500/10 flex items-center justify-center mb-4">
+          <div className="w-16 h-16 mx-auto rounded-lg bg-[#fff1f1] flex items-center justify-center mb-4">
             <AlertTriangle className="w-8 h-8 text-red-500" />
           </div>
-          <p className="text-red-600 dark:text-red-400 font-semibold mb-1">{error}</p>
+          <p className="text-[#c44747] font-semibold mb-1">{error}</p>
           <button
             onClick={() => { setPage(1); }}
-            className="mt-3 px-5 py-2.5 rounded-xl bg-gray-100 dark:bg-white/5 text-sm font-bold active:scale-95 transition-transform"
+            className="mt-3 px-5 py-2.5 rounded-lg bg-[#eef6ff] text-[#0b4edb] text-sm font-bold active:scale-95 transition-transform"
           >
             {t('deliveryHistory.error.retry')}
           </button>
@@ -307,7 +307,7 @@ export default function DeliveryHistoryPage({ onBack }: Props) {
               <button
                 onClick={() => setPage((p) => p + 1)}
                 disabled={isLoadingMore}
-                className="px-6 py-2.5 rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold text-sm transition-transform active:scale-95 disabled:opacity-50"
+                className="px-6 py-2.5 rounded-lg bg-[#eef6ff] text-[#0b4edb] font-semibold text-sm transition-transform active:scale-95 disabled:opacity-50"
               >
                 {isLoadingMore ? t('deliveryHistory.loadingMore') : t('deliveryHistory.loadMore')}
               </button>

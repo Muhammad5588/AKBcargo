@@ -14,6 +14,14 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { regions, DISTRICTS } from '@/lib/validation';
 import TranslatedFormMessage from './TranslatedFormMessage';
+import {
+  premiumHeading,
+  premiumInput,
+  premiumMutedText,
+  premiumPrimaryButton,
+  premiumSecondaryButton,
+  premiumSurface,
+} from '@/components/user_panel/premium';
 
 const loginSchema = z.object({
   clientCode: z.string().min(1, 'login.validation.clientCodeRequired').regex(/^[A-Z][A-Z0-9-]*$/, 'login.validation.clientCodeInvalid'),
@@ -74,11 +82,11 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
     setSubmitMessage(t('login.messages.loading'));
     try {
       const telegramData = getTelegramWebAppData();
-      if (!telegramData?.user) throw new Error(t('login.messages.telegramError'));
+      // if (!telegramData?.user) throw new Error(t('login.messages.telegramError'));
       const response = await loginApi({
         client_code: data.clientCode,
         phone_number: `+998${data.phoneNumber}`,
-        telegram_id: telegramData.user.id,
+        telegram_id: telegramData?.user?.id,
       });
 
       if (response.access_token) {
@@ -162,15 +170,7 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
     return { formatted: f, raw: c };
   };
 
-  const inp = [
-    'h-12 rounded-xl',
-    'border border-gray-200 dark:border-white/10',
-    'bg-gray-50 dark:bg-white/5',
-    'text-gray-900 dark:text-white',
-    'placeholder:text-gray-400 dark:placeholder:text-gray-500',
-    'transition-colors duration-150',
-    'focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:ring-offset-0 focus:outline-none',
-  ].join(' ');
+  const inp = premiumInput;
 
   return (
     <>
@@ -182,41 +182,25 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
         />
       )}
 
-      <div className="w-full max-w-lg mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="relative bg-white dark:bg-[#0d0a04] rounded-3xl border border-orange-100/80 dark:border-orange-500/15 overflow-hidden shadow-xl">
-
-          {/* top accent bar */}
-          <div className="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
-
-          {/* dot-grid texture */}
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.022] dark:opacity-[0.04]"
-            style={{
-              backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(249,115,22) 1px, transparent 0)',
-              backgroundSize: '28px 28px',
-            }}
-          />
-
-          <div className="relative p-6 sm:p-8 lg:p-10">
+      <div className="w-full max-w-md mx-auto px-5 py-8 sm:px-7 lg:py-12">
+        <div className={`relative overflow-hidden ${premiumSurface}`}>
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent dark:via-white/10" />
+          <div className="relative p-6 sm:p-8 lg:p-9">
 
             {/* Header */}
-            <div className="text-center mb-10">
-              <div className="inline-flex mb-5">
-                <div className="w-18 h-18 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/40">
-                  <LogIn className="w-10 h-10 text-white" />
+            <div className="mb-8">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black/[0.08] bg-white text-zinc-900 shadow-[0_6px_20px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-zinc-900 dark:text-white">
+                  <LogIn className="w-6 h-6" />
                 </div>
+                <div className="h-px flex-1 bg-black/[0.08] dark:bg-white/10" />
               </div>
-              <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-orange-500 via-amber-400 to-orange-600 bg-clip-text text-transparent">
+              <h1 className={`text-3xl sm:text-4xl ${premiumHeading}`}>
                 {t('login.title')}
               </h1>
-              <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">
+              <p className={`${premiumMutedText} mt-2 text-sm`}>
                 {t('login.subtitle')}
               </p>
-              <div className="mt-3 flex items-center justify-center gap-2">
-                <div className="h-px w-12 bg-gradient-to-r from-transparent to-orange-400 opacity-50" />
-                <div className="w-2 h-2 rounded-full bg-orange-400" />
-                <div className="h-px w-12 bg-gradient-to-l from-transparent to-orange-400 opacity-50" />
-              </div>
             </div>
 
             <Form {...form}>
@@ -225,8 +209,8 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 {/* Client Code */}
                 <FormField control={form.control} name="clientCode" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                      <User className="w-4 h-4 text-orange-500" />
+                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
+                      <User className="w-4 h-4 text-zinc-500 dark:text-zinc-300" />
                       {t('login.clientCode')}
                     </FormLabel>
                     <FormControl>
@@ -244,15 +228,15 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 {/* Phone */}
                 <FormField control={form.control} name="phoneNumber" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-orange-500" />
+                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-zinc-500 dark:text-zinc-300" />
                       {t('login.phoneNumber')}
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center gap-2">
-                          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">+998</span>
-                          <div className="w-px h-4 bg-gray-300 dark:bg-white/20" />
+                          <span className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">+998</span>
+                          <div className="w-px h-4 bg-zinc-300 dark:bg-white/20" />
                         </div>
                         <Input
                           placeholder={t('login.phoneNumberPlaceholder')}
@@ -271,19 +255,19 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                   <Button
                     type="submit"
                     disabled={submitStatus === 'loading'}
-                    className="w-full h-14 bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90 active:brightness-95 text-white font-bold text-base tracking-wide rounded-xl shadow-md shadow-orange-500/30 transition-opacity duration-150 disabled:opacity-50 disabled:cursor-not-allowed border-0"
+                    className={`w-full text-base ${premiumPrimaryButton}`}
                   >
                     {t('login.submit')}
                   </Button>
                 </div>
 
                 <div className="text-center pb-1">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className={`text-sm ${premiumMutedText}`}>
                     {t('login.noAccount')}{' '}
                     <button
                       type="button"
                       onClick={onNavigateToRegister}
-                      className="text-orange-500 hover:text-orange-400 font-semibold transition-colors underline underline-offset-2 decoration-orange-400/50"
+                      className="text-cyan-700 hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200 font-semibold transition-colors underline underline-offset-2 decoration-cyan-400/50"
                     >
                       {t('login.register')}
                     </button>
@@ -304,7 +288,7 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/80 z-[9999] backdrop-blur-sm"
+                className="fixed inset-0 bg-black/70 z-[9999] backdrop-blur-sm"
                 onClick={() => setShowAddressDrawer(false)}
               />
               <motion.div
@@ -312,14 +296,14 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white dark:bg-zinc-950 z-[10000] rounded-t-3xl p-6 pb-8 shadow-[0_-10px_40px_rgba(0,0,0,0.2)] h-[80vh] overflow-y-auto flex flex-col"
+                className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white dark:bg-zinc-950 z-[10000] rounded-t-lg border border-zinc-200 dark:border-white/10 p-5 pb-8 shadow-2xl h-[80vh] overflow-y-auto flex flex-col"
               >
-                <div className="w-12 h-1.5 bg-gray-300 dark:bg-zinc-800 rounded-full mx-auto mb-6" />
+                <div className="w-10 h-1 bg-zinc-300 dark:bg-zinc-800 rounded-full mx-auto mb-6" />
                 <div className="text-center mb-6">
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h2 className={`text-xl ${premiumHeading}`}>
                     {t('login.addressDrawer.title', 'Yashash manzilingizni kiriting')}
                   </h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <p className={`text-sm ${premiumMutedText} mt-1`}>
                     {t('login.addressDrawer.subtitle', 'Davom etish uchun viloyat va tumaningizni belgilang')}
                   </p>
                 </div>
@@ -328,8 +312,8 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                   <form onSubmit={addressForm.handleSubmit(onAddressSubmit)} className="space-y-5">
                     <FormField control={addressForm.control} name="region" render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                          <MapPin className="w-4 h-4 text-orange-500" />
+                        <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
+                          <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                           {t('form.region')}
                         </FormLabel>
                         <Select onValueChange={(value) => {
@@ -341,12 +325,12 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                               <SelectValue placeholder={t('form.regionPlaceholder')} />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="z-[10010] dark:bg-[#1a1209] dark:border-orange-500/20 rounded-2xl overflow-hidden shadow-xl max-h-60">
+                          <SelectContent className="z-[10010] dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl max-h-60">
                             {regions.map((r) => (
                               <SelectItem
                                 key={r.value}
                                 value={r.value}
-                                className="rounded-lg cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-500/10 dark:text-gray-200"
+                                className="rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/10 dark:text-zinc-200"
                               >
                                 {t(r.label)}
                               </SelectItem>
@@ -359,8 +343,8 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
 
                     <FormField control={addressForm.control} name="district" render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold text-sm text-gray-700 dark:text-gray-200 tracking-wide flex items-center gap-2">
-                          <MapPin className="w-4 h-4 text-orange-500 opacity-50" />
+                        <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
+                          <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400 opacity-70" />
                           {t('form.district')}
                         </FormLabel>
                         <Select
@@ -373,12 +357,12 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                               <SelectValue placeholder={t('form.districtPlaceholder')} />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="z-[10010] dark:bg-[#1a1209] dark:border-orange-500/20 rounded-2xl overflow-hidden shadow-xl max-h-60">
+                          <SelectContent className="z-[10010] dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl max-h-60">
                             {addressForm.watch('region') && DISTRICTS[addressForm.watch('region')]?.map((d) => (
                               <SelectItem
                                 key={d.value}
                                 value={d.value}
-                                className="rounded-lg cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-500/10 dark:text-gray-200"
+                                className="rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/10 dark:text-zinc-200"
                               >
                                 {t(d.label)}
                               </SelectItem>
@@ -393,7 +377,7 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                       <Button
                         type="submit"
                         disabled={submitStatus === 'loading'}
-                        className="w-full h-14 bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90 active:brightness-95 text-white font-bold text-base tracking-wide rounded-xl shadow-md shadow-orange-500/30 transition-opacity duration-150 disabled:opacity-50 disabled:cursor-not-allowed border-0"
+                        className={`w-full text-base ${premiumSecondaryButton}`}
                       >
                         {t('login.addressDrawer.submit', 'Saqlash va Kirish')}
                       </Button>

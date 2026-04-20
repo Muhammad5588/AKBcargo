@@ -61,8 +61,8 @@ const DELIVERY_OPTIONS: DeliveryOption[] = [
     label: 'UzPost',
     descKey: 'deliveryRequest.options.uzpost',
     icon: <Mail className="w-8 h-8" />,
-    gradient: 'from-orange-500 to-amber-500',
-    iconBg: 'bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400',
+    gradient: 'from-blue-500 to-sky-500',
+    iconBg: 'bg-[#eef6ff] text-[#0b4edb]',
   },
   {
     id: 'yandex',
@@ -70,15 +70,15 @@ const DELIVERY_OPTIONS: DeliveryOption[] = [
     descKey: 'deliveryRequest.options.yandex',
     icon: <Zap className="w-8 h-8" />,
     gradient: 'from-red-500 to-rose-500',
-    iconBg: 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400',
+    iconBg: 'bg-[#fff1f1] text-[#c44747]',
   },
   {
     id: 'mandarin',
-    label: 'Mandarin Dostavka',
+    label: 'AKB Dostavka',
     descKey: 'deliveryRequest.options.mandarin',
     icon: <Package className="w-8 h-8" />,
     gradient: 'from-emerald-500 to-green-500',
-    iconBg: 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400',
+    iconBg: 'bg-[#effbf5] text-[#15835b]',
   },
   {
     id: 'bts',
@@ -86,7 +86,7 @@ const DELIVERY_OPTIONS: DeliveryOption[] = [
     descKey: 'deliveryRequest.options.bts',
     icon: <Truck className="w-8 h-8" />,
     gradient: 'from-blue-500 to-sky-500',
-    iconBg: 'bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400',
+    iconBg: 'bg-[#eafaff] text-[#0784a6]',
   },
 ];
 
@@ -99,7 +99,7 @@ const FlightSkeleton = () => (
     {[1, 2, 3].map((i) => (
       <div
         key={i}
-        className="h-20 rounded-2xl bg-gray-200 dark:bg-white/5 animate-pulse"
+        className="h-20 rounded-lg bg-[#dbe8f4] animate-pulse"
       />
     ))}
   </div>
@@ -107,10 +107,10 @@ const FlightSkeleton = () => (
 
 const CalcSkeleton = () => (
   <div className="space-y-4">
-    <div className="h-10 rounded-xl bg-gray-200 dark:bg-white/5 animate-pulse w-3/4" />
-    <div className="h-24 rounded-2xl bg-gray-200 dark:bg-white/5 animate-pulse" />
-    <div className="h-24 rounded-2xl bg-gray-200 dark:bg-white/5 animate-pulse" />
-    <div className="h-14 rounded-2xl bg-gray-200 dark:bg-white/5 animate-pulse" />
+    <div className="h-10 rounded-lg bg-[#dbe8f4] animate-pulse w-3/4" />
+    <div className="h-24 rounded-lg bg-[#dbe8f4] animate-pulse" />
+    <div className="h-24 rounded-lg bg-[#dbe8f4] animate-pulse" />
+    <div className="h-14 rounded-lg bg-[#dbe8f4] animate-pulse" />
   </div>
 );
 
@@ -125,10 +125,10 @@ const StepIndicator = memo(({ current, total }: { current: number; total: number
         key={i}
         className={`h-1.5 rounded-full transition-all duration-500 ${
           i + 1 === current
-            ? 'w-8 bg-amber-500'
+            ? 'w-8 bg-[#0b4edb]'
             : i + 1 < current
-            ? 'w-4 bg-amber-500/40'
-            : 'w-4 bg-gray-300 dark:bg-white/10'
+            ? 'w-4 bg-[#37c5f3]'
+            : 'w-4 bg-[#dbe8f4]'
         }`}
       />
     ))}
@@ -144,8 +144,8 @@ const StepTypeSelection = memo(
     const { t } = useTranslation();
     return (
     <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-      <h2 className="text-2xl font-extrabold mb-1">{t('deliveryRequest.steps.type.title')}</h2>
-      <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+      <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.type.title')}</h2>
+      <p className="text-[#63758a] text-sm mb-6">
         {t('deliveryRequest.steps.type.subtitle')}
       </p>
 
@@ -155,36 +155,27 @@ const StepTypeSelection = memo(
             key={opt.id}
             onClick={() => onSelect(opt.id)}
             className="
-              relative overflow-hidden rounded-3xl p-5 text-left
-              bg-white dark:bg-white/5 border-2 border-transparent
-              hover:border-amber-400/60 dark:hover:border-amber-500/40
+              relative overflow-hidden rounded-lg p-5 text-left
+              bg-white border border-[#dbe8f4]
+              hover:border-[#0b84e5] hover:bg-[#f8fbfe]
               active:scale-[0.96] transition-all duration-200
-              shadow-sm hover:shadow-lg group
-              backdrop-blur-md
+              shadow-sm group
             "
           >
-            {/* Gradient glow on hover */}
-            <div
-              className={`
-                absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300
-                bg-gradient-to-br ${opt.gradient}
-              `}
-            />
-
             <div className="relative z-10">
               <div
                 className={`
-                  w-14 h-14 rounded-2xl flex items-center justify-center mb-4
+                  w-14 h-14 rounded-lg flex items-center justify-center mb-4
                   ${opt.iconBg}
                 `}
               >
                 {opt.icon}
               </div>
-              <h3 className="font-bold text-lg leading-tight mb-0.5">{opt.label}</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t(opt.descKey)}</p>
+              <h3 className="font-semibold text-base leading-tight mb-0.5 text-[#07182f]">{opt.label}</h3>
+              <p className="text-xs text-[#63758a]">{t(opt.descKey)}</p>
             </div>
 
-            <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 dark:text-white/15 group-hover:text-amber-500 transition-colors" />
+            <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9fb7cc] group-hover:text-[#0b4edb] transition-colors" />
           </button>
         ))}
       </div>
@@ -212,25 +203,25 @@ const StepFlightSelection = memo(
     const { t } = useTranslation();
     return (
     <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-      <h2 className="text-2xl font-extrabold mb-1">{t('deliveryRequest.steps.flight.title')}</h2>
-      <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+      <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.flight.title')}</h2>
+      <p className="text-[#63758a] text-sm mb-6">
         {t('deliveryRequest.steps.flight.subtitle')}
       </p>
       {deliveryType === 'mandarin' && (
-        <span className="inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 mb-4 font-medium">
-          <Wallet className="w-4 h-4 text-emerald-500 dark:text-emerald-400 inline-block mr-1" />
+        <span className="inline-flex items-center gap-1 text-xs text-[#15835b] mb-4 font-medium">
+          <Wallet className="w-4 h-4 text-[#15835b] inline-block mr-1" />
           {t('deliveryRequest.steps.flight.mandarinNote')}
         </span>
       )}
       {deliveryType === 'yandex' && (
-        <span className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 mb-4 font-medium">
-          <Clock className="w-4 h-4 text-blue-500 dark:text-blue-400 inline-block mr-1" />
+        <span className="inline-flex items-center gap-1 text-xs text-[#0b4edb] mb-4 font-medium">
+          <Clock className="w-4 h-4 text-[#0b4edb] inline-block mr-1" />
           {t('deliveryRequest.steps.flight.yandexNote')}
         </span>
       )}
       {deliveryType === 'bts' && (
-        <span className="inline-flex items-center gap-1 text-xs text-sky-600 dark:text-sky-400 mb-4 font-medium">
-          <Clock className="w-4 h-4 text-sky-500 dark:text-sky-400 inline-block mr-1" />
+        <span className="inline-flex items-center gap-1 text-xs text-[#0784a6] mb-4 font-medium">
+          <Clock className="w-4 h-4 text-[#0784a6] inline-block mr-1" />
           {t('deliveryRequest.steps.flight.btsNote')}
         </span>
       )}
@@ -238,11 +229,11 @@ const StepFlightSelection = memo(
         <FlightSkeleton />
       ) : flights.length === 0 ? (
         <div className="text-center py-16">
-          <Plane className="w-16 h-16 mx-auto text-gray-300 dark:text-white/15 mb-4" />
-          <p className="text-gray-500 dark:text-gray-400 font-semibold text-lg">
+          <Plane className="w-16 h-16 mx-auto text-[#9fb7cc] mb-4" />
+          <p className="text-[#63758a] font-semibold text-lg">
             {t('deliveryRequest.steps.flight.empty')}
           </p>
-          <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">
+          <p className="text-[#7d91a8] text-sm mt-1">
             {t('deliveryRequest.steps.flight.emptyDesc')}
           </p>
         </div>
@@ -255,13 +246,13 @@ const StepFlightSelection = memo(
                 key={f.flight_name}
                 onClick={() => onToggle(f.flight_name)}
                 className={`
-                  w-full flex items-center gap-4 p-4 rounded-2xl text-left
+                  w-full flex items-center gap-4 p-4 rounded-lg text-left
                   transition-all duration-200 active:scale-[0.98]
                   border-2
                   ${
                     isChecked
-                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-500/10 shadow-md shadow-amber-500/10'
-                      : 'border-transparent bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/8'
+                      ? 'border-[#0b84e5] bg-[#eef6ff] shadow-sm'
+                      : 'border-[#dbe8f4] bg-white hover:bg-[#f8fbfe]'
                   }
                 `}
               >
@@ -272,8 +263,8 @@ const StepFlightSelection = memo(
                     transition-all duration-200 border-2
                     ${
                       isChecked
-                        ? 'bg-amber-500 border-amber-500'
-                        : 'border-gray-300 dark:border-white/20 bg-transparent'
+                        ? 'bg-[#0b4edb] border-[#0b4edb]'
+                        : 'border-[#cfe0f1] bg-white'
                     }
                   `}
                 >
@@ -282,11 +273,11 @@ const StepFlightSelection = memo(
 
                 {/* Flight Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-base">{f.flight_name}</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{t('deliveryRequest.steps.flight.flightLabel')}</p>
+                  <h3 className="font-bold text-base text-[#07182f]">{f.flight_name}</h3>
+                  <p className="text-xs text-[#63758a]">{t('deliveryRequest.steps.flight.flightLabel')}</p>
                 </div>
 
-                <Plane className="w-5 h-5 text-gray-300 dark:text-white/15 shrink-0" />
+                <Plane className="w-5 h-5 text-[#9fb7cc] shrink-0" />
               </button>
             );
           })}
@@ -298,8 +289,8 @@ const StepFlightSelection = memo(
         <button
           onClick={onBack}
           className="
-            flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center
-            bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300
+            flex-shrink-0 w-14 h-14 rounded-lg flex items-center justify-center
+            bg-white border border-[#dbe8f4] text-[#63758a]
             active:scale-95 transition-transform
           "
         >
@@ -309,13 +300,13 @@ const StepFlightSelection = memo(
           onClick={onContinue}
           disabled={selected.length === 0}
           className={`
-            flex-1 h-14 rounded-2xl font-bold text-base
+            flex-1 h-14 rounded-lg font-bold text-base
             flex items-center justify-center gap-2
             transition-all duration-200 active:scale-[0.98]
             ${
               selected.length > 0
-                ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/25 hover:bg-amber-600'
-                : 'bg-gray-200 dark:bg-white/10 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                ? 'bg-[#0b4edb] text-white shadow-sm hover:bg-[#073fba]'
+                : 'bg-[#e8eff6] text-[#9fb7cc] cursor-not-allowed'
             }
           `}
         >
@@ -348,32 +339,32 @@ const StepStandardConfirm = memo(
 
     return (
       <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-        <h2 className="text-2xl font-extrabold mb-1">{t('deliveryRequest.steps.confirm.title')}</h2>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+        <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.confirm.title')}</h2>
+        <p className="text-[#63758a] text-sm mb-6">
           {t('deliveryRequest.steps.confirm.subtitle')}
         </p>
 
         {/* Summary Card */}
-        <div className="rounded-3xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-5 mb-4 backdrop-blur-md">
+        <div className="rounded-lg bg-white border border-[#dbe8f4] p-5 mb-4 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400">
+            <div className="w-12 h-12 rounded-lg bg-[#eef6ff] flex items-center justify-center text-[#0b4edb]">
               <Truck className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{t('deliveryRequest.steps.confirm.deliveryType')}</p>
-              <h3 className="font-bold text-lg">{typeLabel}</h3>
+              <p className="text-xs text-[#63758a]">{t('deliveryRequest.steps.confirm.deliveryType')}</p>
+              <h3 className="font-bold text-lg text-[#07182f]">{typeLabel}</h3>
             </div>
           </div>
 
-          <div className="border-t border-gray-100 dark:border-white/5 pt-4">
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">
+          <div className="border-t border-[#edf3f8] pt-4">
+            <p className="text-xs text-[#63758a] mb-2 font-medium">
               {t('deliveryRequest.steps.confirm.selectedFlights')}
             </p>
             <div className="flex flex-wrap gap-2">
               {selectedFlights.map((f) => (
                 <span
                   key={f}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 text-sm font-semibold"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#eef6ff] text-[#0b4edb] text-sm font-semibold"
                 >
                   <Plane className="w-3.5 h-3.5" />
                   {f}
@@ -384,8 +375,8 @@ const StepStandardConfirm = memo(
         </div>
 
         {/* Info box */}
-        <div className="rounded-2xl bg-amber-50 dark:bg-amber-500/5 border border-amber-200 dark:border-amber-500/20 p-4 mb-6">
-          <p className="text-sm text-amber-800 dark:text-amber-300 font-medium">
+        <div className="rounded-lg bg-[#eef6ff] border border-[#cfe0f1] p-4 mb-6">
+          <p className="text-sm text-[#0b2b53] font-medium">
             <Trans
               i18nKey="deliveryRequest.steps.confirm.infoMessage"
               values={{ type: typeLabel, flights: selectedFlights.join(', ') }}
@@ -399,8 +390,8 @@ const StepStandardConfirm = memo(
           <button
             onClick={onBack}
             className="
-              flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center
-              bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300
+              flex-shrink-0 w-14 h-14 rounded-lg flex items-center justify-center
+              bg-white border border-[#dbe8f4] text-[#63758a]
               active:scale-95 transition-transform
             "
           >
@@ -410,10 +401,10 @@ const StepStandardConfirm = memo(
             onClick={onSubmit}
             disabled={submitting}
             className="
-              flex-1 h-14 rounded-2xl font-bold text-base text-white
+              flex-1 h-14 rounded-lg font-bold text-base text-white
               flex items-center justify-center gap-2
               bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98]
-              shadow-lg shadow-emerald-500/25 transition-all duration-200
+              shadow-sm transition-all duration-200
               disabled:opacity-60 disabled:cursor-not-allowed
             "
           >
@@ -486,8 +477,8 @@ function StepUzpostPayment({
   if (loading) {
     return (
       <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-        <h2 className="text-2xl font-extrabold mb-1">{t('deliveryRequest.steps.uzpost.calcTitle')}</h2>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">{t('deliveryRequest.steps.uzpost.calcDesc')}</p>
+        <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.uzpost.calcTitle')}</h2>
+        <p className="text-[#63758a] text-sm mb-6">{t('deliveryRequest.steps.uzpost.calcDesc')}</p>
         <CalcSkeleton />
       </div>
     );
@@ -497,22 +488,22 @@ function StepUzpostPayment({
   if (calcData?.warning) {
     return (
       <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-        <h2 className="text-2xl font-extrabold mb-4">{t('deliveryRequest.steps.uzpost.warningTitle')}</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-[#07182f]">{t('deliveryRequest.steps.uzpost.warningTitle')}</h2>
 
-        <div className="rounded-3xl bg-red-50 dark:bg-red-500/10 border-2 border-red-200 dark:border-red-500/30 p-6 text-center mb-6">
-          <AlertTriangle className="w-16 h-16 mx-auto text-red-500 mb-4" />
-          <p className="text-red-700 dark:text-red-300 font-bold text-lg mb-2">
+        <div className="rounded-lg bg-[#fff1f1] border border-[#f0cccc] p-6 text-center mb-6">
+          <AlertTriangle className="w-16 h-16 mx-auto text-[#c44747] mb-4" />
+          <p className="text-[#9f3131] font-bold text-lg mb-2">
             {t('deliveryRequest.steps.uzpost.weightExceeded')}
           </p>
-          <p className="text-red-600 dark:text-red-400 text-sm">{calcData.warning}</p>
+          <p className="text-[#c44747] text-sm">{calcData.warning}</p>
         </div>
 
         <button
           onClick={onBack}
           className="
-            w-full h-14 rounded-2xl font-bold text-base
+            w-full h-14 rounded-lg font-bold text-base
             flex items-center justify-center gap-2
-            bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-200
+            bg-white border border-[#dbe8f4] text-[#63758a]
             active:scale-[0.98] transition-all
           "
         >
@@ -529,35 +520,35 @@ function StepUzpostPayment({
 
   return (
     <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-      <h2 className="text-2xl font-extrabold mb-1">{t('deliveryRequest.steps.uzpost.paymentTitle')}</h2>
-      <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+      <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.uzpost.paymentTitle')}</h2>
+      <p className="text-[#63758a] text-sm mb-6">
         {t('deliveryRequest.steps.uzpost.flightsFor', { flights: selectedFlights.join(', ') })}
       </p>
 
       {/* Summary Grid */}
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-4 backdrop-blur-md">
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('deliveryRequest.steps.uzpost.totalWeight')}</p>
-          <p className="text-xl font-extrabold">{calcData.total_weight} kg</p>
+        <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 shadow-sm">
+          <p className="text-xs text-[#63758a] mb-1">{t('deliveryRequest.steps.uzpost.totalWeight')}</p>
+          <p className="text-xl font-extrabold text-[#07182f]">{calcData.total_weight} kg</p>
         </div>
-        <div className="rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-4 backdrop-blur-md">
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('deliveryRequest.steps.uzpost.totalAmount')}</p>
-          <p className="text-xl font-extrabold text-amber-600 dark:text-amber-400">
+        <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 shadow-sm">
+          <p className="text-xs text-[#63758a] mb-1">{t('deliveryRequest.steps.uzpost.totalAmount')}</p>
+          <p className="text-xl font-extrabold text-[#0b4edb]">
             {calcData.total_amount.toLocaleString()} so'm
           </p>
         </div>
       </div>
 
       {/* Wallet Toggle */}
-      <div className="rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-4 mb-4 backdrop-blur-md">
+      <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 mb-4 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400">
+            <div className="w-10 h-10 rounded-lg bg-[#effbf5] flex items-center justify-center text-[#15835b]">
               <Wallet className="w-5 h-5" />
             </div>
             <div>
               <p className="font-bold text-sm">{t('deliveryRequest.steps.uzpost.walletPay')}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-[#63758a]">
                 {t('deliveryRequest.steps.uzpost.walletBalance', { balance: calcData.wallet_balance.toLocaleString() })}
               </p>
             </div>
@@ -568,7 +559,7 @@ function StepUzpostPayment({
             onClick={() => setUseWallet(!useWallet)}
             className={`
               relative w-14 h-8 rounded-full transition-colors duration-300
-              ${useWallet ? 'bg-amber-500' : 'bg-gray-300 dark:bg-white/15'}
+              ${useWallet ? 'bg-[#0b4edb]' : 'bg-[#cfe0f1]'}
             `}
           >
             <div
@@ -582,16 +573,16 @@ function StepUzpostPayment({
         </div>
 
         {useWallet && (
-          <div className="mt-3 pt-3 border-t border-gray-100 dark:border-white/5 space-y-1">
+          <div className="mt-3 pt-3 border-t border-[#edf3f8] space-y-1">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500 dark:text-gray-400">{t('deliveryRequest.steps.uzpost.fromWallet')}</span>
-              <span className="font-bold text-emerald-600 dark:text-emerald-400">
+              <span className="text-[#63758a]">{t('deliveryRequest.steps.uzpost.fromWallet')}</span>
+              <span className="font-bold text-[#15835b]">
                 -{walletApplied.toLocaleString()} so'm
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500 dark:text-gray-400">{t('deliveryRequest.steps.uzpost.remainingPayment')}</span>
-              <span className="font-extrabold text-lg">
+              <span className="text-[#63758a]">{t('deliveryRequest.steps.uzpost.remainingPayment')}</span>
+              <span className="font-extrabold text-lg text-[#07182f]">
                 {remaining.toLocaleString()} so'm
               </span>
             </div>
@@ -601,16 +592,16 @@ function StepUzpostPayment({
 
       {/* Card Info (only if payment remains) */}
       {!fullyCoveredByWallet && calcData.card && (
-        <div className="rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-4 mb-4 backdrop-blur-md">
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">
+        <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 mb-4 shadow-sm">
+          <p className="text-xs text-[#63758a] mb-2 font-medium">
             {t('deliveryRequest.steps.uzpost.paymentCard')}
           </p>
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-mono font-bold text-lg tracking-wider">
+              <p className="font-mono font-bold text-lg tracking-normal">
                 {calcData.card.card_number}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-[#63758a]">
                 {calcData.card.card_owner}
               </p>
             </div>
@@ -618,7 +609,7 @@ function StepUzpostPayment({
               onClick={() => handleCopy(calcData.card!.card_number)}
               className="
                 w-11 h-11 rounded-xl flex items-center justify-center
-                bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400
+                bg-[#eef6ff] text-[#0b4edb]
                 active:scale-90 transition-transform
               "
             >
@@ -631,12 +622,12 @@ function StepUzpostPayment({
       {/* File Upload (only if payment remains) */}
       {!fullyCoveredByWallet && (
         <div className="mb-6">
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">
+          <p className="text-xs text-[#63758a] mb-2 font-medium">
             {t('deliveryRequest.steps.uzpost.uploadReceipt')}
           </p>
 
           {receiptFile ? (
-            <div className="rounded-2xl bg-white dark:bg-white/5 border-2 border-dashed border-emerald-400 dark:border-emerald-500/40 p-4">
+            <div className="rounded-lg bg-white border-2 border-dashed border-[#22a06b] p-4">
               {preview ? (
                 <div className="relative mb-3">
                   <img
@@ -659,14 +650,14 @@ function StepUzpostPayment({
                       <p className="font-semibold text-sm truncate max-w-[200px]">
                         {receiptFile.name}
                       </p>
-                      <p className="text-xs text-gray-400">
+                    <p className="text-xs text-[#7d91a8]">
                         {(receiptFile.size / 1024).toFixed(0)} KB
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={clearFile}
-                    className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-500/20 text-red-500 flex items-center justify-center active:scale-90 transition-transform"
+                    className="w-8 h-8 rounded-full bg-[#fff1f1] text-[#c44747] flex items-center justify-center active:scale-90 transition-transform"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -677,22 +668,22 @@ function StepUzpostPayment({
             <button
               onClick={() => fileInputRef.current?.click()}
               className="
-                w-full rounded-2xl border-2 border-dashed
-                border-gray-300 dark:border-white/15
-                hover:border-amber-400 dark:hover:border-amber-500/40
-                bg-gray-50 dark:bg-white/[0.02]
+                w-full rounded-lg border-2 border-dashed
+                border-[#cfe0f1]
+                hover:border-[#0b84e5]
+                bg-[#f8fbfe]
                 p-8 flex flex-col items-center justify-center gap-3
                 transition-all duration-200 active:scale-[0.98] group
               "
             >
-              <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-500/15 flex items-center justify-center text-amber-500 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 rounded-lg bg-[#eef6ff] flex items-center justify-center text-[#0b4edb] group-hover:scale-110 transition-transform">
                 <Upload className="w-7 h-7" />
               </div>
               <div className="text-center">
-                <p className="font-bold text-sm text-gray-700 dark:text-gray-200">
+                <p className="font-bold text-sm text-[#334a62]">
                   {t('deliveryRequest.steps.uzpost.uploadButton')}
                 </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                <p className="text-xs text-[#7d91a8] mt-0.5">
                   {t('deliveryRequest.steps.uzpost.uploadHint')}
                 </p>
               </div>
@@ -714,8 +705,8 @@ function StepUzpostPayment({
         <button
           onClick={onBack}
           className="
-            flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center
-            bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300
+            flex-shrink-0 w-14 h-14 rounded-lg flex items-center justify-center
+            bg-white border border-[#dbe8f4] text-[#63758a]
             active:scale-95 transition-transform
           "
         >
@@ -725,13 +716,13 @@ function StepUzpostPayment({
           onClick={() => onSubmit(walletApplied, receiptFile)}
           disabled={submitting || (!fullyCoveredByWallet && !receiptFile)}
           className={`
-            flex-1 h-14 rounded-2xl font-bold text-base text-white
+            flex-1 h-14 rounded-lg font-bold text-base text-white
             flex items-center justify-center gap-2
             transition-all duration-200 active:scale-[0.98]
             ${
               submitting || (!fullyCoveredByWallet && !receiptFile)
-                ? 'bg-gray-300 dark:bg-white/10 text-gray-500 cursor-not-allowed'
-                : 'bg-emerald-500 hover:bg-emerald-600 shadow-lg shadow-emerald-500/25'
+                ? 'bg-[#e8eff6] text-[#9fb7cc] cursor-not-allowed'
+                : 'bg-[#22a06b] hover:bg-[#15835b] shadow-sm'
             }
           `}
         >
@@ -757,21 +748,21 @@ const StepSuccess = memo(({ onGoHome }: { onGoHome: () => void }) => {
   const { t } = useTranslation();
   return (
   <div className="animate-in fade-in zoom-in-95 duration-500 text-center py-8">
-    <div className="w-24 h-24 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-500/15 flex items-center justify-center mb-6">
-      <CheckCircle2 className="w-14 h-14 text-emerald-500" />
+    <div className="w-24 h-24 mx-auto rounded-full bg-[#effbf5] flex items-center justify-center mb-6">
+      <CheckCircle2 className="w-14 h-14 text-[#22a06b]" />
     </div>
-    <h2 className="text-2xl font-extrabold mb-2">{t('deliveryRequest.steps.success.title')}</h2>
-    <p className="text-gray-500 dark:text-gray-400 text-sm max-w-xs mx-auto mb-8">
+    <h2 className="text-2xl font-semibold mb-2 text-[#07182f]">{t('deliveryRequest.steps.success.title')}</h2>
+    <p className="text-[#63758a] text-sm max-w-xs mx-auto mb-8">
       {t('deliveryRequest.steps.success.desc')}
     </p>
 
     <button
       onClick={onGoHome}
       className="
-        w-full max-w-xs mx-auto h-14 rounded-2xl font-bold text-base text-white
+        w-full max-w-xs mx-auto h-14 rounded-lg font-bold text-base text-white
         flex items-center justify-center gap-2
-        bg-amber-500 hover:bg-amber-600 active:scale-[0.98]
-        shadow-lg shadow-amber-500/25 transition-all duration-200
+        bg-[#0b4edb] hover:bg-[#073fba] active:scale-[0.98]
+        shadow-sm transition-all duration-200
       "
     >
       {t('deliveryRequest.steps.success.homeButton')}
@@ -789,11 +780,11 @@ const ProfileIncompleteAlert = memo(
     const { t } = useTranslation();
     return (
     <div className="animate-in fade-in zoom-in-95 duration-400 text-center py-8">
-      <div className="w-20 h-20 mx-auto rounded-full bg-red-100 dark:bg-red-500/15 flex items-center justify-center mb-5">
-        <UserCog className="w-10 h-10 text-red-500" />
+      <div className="w-20 h-20 mx-auto rounded-full bg-[#fff1f1] flex items-center justify-center mb-5">
+        <UserCog className="w-10 h-10 text-[#c44747]" />
       </div>
       <h2 className="text-xl font-extrabold mb-2">{t('deliveryRequest.profile.title')}</h2>
-      <p className="text-gray-500 dark:text-gray-400 text-sm max-w-xs mx-auto mb-6">
+      <p className="text-[#63758a] text-sm max-w-xs mx-auto mb-6">
         {t('deliveryRequest.profile.desc')}
       </p>
 
@@ -802,10 +793,10 @@ const ProfileIncompleteAlert = memo(
           <button
             onClick={onGoProfile}
             className="
-              w-full h-14 rounded-2xl font-bold text-base text-white
+              w-full h-14 rounded-lg font-bold text-base text-white
               flex items-center justify-center gap-2
               bg-blue-500 hover:bg-blue-600 active:scale-[0.98]
-              shadow-lg shadow-blue-500/25 transition-all duration-200
+              shadow-sm transition-all duration-200
             "
           >
             <UserCog className="w-5 h-5" />
@@ -815,9 +806,9 @@ const ProfileIncompleteAlert = memo(
         <button
           onClick={onBack}
           className="
-            w-full h-14 rounded-2xl font-bold text-base
+            w-full h-14 rounded-lg font-bold text-base
             flex items-center justify-center gap-2
-            bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-200
+            bg-white border border-[#dbe8f4] text-[#63758a]
             active:scale-[0.98] transition-all
           "
         >
@@ -871,7 +862,7 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
     } finally {
       setFlightsLoading(false);
     }
-  }, []);
+  }, [t]);
 
   const toggleFlight = useCallback((name: string) => {
     setSelectedFlights((prev) =>
@@ -895,7 +886,7 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
     } else {
       setCurrentStep(3);
     }
-  }, [deliveryType, selectedFlights]);
+  }, [deliveryType, selectedFlights, t]);
 
   const handleStandardSubmit = useCallback(async () => {
     if (!deliveryType || deliveryType === 'uzpost') return;
@@ -913,7 +904,7 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
     } finally {
       setSubmitting(false);
     }
-  }, [deliveryType, selectedFlights]);
+  }, [deliveryType, selectedFlights, t]);
 
   const handleUzpostSubmit = useCallback(
     async (walletUsed: number, file: File | null) => {
@@ -932,7 +923,7 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
         setSubmitting(false);
       }
     },
-    [selectedFlights]
+    [selectedFlights, t]
   );
 
   const goBackStep = useCallback(() => {
@@ -954,7 +945,7 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
         <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => setProfileIncomplete(false)}
-            className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-100 dark:bg-white/5 active:scale-90 transition-transform"
+            className="w-10 h-10 rounded-lg flex items-center justify-center bg-white border border-[#dbe8f4] text-[#63758a] active:scale-90 transition-transform"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -975,7 +966,7 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
         <div className="flex items-center gap-3">
           <button
             onClick={currentStep === 1 ? onBack : goBackStep}
-            className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-100 dark:bg-white/5 active:scale-90 transition-transform"
+            className="w-10 h-10 rounded-lg flex items-center justify-center bg-white border border-[#dbe8f4] text-[#63758a] active:scale-90 transition-transform"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -984,7 +975,7 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
         {onNavigateToHistory && (
           <button
             onClick={onNavigateToHistory}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 dark:bg-white/5 text-xs font-semibold text-gray-600 dark:text-gray-300 active:scale-95 transition-transform hover:bg-gray-200 dark:hover:bg-white/10"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#eef6ff] border border-[#cfe0f1] text-xs font-semibold text-[#0b4edb] active:scale-95 transition-transform hover:bg-[#e1f0ff]"
           >
             <Clock className="w-3.5 h-3.5" />
             {t('deliveryRequest.historyButton')}
