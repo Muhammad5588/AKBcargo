@@ -51,21 +51,21 @@ const STYLES = `
 `;
 
 const GLOW: Record<string, string> = {
-  loading: 'rgba(91,130,217,0.12)',
-  success: 'rgba(121,188,159,0.12)',
-  error:   'rgba(214,152,163,0.12)',
+  loading: 'rgba(142,227,255,0.12)',
+  success: 'rgba(126,226,168,0.12)',
+  error:   'rgba(255,156,156,0.12)',
 };
 
 const BAR_GRADIENT: Record<string, string> = {
-  loading: 'linear-gradient(90deg, transparent, rgba(91,130,217,0.15), rgb(91,130,217), transparent)',
-  success: 'linear-gradient(90deg, transparent, rgba(121,188,159,0.15), rgb(121,188,159), transparent)',
-  error:   'linear-gradient(90deg, transparent, rgba(214,152,163,0.15), rgb(214,152,163), transparent)',
+  loading: 'linear-gradient(90deg, transparent, rgba(142,227,255,0.15), rgb(142,227,255), transparent)',
+  success: 'linear-gradient(90deg, transparent, rgba(126,226,168,0.15), rgb(126,226,168), transparent)',
+  error:   'linear-gradient(90deg, transparent, rgba(255,156,156,0.15), rgb(255,156,156), transparent)',
 };
 
 const RING_COLOR: Record<string, string> = {
-  loading: 'border-[#86a4dc]',
-  success: 'border-[#79bc9f]',
-  error:   'border-[#d698a3]',
+  loading: 'border-[#8EE3FF]',
+  success: 'border-[#7EE2A8]',
+  error:   'border-[#FF9C9C]',
 };
 
 export default function StatusAnimation({ status, message, onComplete }: StatusAnimationProps) {
@@ -86,11 +86,11 @@ export default function StatusAnimation({ status, message, onComplete }: StatusA
       <div className={`backdrop-in fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}>
 
         {/* backdrop */}
-        <div className="absolute inset-0 bg-[#07182f]/56 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-[#0B1220]/56 backdrop-blur-sm" />
 
         {/* card */}
         <div
-          className="anim-modal relative flex min-w-[300px] max-w-sm flex-col items-center gap-6 rounded-[28px] border border-[#dbe8f4] bg-white p-10 dark:border-[#22364d] dark:bg-[#121e2f] mx-4"
+          className="anim-modal relative mx-4 flex min-w-[300px] max-w-sm flex-col items-center gap-6 rounded-[28px] border border-[#dbe8f4] bg-white p-10 dark:border-[#233554] dark:bg-[#111A2E]"
           style={{ boxShadow: `0 24px 52px rgba(2,10,20,.34), 0 0 0 1px rgba(255,255,255,.03), 0 0 36px ${GLOW[status]}` }}
         >
           {/* top accent bar */}
@@ -107,22 +107,22 @@ export default function StatusAnimation({ status, message, onComplete }: StatusA
 
             {status === 'loading' && (
               <>
-                <Loader2 className="relative z-10 h-20 w-20 animate-spin text-[#0b4edb] dark:text-[#86a4dc]" />
-                <div className="glow-pulse absolute h-20 w-20 rounded-full bg-[#0b4edb]/10 blur-lg dark:bg-[#86a4dc]/12" />
+                <Loader2 className="relative z-10 h-20 w-20 animate-spin text-[#0b4edb] dark:text-[#8EE3FF]" />
+                <div className="glow-pulse absolute h-20 w-20 rounded-full bg-[#0b4edb]/10 blur-lg dark:bg-[#8EE3FF]/12" />
               </>
             )}
 
             {status === 'success' && (
               <div className="anim-bounce relative z-10">
-                <CheckCircle2 className="h-20 w-20 text-[#15835b] dark:text-[#79bc9f]" />
-                <div className="glow-pulse absolute inset-0 h-20 w-20 rounded-full bg-[#15835b]/12 blur-lg dark:bg-[#79bc9f]/12" />
+                <CheckCircle2 className="h-20 w-20 text-[#15835b] dark:text-[#7EE2A8]" />
+                <div className="glow-pulse absolute inset-0 h-20 w-20 rounded-full bg-[#15835b]/12 blur-lg dark:bg-[#7EE2A8]/12" />
               </div>
             )}
 
             {status === 'error' && (
               <div className="anim-shake relative z-10">
-                <XCircle className="h-20 w-20 text-[#c44747] dark:text-[#d698a3]" />
-                <div className="glow-pulse absolute inset-0 h-20 w-20 rounded-full bg-[#c44747]/12 blur-lg dark:bg-[#d698a3]/12" />
+                <XCircle className="h-20 w-20 text-[#c44747] dark:text-[#FF9C9C]" />
+                <div className="glow-pulse absolute inset-0 h-20 w-20 rounded-full bg-[#c44747]/12 blur-lg dark:bg-[#FF9C9C]/12" />
               </div>
             )}
           </div>
@@ -130,9 +130,9 @@ export default function StatusAnimation({ status, message, onComplete }: StatusA
           {/* message */}
           {message && (
             <p className={`text-base font-semibold text-center max-w-xs leading-relaxed ${
-              status === 'loading' ? 'text-[#334a62] dark:text-[#dce8f7]'
-              : status === 'success' ? 'text-[#15835b] dark:text-[#79bc9f]'
-              : 'text-[#c44747] dark:text-[#d698a3]'
+              status === 'loading' ? 'text-[#334a62] dark:text-[#B8C4D9]'
+              : status === 'success' ? 'text-[#15835b] dark:text-[#7EE2A8]'
+              : 'text-[#c44747] dark:text-[#FF9C9C]'
             }`}>
               {message}
             </p>
@@ -141,9 +141,9 @@ export default function StatusAnimation({ status, message, onComplete }: StatusA
           {/* loading dots */}
           {status === 'loading' && (
             <div className="flex gap-2.5">
-              <div className="dot-0 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#86a4dc] dark:shadow-[#86a4dc]/16" />
-              <div className="dot-1 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#86a4dc] dark:shadow-[#86a4dc]/16" />
-              <div className="dot-2 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#86a4dc] dark:shadow-[#86a4dc]/16" />
+              <div className="dot-0 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#4D8DFF] dark:shadow-[#4D8DFF]/16" />
+              <div className="dot-1 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#4D8DFF] dark:shadow-[#4D8DFF]/16" />
+              <div className="dot-2 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#4D8DFF] dark:shadow-[#4D8DFF]/16" />
             </div>
           )}
         </div>

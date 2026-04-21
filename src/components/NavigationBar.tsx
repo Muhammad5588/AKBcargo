@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BarChart3, UserCheck,
-  Sun, Moon, Monitor, LayoutDashboard
+  Sun, Moon, Monitor
 } from 'lucide-react';
+import { AKBLogo } from '@/components/user_panel/AKBLogo';
 import { cn } from '@/lib/utils';
 
 interface NavigationBarProps {
@@ -211,6 +212,19 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
   const forceLight = !isScrolled && (isProfilePage || isDark);
   const HIDDEN_PAGES = ['login', 'register', 'user-profile', 'user-home', 'user-home', 'user-reports', 'user-history'];
   const is_show_statistics = !HIDDEN_PAGES.includes(currentPage ?? '');
+  const logoMarkClassName = forceLight
+    ? isProfilePage
+      ? "border-white/20 bg-white/10 shadow-[0_6px_14px_rgba(15,23,42,0.16)] backdrop-blur-sm md:border-[#cfe0f1] md:bg-white dark:border-white/20 dark:bg-white/10"
+      : "border-white/20 bg-white/10 shadow-[0_6px_14px_rgba(15,23,42,0.16)] backdrop-blur-sm"
+    : "border-[#cfe0f1] bg-white shadow-[0_6px_14px_rgba(15,23,42,0.16)] dark:border-white/10 dark:bg-white/10";
+  const logoTextClassName = cn(
+    "hidden min-[360px]:block",
+    forceLight
+      ? isProfilePage
+        ? "[&_p:first-child]:text-white [&_p:last-child]:text-white/70 md:[&_p:first-child]:text-[#0b2b53] md:[&_p:last-child]:text-[#0b84e5] dark:[&_p:first-child]:text-white dark:[&_p:last-child]:text-white/70"
+        : "[&_p:first-child]:text-white [&_p:last-child]:text-white/70"
+      : "[&_p:first-child]:text-[#0b2b53] [&_p:last-child]:text-[#0b84e5] dark:[&_p:first-child]:text-white dark:[&_p:last-child]:text-white/70"
+  );
 
   // ─── Inline style for scrolled dark bg ──────────────────────────────────
   // rgba(13,10,4,0.78) — Dashboard #0d0a04 bilan bir xil tona, biroz transparent
@@ -241,30 +255,10 @@ export default function NavigationBar({ onStatisticsClick, onVerificationClick, 
 
           {/* ── LOGO ── */}
           <div className="flex items-center gap-2.5 cursor-pointer shrink-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center
-              bg-zinc-900 text-white dark:bg-white dark:text-zinc-900
-              shadow-[0_6px_14px_rgba(15,23,42,0.16)] shrink-0">
-              <LayoutDashboard className="w-5 h-5 sm:w-6 sm:h-6" />
-            </div>
-
-            <div className="flex flex-col min-w-0">
-              <span className={cn(
-                "font-bold leading-tight tracking-tight transition-colors duration-300 truncate text-base sm:text-lg",
-                forceLight
-                  ? `text-white ${isProfilePage ? "md:text-black dark:text-white" : "md:text-white dark:text-white"}`
-                  : "text-zinc-900 dark:text-white"
-              )}>
-                Mandarin Cargo
-              </span>
-              <span className={cn(
-                "font-bold uppercase tracking-widest transition-colors duration-300 truncate text-[8px] sm:text-[10px]",
-                forceLight
-                  ? "text-white/70 md:text-black/70 dark:text-white/70"
-                  : "text-zinc-500 dark:text-zinc-400"
-              )}>
-                Foydalanuvchi tizimi
-              </span>
-            </div>
+            <AKBLogo
+              markClassName={logoMarkClassName}
+              textClassName={logoTextClassName}
+            />
           </div>
 
           {/* ── RIGHT SIDE ── */}

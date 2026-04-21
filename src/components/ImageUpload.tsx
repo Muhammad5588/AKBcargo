@@ -88,11 +88,11 @@ export default function ImageUpload({
       <div className="space-y-2">
         <label className={[
           'flex items-center gap-1.5 text-sm font-semibold',
-          isAkb ? 'text-[#0b2b53] dark:text-[#dce8f7]' : 'text-gray-700 dark:text-gray-200',
+          isAkb ? 'text-[#0b2b53] dark:text-[#B8C4D9]' : 'text-gray-700 dark:text-gray-200',
         ].join(' ')}>
           <ImageIcon className={[
             'h-3.5 w-3.5',
-            isAkb ? 'text-[#0b84e5] dark:text-[#92abd0]' : 'text-orange-500',
+            isAkb ? 'text-[#0b84e5] dark:text-[#8FA0BC]' : 'text-orange-500',
           ].join(' ')} />
           {label}
         </label>
@@ -101,20 +101,20 @@ export default function ImageUpload({
           <div className={[
             'relative h-[180px] overflow-hidden border-2 border-dashed',
             isAkb
-              ? 'rounded-lg border-[#cfe0f1] bg-white dark:border-[#2c4762] dark:bg-[#121e2f]'
+              ? 'rounded-lg border-[#cfe0f1] bg-white dark:border-[#2B4166] dark:bg-[#111A2E]'
               : 'rounded-2xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5',
           ].join(' ')}>
             <div
               className={[
                 'absolute inset-0 bg-gradient-to-r from-transparent to-transparent',
-                isAkb ? 'via-[#eef7ff] dark:via-[#182738]' : 'via-orange-100/50 dark:via-orange-500/8',
+                isAkb ? 'via-[#eef7ff] dark:via-[#16233D]' : 'via-orange-100/50 dark:via-orange-500/8',
               ].join(' ')}
               style={{ animation: 'shimmer 1.5s ease-in-out infinite' }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className={[
                 'h-10 w-10 animate-spin rounded-full border-4',
-                isAkb ? 'border-[#cfe0f1] border-t-[#0b4edb] dark:border-[#26364a] dark:border-t-[#5b82d9]' : 'border-orange-200 border-t-orange-500',
+                isAkb ? 'border-[#cfe0f1] border-t-[#0b4edb] dark:border-[#2B4166] dark:border-t-[#39C6FF]' : 'border-orange-200 border-t-orange-500',
               ].join(' ')} />
             </div>
           </div>
@@ -134,10 +134,10 @@ export default function ImageUpload({
                 ? 'border-gray-200 hover:border-orange-400 hover:bg-orange-50/40 dark:border-white/10 dark:hover:border-orange-500/40 dark:hover:bg-orange-500/5'
                 : '',
               isDragging && isAkb
-                ? 'drag-active border-[#0b84e5] bg-[#eef7ff] shadow-[0_8px_22px_rgba(11,78,219,0.12)] dark:border-[#536c90] dark:bg-[#182636] dark:shadow-[0_12px_24px_rgba(2,10,20,0.22)]'
+                ? 'drag-active border-[#0b84e5] bg-[#eef7ff] shadow-[0_8px_22px_rgba(11,78,219,0.12)] dark:border-[#39C6FF] dark:bg-[#16233D] dark:shadow-[0_12px_24px_rgba(2,10,20,0.22)]'
                 : '',
               !isDragging && isAkb
-                ? 'border-[#cfe0f1] bg-white hover:border-[#0b84e5] hover:bg-[#f8fbfe] dark:border-[#26364a] dark:bg-[#121b29] dark:hover:border-[#36485d] dark:hover:bg-[#172230]'
+                ? 'border-[#cfe0f1] bg-white hover:border-[#0b84e5] hover:bg-[#f8fbfe] dark:border-[#2B4166] dark:bg-[#111A2E] dark:hover:border-[#39C6FF] dark:hover:bg-[#16233D]'
                 : '',
               error ? (isAkb ? 'border-red-400' : 'border-red-400 dark:border-red-500/40') : '',
             ].join(' ')}
@@ -145,7 +145,7 @@ export default function ImageUpload({
             {isDragging && (
               <div className={[
                 'pointer-events-none absolute inset-0',
-                isAkb ? 'rounded-lg bg-[#0b84e5]/10 dark:bg-[#6f8fcf]/10' : 'rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10',
+                isAkb ? 'rounded-lg bg-[#0b84e5]/10 dark:bg-[#39C6FF]/10' : 'rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10',
               ].join(' ')} />
             )}
 
@@ -159,15 +159,15 @@ export default function ImageUpload({
                 ? 'bg-orange-100 group-hover:bg-orange-200 dark:bg-orange-500/15 dark:group-hover:bg-orange-500/25'
                 : '',
               isDragging && isAkb
-                ? 'scale-105 bg-[#0b4edb] shadow-[0_8px_18px_rgba(11,78,219,0.22)] dark:bg-[#5b82d9] dark:shadow-[0_10px_22px_rgba(2,10,20,0.24)]'
+                ? 'scale-105 bg-[#0b4edb] shadow-[0_8px_18px_rgba(11,78,219,0.22)] dark:bg-[#2F6BFF] dark:shadow-[0_10px_22px_rgba(2,10,20,0.24)]'
                 : '',
               !isDragging && isAkb
-                ? 'bg-[#eef7ff] group-hover:bg-[#e2f2ff] dark:bg-[#172230] dark:group-hover:bg-[#1b2838]'
+                ? 'bg-[#eef7ff] group-hover:bg-[#e2f2ff] dark:bg-[#16233D] dark:group-hover:bg-[#1B2A47]'
                 : '',
             ].join(' ')}>
               <Upload className={[
                 'h-7 w-7 transition-colors duration-300',
-                isDragging ? 'text-white upload-icon' : isAkb ? 'text-[#0b4edb] dark:text-[#92abd0]' : 'text-orange-500',
+                isDragging ? 'text-white upload-icon' : isAkb ? 'text-[#0b4edb] dark:text-[#B8C4D9]' : 'text-orange-500',
               ].join(' ')} />
             </div>
 
@@ -175,14 +175,14 @@ export default function ImageUpload({
               <p className={[
                 'text-sm font-semibold transition-colors duration-200',
                 isAkb
-                  ? 'text-[#0b2b53] group-hover:text-[#0b4edb] dark:text-[#dce8f7] dark:group-hover:text-[#e6edf7]'
+                  ? 'text-[#0b2b53] group-hover:text-[#0b4edb] dark:text-[#F3F7FF] dark:group-hover:text-[#F3F7FF]'
                   : 'text-gray-600 group-hover:text-orange-600 dark:text-gray-300 dark:group-hover:text-orange-400',
               ].join(' ')}>
                 {t('form.dragDropImage')}
               </p>
               <p className={[
                 'mt-1 font-mono text-xs',
-                isAkb ? 'text-[#63758a] dark:text-[#9ab0c5]' : 'text-gray-400 dark:text-gray-500',
+                isAkb ? 'text-[#63758a] dark:text-[#8FA0BC]' : 'text-gray-400 dark:text-gray-500',
               ].join(' ')}>
                 {t('form.supportedFormats')}
               </p>
@@ -200,7 +200,7 @@ export default function ImageUpload({
           <div className={[
             'group relative h-[180px] overflow-hidden border-2 transition-all duration-300',
             isAkb
-              ? 'rounded-lg border-[#cfe0f1] shadow-[0_8px_22px_rgba(15,47,87,0.06)] hover:border-[#0b84e5] dark:border-[#26364a] dark:shadow-[0_14px_28px_rgba(2,10,20,0.22)] dark:hover:border-[#36485d]'
+              ? 'rounded-lg border-[#cfe0f1] shadow-[0_8px_22px_rgba(15,47,87,0.06)] hover:border-[#0b84e5] dark:border-[#2B4166] dark:shadow-[0_14px_28px_rgba(2,10,20,0.22)] dark:hover:border-[#39C6FF]'
               : 'rounded-2xl border-orange-200 shadow-md hover:border-orange-400 hover:shadow-xl hover:shadow-orange-500/15 dark:border-orange-500/30 dark:hover:border-orange-500/60',
           ].join(' ')}>
             <img src={preview} alt={label} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -224,7 +224,7 @@ export default function ImageUpload({
 
             <div className={[
               'absolute right-2 top-2 flex translate-y-1 items-center gap-1 px-2.5 py-1 text-xs font-bold text-white opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100',
-              isAkb ? 'rounded-lg bg-[#0b4edb] dark:bg-[#5b82d9]' : 'rounded-full bg-green-500',
+              isAkb ? 'rounded-lg bg-[#0b4edb] dark:bg-[#2F6BFF]' : 'rounded-full bg-green-500',
             ].join(' ')}>
               <span>{isAkb ? 'OK' : '\u2713'}</span>
             </div>

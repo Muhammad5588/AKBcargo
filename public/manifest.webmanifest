@@ -1,0 +1,25 @@
+{
+  "name": "AKB Cargo",
+  "short_name": "AKB Cargo",
+  "description": "AKB Cargo shaxsiy kabineti va buyurtmalar boshqaruvi.",
+  "lang": "uz",
+  "start_url": "/user/home",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f8fc",
+  "theme_color": "#0b4edb",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

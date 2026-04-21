@@ -567,6 +567,17 @@
       "retry": "Повторить попытку"
     },
     "editProfile": "Редактировать профиль",
+    "install": {
+      "action": "Добавить на главный экран",
+      "browserHint": "Появится окно установки в браузере.",
+      "telegramHint": "Подтвердите добавление ярлыка в окне Telegram.",
+      "manualHint": "Откройте меню браузера и выберите install или Add to Home Screen.",
+      "manualTitle": "Добавить на главный экран",
+      "manualDescription": "Откройте меню браузера и выберите Install App, Add to Home Screen или похожий пункт.",
+      "telegramStarted": "Подтвердите действие в Telegram",
+      "telegramStartedDescription": "Окно добавления ярлыка откроется внутри Telegram.",
+      "error": "Не удалось добавить приложение на главный экран. Попробуйте ещё раз."
+    },
     "logout": "Выйти из системы",
     "version": "Версия 2.0 - AKB Cargo",
     "logoutConfirm": {

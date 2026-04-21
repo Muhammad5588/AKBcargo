@@ -7,6 +7,23 @@ import App from './App.tsx'
 // import eruda from 'eruda';
 
 // eruda.init();
+const canRegisterServiceWorker =
+  typeof window !== 'undefined' &&
+  'serviceWorker' in navigator &&
+  (import.meta.env.PROD || window.location.hostname === 'localhost');
+
+if (canRegisterServiceWorker) {
+  window.addEventListener(
+    'load',
+    () => {
+      navigator.serviceWorker.register('/sw.js').catch((error) => {
+        console.error('Service worker registration failed', error);
+      });
+    },
+    { once: true },
+  );
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -5,7 +5,7 @@ import { PersonalInfo } from '@/components/profile/PersonalInfo';
 import { SessionHistory } from '@/components/profile/SessionHistory';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { LogOut, RefreshCw, UserCog, FileImage, ShieldCheck, X } from 'lucide-react';
+import { LogOut, RefreshCw, UserCog, FileImage, ShieldCheck, X, Download } from 'lucide-react';
 import { useState, useCallback, lazy, Suspense, memo, useTransition, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +14,8 @@ import { UniqueBackground } from '@/components/ui/UniqueBackground';
 import { WalletModal } from '@/components/wallet/WalletModal';
 import { CardsManagerModal } from '@/components/wallet/CardsManagerModal';
 import { ExtraPassportsModal } from '@/components/profile/ExtraPassportsModal';
+import { toast } from 'sonner';
+import { useInstallPrompt } from '@/hooks/useInstallPrompt';
 
 // Lazy load the heavy modal
 const EditProfileModal = lazy(() => import('@/components/profile/EditProfileModal').then(module => ({ default: module.EditProfileModal })));
@@ -164,6 +166,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
    const [isPassportsModalOpen, setIsPassportsModalOpen] = useState(false);
    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
    const [isModalLoading, startTransition] = useTransition();
+   const { canInstall, installMethod, handleInstall } = useInstallPrompt();
 
    const handleLogout = useCallback(() => {
       setIsLogoutModalOpen(false);
@@ -183,6 +186,58 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
    const handleRefetch = useCallback(() => {
       refetch();
    }, [refetch]);
+
+   const handleInstallClick = useCallback(async () => {
+      if (installMethod === 'manual') {
+         toast(t('profile.install.manualTitle', "Bosh ekranga qo'shish"), {
+            description: t(
+               'profile.install.manualDescription',
+               "Brauzer menyusidan Install App, Add to Home Screen yoki shunga o'xshash bandni tanlang.",
+            ),
+         });
+         return;
+      }
+
+      try {
+         await handleInstall();
+
+         if (installMethod === 'telegram') {
+            toast(t('profile.install.telegramStarted', 'Telegram oynasida tasdiqlang'), {
+               description: t(
+                  'profile.install.telegramStartedDescription',
+                  "Shortcut qo'shish oynasi Telegram ichida ochiladi.",
+               ),
+            });
+         }
+      } catch {
+         toast.error(
+            t('profile.install.error', "Ilovani bosh ekranga qo'shib bo'lmadi. Qayta urinib ko'ring."),
+         );
+      }
+   }, [handleInstall, installMethod, t]);
+
+   const installHint =
+      installMethod === 'telegram'
+         ? t('profile.install.telegramHint', "Telegram oynasida shortcut qo'shishni tasdiqlang.")
+         : installMethod === 'manual'
+            ? t('profile.install.manualHint', "Brauzer menyusidan install yoki Add to Home Screen ni tanlang.")
+            : t('profile.install.browserHint', 'Brauzer install oynasi chiqadi.');
+
+   const installAction = canInstall ? (
+      <div className="space-y-2">
+         <Button
+            variant="outline"
+            className="w-full h-14 rounded-lg text-lg font-medium shadow-sm border-[#dbe8f4] bg-white hover:bg-[#eef6ff] active:scale-95 transition-all text-[#0b4edb]"
+            onClick={handleInstallClick}
+         >
+            <Download className="mr-2 h-5 w-5" />
+            {t('profile.install.action', "Bosh ekranga qo'shish")}
+         </Button>
+         <p className="text-center text-xs text-[#7d91a8] px-2">
+            {installHint}
+         </p>
+      </div>
+   ) : null;
 
    if (isLoading) {
       return <ProfileSkeleton />;
@@ -259,6 +314,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                            <PassportImages images={user.passport_images} />
 
                            <div className="space-y-3">
+                              {installAction}
                               <Button
                                  variant="outline"
                                  className="w-full h-14 rounded-lg text-lg font-medium shadow-sm border-[#dbe8f4] bg-white hover:bg-[#eef6ff] active:scale-95 transition-all text-[#0b4edb]"
@@ -307,6 +363,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
 
                            {/* Mobile Only: Buttons */}
                            <div className="md:hidden max-w-md mx-auto space-y-3 pt-4 px-4">
+                              {installAction}
                               <Button
                                  variant="outline"
                                  className="w-full h-14 rounded-lg text-lg font-medium shadow-sm border-[#dbe8f4] bg-white hover:bg-[#eef6ff] active:scale-95 transition-all text-[#0b4edb]"

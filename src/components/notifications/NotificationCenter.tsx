@@ -241,7 +241,11 @@ const DetailDialog = ({
 };
 
 // --- Main Component ---
-export default function NotificationCenter() {
+export default function NotificationCenter({
+    triggerClassName,
+}: {
+    triggerClassName?: string;
+} = {}) {
     const { t, i18n } = useTranslation();
     const queryClient = useQueryClient();
 
@@ -545,7 +549,8 @@ export default function NotificationCenter() {
                             "p-2 rounded-xl transition-all duration-300",
                             isOpen
                                 ? "bg-orange-100/50 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400"
-                                : "hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400"
+                                : "hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400",
+                            triggerClassName,
                         )}>
                             <Bell
                                 className={cn(

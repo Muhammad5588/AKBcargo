@@ -80,37 +80,37 @@
 }
 
 .dark {
-  --background: oklch(0.18 0.008 264.5);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #0B1220;
+  --foreground: #F3F7FF;
+  --card: #111A2E;
+  --card-foreground: #F3F7FF;
+  --popover: #111A2E;
+  --popover-foreground: #F3F7FF;
+  --primary: #2F6BFF;
+  --primary-foreground: #F3F7FF;
+  --secondary: #16233D;
+  --secondary-foreground: #B8C4D9;
+  --muted: #16233D;
+  --muted-foreground: #8FA0BC;
+  --accent: #39C6FF;
+  --accent-foreground: #0B1220;
+  --destructive: #FF9C9C;
+  --border: rgba(255,255,255,0.08);
+  --input: #2B4166;
+  --ring: #39C6FF;
+  --chart-1: #2F6BFF;
+  --chart-2: #7EE2A8;
+  --chart-3: #FFD08A;
+  --chart-4: #4D8DFF;
+  --chart-5: #FF9C9C;
+  --sidebar: #0F1728;
+  --sidebar-foreground: #F3F7FF;
+  --sidebar-primary: #2F6BFF;
+  --sidebar-primary-foreground: #F3F7FF;
+  --sidebar-accent: #16233D;
+  --sidebar-accent-foreground: #B8C4D9;
+  --sidebar-border: #233554;
+  --sidebar-ring: #39C6FF;
 }
 
 html.customer-ui {
@@ -145,32 +145,64 @@ html.customer-ui {
 }
 
 html.customer-ui.dark {
-  --akb-page-bg: #0c1521;
-  --akb-page-top: #101927;
-  --akb-page-bottom: #0a111b;
-  --akb-surface: #121b29;
-  --akb-surface-rgb: 18, 27, 41;
-  --akb-surface-alt: #172230;
-  --akb-surface-muted: #101923;
-  --akb-border: #1f2d3d;
-  --akb-border-strong: #2a394b;
-  --akb-border-accent: #30455c;
-  --akb-text: #edf3fb;
-  --akb-heading: #f8fbff;
-  --akb-muted: #97a8bc;
-  --akb-muted-2: #77889d;
-  --akb-primary: #5b82d9;
-  --akb-primary-strong: #4b74c5;
-  --akb-accent: #67b7d3;
-  --akb-accent-strong: #7ac3df;
-  --akb-primary-soft: #172536;
-  --akb-info-soft: #142430;
-  --akb-success: #79bc9f;
-  --akb-success-soft: #14241d;
-  --akb-success-border: #244036;
-  --akb-danger: #d698a3;
-  --akb-danger-soft: #27171d;
-  --akb-danger-border: #49303a;
+  --bg-app: #0B1220;
+  --bg-surface: #111A2E;
+  --bg-surface-2: #16233D;
+  --bg-elevated: #1B2A47;
+  --border-primary: #233554;
+  --border-secondary: #2B4166;
+  --border-soft: rgba(255,255,255,0.08);
+  --text-primary: #F3F7FF;
+  --text-secondary: #B8C4D9;
+  --text-muted: #8FA0BC;
+  --text-disabled: #667792;
+  --brand-primary: #2F6BFF;
+  --brand-primary-hover: #245AE0;
+  --brand-secondary: #4D8DFF;
+  --brand-accent: #39C6FF;
+  --input-bg: #111A2E;
+  --input-border: #2B4166;
+  --input-border-focus: #39C6FF;
+  --input-text: #F3F7FF;
+  --input-placeholder: #7E90AD;
+  --card-bg: #111A2E;
+  --card-bg-hover: #16233D;
+  --card-bg-active: #1B2A47;
+  --card-border: #233554;
+  --success-text: #7EE2A8;
+  --danger-text: #FF9C9C;
+  --warning-text: #FFD08A;
+  --info-text: #8EE3FF;
+  --nav-bg: #0F1728;
+  --nav-item: #7F91AE;
+  --nav-item-active: #2F6BFF;
+
+  --akb-page-bg: var(--bg-app);
+  --akb-page-top: var(--bg-app);
+  --akb-page-bottom: var(--bg-surface);
+  --akb-surface: var(--card-bg);
+  --akb-surface-rgb: 17, 26, 46;
+  --akb-surface-alt: var(--bg-surface-2);
+  --akb-surface-muted: var(--bg-elevated);
+  --akb-border: var(--border-primary);
+  --akb-border-strong: var(--border-secondary);
+  --akb-border-accent: var(--border-secondary);
+  --akb-text: var(--text-primary);
+  --akb-heading: var(--text-primary);
+  --akb-muted: var(--text-secondary);
+  --akb-muted-2: var(--text-muted);
+  --akb-primary: var(--brand-primary);
+  --akb-primary-strong: var(--brand-primary-hover);
+  --akb-accent: var(--brand-accent);
+  --akb-accent-strong: var(--brand-secondary);
+  --akb-primary-soft: var(--card-bg-hover);
+  --akb-info-soft: rgba(57, 198, 255, 0.10);
+  --akb-success: var(--success-text);
+  --akb-success-soft: rgba(126, 226, 168, 0.10);
+  --akb-success-border: rgba(126, 226, 168, 0.22);
+  --akb-danger: var(--danger-text);
+  --akb-danger-soft: rgba(255, 156, 156, 0.10);
+  --akb-danger-border: rgba(255, 156, 156, 0.22);
   --akb-shadow-soft: 0 14px 32px rgba(2, 10, 20, 0.22);
   --akb-shadow-strong: 0 22px 52px rgba(2, 10, 20, 0.34);
 }
@@ -242,7 +274,7 @@ html.customer-ui.dark {
   html.customer-ui.dark [class~="bg-[#dbe8f4]"],
   html.customer-ui.dark [class~="bg-[#e8eff6]"],
   html.customer-ui.dark [class~="bg-[#edf3f8]"],
-  html.customer-ui.dark [class~="bg-[#cfe0f1]"] { background-color: #203449 !important; }
+  html.customer-ui.dark [class~="bg-[#cfe0f1]"] { background-color: var(--bg-elevated) !important; }
   html.customer-ui.dark [class~="bg-[#0b4edb]"] { background-color: var(--akb-primary) !important; }
   html.customer-ui.dark [class~="bg-[#073fba]"] { background-color: var(--akb-primary-strong) !important; }
   html.customer-ui.dark [class~="bg-[#37c5f3]"] { background-color: var(--akb-accent) !important; }
@@ -255,7 +287,7 @@ html.customer-ui.dark {
   html.customer-ui.dark [class~="text-[#9fb7cc]"] { color: var(--akb-muted-2) !important; }
   html.customer-ui.dark [class~="text-[#0b4edb]"] { color: var(--akb-primary) !important; }
   html.customer-ui.dark [class~="text-[#0b84e5]"],
-  html.customer-ui.dark [class~="text-[#0784a6]"] { color: var(--akb-accent) !important; }
+  html.customer-ui.dark [class~="text-[#0784a6]"] { color: var(--info-text) !important; }
   html.customer-ui.dark [class~="text-[#15835b]"] { color: var(--akb-success) !important; }
   html.customer-ui.dark [class~="text-[#c44747]"] { color: var(--akb-danger) !important; }
 

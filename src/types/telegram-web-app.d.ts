@@ -78,6 +78,9 @@ interface TelegramWebApp {
   readTextFromClipboard(callback?: (text: string) => void): void;
   requestWriteAccess(callback?: (granted: boolean) => void): void;
   requestContact(callback?: (granted: boolean) => void): void;
+  isVersionAtLeast(version: string): boolean;
+  addToHomeScreen(): void;
+  checkHomeScreenStatus(callback?: (status: TelegramHomeScreenStatus) => void): void;
 
   // Main button
   MainButton: {
@@ -146,3 +149,5 @@ interface Window {
     WebApp: TelegramWebApp;
   };
 }
+
+type TelegramHomeScreenStatus = 'unsupported' | 'unknown' | 'added' | 'missed';

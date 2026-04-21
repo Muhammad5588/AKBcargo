@@ -567,6 +567,17 @@
       "retry": "Qayta urinish"
     },
     "editProfile": "Profilni Tahrirlash",
+    "install": {
+      "action": "Bosh ekranga qo'shish",
+      "browserHint": "Brauzer install oynasi chiqadi.",
+      "telegramHint": "Telegram oynasida shortcut qo'shishni tasdiqlang.",
+      "manualHint": "Brauzer menyusidan install yoki Add to Home Screen ni tanlang.",
+      "manualTitle": "Bosh ekranga qo'shish",
+      "manualDescription": "Brauzer menyusidan Install App, Add to Home Screen yoki shunga o'xshash bandni tanlang.",
+      "telegramStarted": "Telegram oynasida tasdiqlang",
+      "telegramStartedDescription": "Shortcut qo'shish oynasi Telegram ichida ochiladi.",
+      "error": "Ilovani bosh ekranga qo'shib bo'lmadi. Qayta urinib ko'ring."
+    },
     "logout": "Tizimdan Chiqish",
     "version": "Versiya 2.0 - AKB Cargo",
     "logoutConfirm": {

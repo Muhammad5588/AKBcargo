@@ -38,18 +38,18 @@ export const FloatingNavbar = <T,>({
     };
 
     const containerClasses = cn(
-        "grid w-full max-w-[430px] grid-cols-4 gap-1 rounded-lg border border-[#d7e5f2] bg-white p-1.5 shadow-[0_12px_28px_rgba(10,35,70,0.12)] pointer-events-auto backdrop-blur-md dark:border-[#1f2d3d] dark:bg-[#111b28] dark:shadow-[0_18px_36px_rgba(2,10,20,0.28)]",
+        "grid w-full max-w-[430px] grid-cols-4 gap-1 rounded-lg border border-[#d7e5f2] bg-white p-1.5 shadow-[0_12px_28px_rgba(10,35,70,0.12)] pointer-events-auto backdrop-blur-md dark:border-[#233554] dark:bg-[#0F1728] dark:shadow-[0_18px_36px_rgba(2,10,20,0.28)]",
         "md:max-w-[460px]"
     );
 
     const buttonBaseClasses = "relative flex h-14 min-w-0 flex-col items-center justify-center gap-1 overflow-hidden rounded-md transition-colors duration-200";
 
     const buttonInactiveClasses = cn(
-        "text-[#63758a] hover:bg-[#eef7ff] hover:text-[#0b4edb] dark:text-[#91a3b8] dark:hover:bg-[#182433] dark:hover:text-[#e6edf7]"
+        "text-[#63758a] hover:bg-[#eef7ff] hover:text-[#0b4edb] dark:text-[#7F91AE] dark:hover:bg-[#16233D] dark:hover:text-[#B8C4D9]"
     );
 
     const buttonActiveClasses = cn(
-        "bg-[#0b4edb] text-white shadow-[0_8px_16px_rgba(11,78,219,0.18)] dark:bg-[#5b82d9] dark:shadow-[0_12px_24px_rgba(2,10,20,0.28)]"
+        "bg-[#0b4edb] text-white shadow-[0_8px_16px_rgba(11,78,219,0.18)] dark:bg-[#2F6BFF] dark:shadow-[0_12px_24px_rgba(2,10,20,0.28)]"
     );
 
     const activePillClasses = "absolute inset-x-4 bottom-1 h-0.5 rounded-full bg-white/80";

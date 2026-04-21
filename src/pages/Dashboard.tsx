@@ -20,7 +20,6 @@ import {
     MessageSquare,
     ListOrdered,
     Calculator, // Calculator bu yerda import qilingan
-    Search,
     Package,
 } from "lucide-react";
 import TrackCodeTab from "./dashboard/TrackCodeTab";
@@ -32,11 +31,9 @@ import {
 } from "@/api/services/carousel";
 import CarouselMediaModal from "@/components/carousel/CarouselMediaModal";
 import { toast } from "sonner";
-import NotificationCenter from "@/components/notifications/NotificationCenter";
 import { ActionButton, type ActionItemData } from "@/components/user_page/ActionButtons";
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from "framer-motion";
-import { AKBLogo } from "@/components/user_panel/AKBLogo";
 import { useProfile } from "@/hooks/useProfile";
 
 interface CarouselItemData {
@@ -78,7 +75,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         type: "feature",
         titleKey: "dashboard.carousel.prohibited.title",
         subKey: "dashboard.carousel.prohibited.sub",
-        gradient: "from-[#fff5f5] to-[#eef7ff]",
+        gradient: "from-[#ef4444] via-[#f97316] to-[#fb7185]",
         bgIcon: <ShieldAlert className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
         mainIcon: <ShieldOff style={{ width: 32, height: 32 }} />,
     },
@@ -87,7 +84,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         type: "feature",
         titleKey: "dashboard.carousel.id.title",
         subKey: "dashboard.carousel.id.sub",
-        gradient: "from-[#f8fbfe] to-[#eef7ff]",
+        gradient: "from-[#4338ca] via-[#2563eb] to-[#06b6d4]",
         bgIcon: <IdCard className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
         mainIcon: <IdCard style={{ width: 32, height: 32 }} />,
     },
@@ -96,7 +93,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         type: "feature",
         titleKey: "dashboard.carousel.delivery.title",
         subKey: "dashboard.carousel.delivery.sub",
-        gradient: "from-[#eafaff] to-[#eef7ff]",
+        gradient: "from-[#0f766e] via-[#0891b2] to-[#1d4ed8]",
         bgIcon: <Rocket className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
         mainIcon: <Plane style={{ width: 32, height: 32 }} />,
     },
@@ -219,6 +216,7 @@ const CarouselCard = memo(({ item, onView }: { item: CarouselItemData; onView?: 
     const { t } = useTranslation();
     const cardRef = useRef<HTMLDivElement>(null);
     const isAd = item.type === "ad";
+    const hasFeatureGradient = item.type === "feature" && (!!item.gradient || !!item.gradientStyle);
     const title = item.titleKey ? t(item.titleKey) : item.title;
     const sub = item.subKey ? t(item.subKey) : item.sub;
 
@@ -305,12 +303,12 @@ const CarouselCard = memo(({ item, onView }: { item: CarouselItemData; onView?: 
 return (
     <div
         ref={cardRef}
-        className={`
-            h-full w-full rounded-lg relative overflow-hidden
-            cursor-pointer transition-all duration-300
-            border border-[#dbe8f4] bg-white shadow-[0_10px_24px_rgba(15,47,87,0.08)]
-            hover:border-[#0b84e5]
-        `}
+        className={`h-full w-full rounded-lg relative overflow-hidden cursor-pointer transition-all duration-300 ${
+            hasFeatureGradient
+                ? `border border-white/15 shadow-[0_16px_34px_rgba(15,47,87,0.18)] ${item.gradient ? `bg-gradient-to-br ${item.gradient}` : ""}`
+                : "border border-[#dbe8f4] bg-white shadow-[0_10px_24px_rgba(15,47,87,0.08)] hover:border-[#0b84e5]"
+        }`}
+        style={item.gradientStyle ? { background: item.gradientStyle } : undefined}
     >
         {/* Background media — faqat mediaUrl bo'lib, mainIcon bo'lmaganda */}
         {item.mediaUrl && !item.mainIcon && (
@@ -331,17 +329,33 @@ return (
         )}
 
         {/* Content */}
-        <div className="absolute inset-x-0 top-0 h-1 bg-[#0b4edb]" />
-        <div className="absolute right-4 top-4 h-16 w-16 rounded-lg border border-[#dbe8f4] bg-[#f8fbfe]" />
+        <div className={`absolute inset-x-0 top-0 h-1 ${hasFeatureGradient ? "bg-white/70" : "bg-[#0b4edb]"}`} />
+        {hasFeatureGradient ? (
+            <>
+                <div className="absolute -right-8 top-5 h-24 w-24 rounded-full bg-white/20 blur-2xl" />
+                <div className="absolute bottom-0 left-0 h-24 w-24 rounded-full bg-black/10 blur-2xl" />
+                {item.bgIcon && <div className="absolute inset-0">{item.bgIcon}</div>}
+            </>
+        ) : (
+            <div className="absolute right-4 top-4 h-16 w-16 rounded-lg border border-[#dbe8f4] bg-[#f8fbfe]" />
+        )}
         <div className="h-full flex flex-col justify-between relative z-10 p-5 sm:p-6">
             {/* Top: icon yoki thumbnail */}
             {item.mainIcon ? (
-                <div className="w-12 h-12 rounded-lg border border-[#cfe0f1] bg-[#eef7ff] text-[#0b4edb] flex items-center justify-center [&_svg]:h-6 [&_svg]:w-6 [&_svg]:text-current">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center [&_svg]:h-6 [&_svg]:w-6 [&_svg]:text-current ${
+                    hasFeatureGradient
+                        ? "border border-white/20 bg-white/15 text-white shadow-lg backdrop-blur-sm"
+                        : "border border-[#cfe0f1] bg-[#eef7ff] text-[#0b4edb]"
+                }`}>
                     {item.mainIcon}
                 </div>
             ) : item.mediaUrl ? (
                 // mediaUrl bor, mainIcon yo'q — top-left badge
-                <div className="self-start rounded-md border border-[#cfe0f1] bg-[#eef7ff] px-2 py-1 text-[10px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                <div className={`self-start rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-normal ${
+                    hasFeatureGradient
+                        ? "border border-white/20 bg-white/15 text-white backdrop-blur-sm"
+                        : "border border-[#cfe0f1] bg-[#eef7ff] text-[#0b4edb]"
+                }`}>
                     {t('dashboard.carousel.badge', 'Yangilik')}
                 </div>
             ) : (
@@ -351,14 +365,14 @@ return (
             {/* Bottom: title + sub */}
             <div className={item.mediaUrl && !item.mainIcon ? "max-w-[72%]" : ""}>
                 <h3
-                    className="mb-2 text-lg font-semibold leading-tight text-[#07182f] sm:text-xl"
-                    style={item.textColor && item.textColor !== "#ffffff" ? { color: item.textColor } : undefined}
+                    className={`mb-2 text-lg font-semibold leading-tight sm:text-xl ${hasFeatureGradient ? "text-white" : "text-[#07182f]"}`}
+                    style={item.textColor ? { color: item.textColor } : undefined}
                 >
                     {title}
                 </h3>
                 {sub && (
                     <p
-                        className="text-sm font-medium leading-snug text-[#63758a]"
+                        className={`text-sm font-medium leading-snug ${hasFeatureGradient ? "text-white/82" : "text-[#63758a]"}`}
                     >
                         {sub}
                     </p>
@@ -412,6 +426,105 @@ const SectionTitle = memo(({
 });
 
 SectionTitle.displayName = "SectionTitle";
+
+const ImportantCarouselSection = ({
+    sortedCarouselItems,
+    boundedCarouselIndex,
+    carouselDirection,
+    activeCarouselItem,
+    onStep,
+    onSelect,
+    onItemClick,
+    onTouchStart,
+    onTouchEnd,
+    onPause,
+    onResume,
+}: {
+    sortedCarouselItems: CarouselItemData[];
+    boundedCarouselIndex: number;
+    carouselDirection: number;
+    activeCarouselItem?: CarouselItemData;
+    onStep: (direction: 1 | -1) => void;
+    onSelect: (index: number) => void;
+    onItemClick: (item: CarouselItemData) => void;
+    onTouchStart: (e: React.TouchEvent) => void;
+    onTouchEnd: (e: React.TouchEvent) => void;
+    onPause: () => void;
+    onResume: () => void;
+}) => {
+    const { t } = useTranslation();
+
+    return (
+        <section>
+            <SectionTitle
+                eyebrow={t('dashboard.sections.info', 'Muhim ma\'lumotlar')}
+                accessory={
+                    <div className="hidden md:flex items-center gap-2">
+                        <button
+                            onClick={() => onStep(-1)}
+                            disabled={sortedCarouselItems.length <= 1}
+                            className="p-1.5 rounded-lg bg-white text-[#0b4edb] border border-[#dbe8f4] hover:bg-[#0b4edb] hover:text-white disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#0b4edb] transition-colors active:scale-95"
+                        >
+                            <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <button
+                            onClick={() => onStep(1)}
+                            disabled={sortedCarouselItems.length <= 1}
+                            className="p-1.5 rounded-lg bg-white text-[#0b4edb] border border-[#dbe8f4] hover:bg-[#0b4edb] hover:text-white disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#0b4edb] transition-colors active:scale-95"
+                        >
+                            <ChevronRight className="w-5 h-5" />
+                        </button>
+                    </div>
+                }
+            >
+                {t('dashboard.sections.important')}
+            </SectionTitle>
+
+            <div
+                className="relative -mx-1 px-1 pb-4 sm:mx-0 sm:px-0"
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+                onMouseEnter={onPause}
+                onMouseLeave={onResume}
+            >
+                <div className="relative h-[168px] overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-sm sm:h-[196px] [perspective:1200px]">
+                    <AnimatePresence initial={false} custom={carouselDirection}>
+                        {activeCarouselItem && (
+                            <motion.button
+                                type="button"
+                                key={`${activeCarouselItem.fromApi ? "api" : "static"}-${activeCarouselItem.id}`}
+                                custom={carouselDirection}
+                                variants={cubeCardVariants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{ type: "spring", stiffness: 230, damping: 27, mass: 0.72 }}
+                                className="group absolute inset-0 h-full w-full text-left outline-none [transform-style:preserve-3d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                                onClick={() => onItemClick(activeCarouselItem)}
+                            >
+                                <CarouselCard item={activeCarouselItem} />
+                            </motion.button>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {sortedCarouselItems.length > 1 && (
+                    <div className="mt-3 flex items-center justify-center gap-1.5">
+                        {sortedCarouselItems.map((item, index) => (
+                            <button
+                                key={`${item.fromApi ? "api" : "static"}-dot-${item.id}`}
+                                type="button"
+                                onClick={() => onSelect(index)}
+                                className={`h-1.5 rounded-full transition-all duration-300 ${index === boundedCarouselIndex ? "w-6 bg-[#0b4edb]" : "w-1.5 bg-[#cfe0f1] hover:bg-[#9edcf0]"}`}
+                                aria-label={`${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        </section>
+    );
+};
 
 // --- Compact Subpage Tab Component ---
 const HeaderTabs = memo(({ activeTab, setActiveTab }: { activeTab: string; setActiveTab: (t: string) => void }) => {
@@ -475,44 +588,12 @@ const PageLoadingFallback = memo(() => {
     );
 });
 
-const LanguageSwitcher = memo(() => {
-    const { i18n } = useTranslation();
-    const language = i18n.language || "uz";
-
-    return (
-        <div className="flex items-center rounded-lg border border-[#dbe8f4] bg-white p-1 shadow-sm">
-            {(["uz", "ru"] as const).map((lng) => (
-                <button
-                    key={lng}
-                    type="button"
-                    onClick={() => i18n.changeLanguage(lng)}
-                    className={`h-8 rounded-md px-2.5 text-xs font-bold uppercase transition-colors ${
-                        language.startsWith(lng)
-                            ? "bg-[#0b4edb] text-white"
-                            : "text-[#63758a] hover:bg-[#eef6ff] hover:text-[#0b4edb]"
-                    }`}
-                >
-                    {lng}
-                </button>
-            ))}
-        </div>
-    );
-});
-
 const DashboardHeader = memo(({ name }: { name?: string }) => {
     const { t } = useTranslation();
     const displayName = name?.trim().split(/\s+/)[0];
 
     return (
-        <header className="mb-4 space-y-3">
-            <div className="flex items-center justify-between gap-3">
-                <AKBLogo />
-                <div className="flex items-center gap-2">
-                    <LanguageSwitcher />
-                    <NotificationCenter />
-                </div>
-            </div>
-
+        <header className="mb-4">
             <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
                 <p className="text-sm font-medium text-[#0b84e5]">{t('dashboard.greeting', 'Assalomu alaykum 👋')}</p>
                 <h1 className="mt-1 max-w-md text-xl font-semibold leading-tight text-[#07182f]">
@@ -528,78 +609,6 @@ const DashboardHeader = memo(({ name }: { name?: string }) => {
                 </p>
             </div>
         </header>
-    );
-});
-
-const QuickTrackSearch = memo(({
-    onSubmit,
-    onCargoClick,
-}: {
-    onSubmit: (code: string) => void;
-    onCargoClick?: () => void;
-}) => {
-    const { t } = useTranslation();
-    const [value, setValue] = useState("");
-
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        const clean = value.trim().toUpperCase();
-        if (clean.length < 3) {
-            toast.error(t('tracking.validation'));
-            return;
-        }
-        onSubmit(clean);
-    };
-
-    return (
-        <section className="rounded-lg border border-[#cfe0f1] bg-white p-4 shadow-[0_12px_28px_rgba(15,47,87,0.08)]">
-            <div className="mb-4 flex items-start justify-between gap-3">
-                <div>
-                    <p className="text-[11px] font-semibold uppercase text-[#0b84e5]">
-                        {t('dashboard.trackModule.kicker', 'Tezkor qidiruv')}
-                    </p>
-                    <h2 className="mt-1 text-lg font-semibold text-[#07182f]">
-                        {t('tracking.title')}
-                    </h2>
-                    <p className="mt-1 text-sm leading-snug text-[#63758a]">
-                        {t('dashboard.trackModule.subtitle', 'Trek-kodni kiriting va yuk holatini tez tekshiring.')}
-                    </p>
-                </div>
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#eef7ff] text-[#0b4edb]">
-                    <ScanBarcode className="h-5 w-5" />
-                </div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="grid gap-2 sm:grid-cols-[1fr_auto]">
-                <div className="relative min-w-0">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#7d91a8]" />
-                    <input
-                        value={value}
-                        onChange={(event) => setValue(event.target.value.toUpperCase())}
-                        placeholder={t('tracking.placeholder', 'Trek-kodni kiriting')}
-                        className="h-12 w-full rounded-lg border border-[#cfe0f1] bg-[#f8fbfe] pl-9 pr-3 font-mono text-base font-semibold text-[#07182f] placeholder:font-sans placeholder:text-sm placeholder:font-medium placeholder:text-[#7d91a8] focus:border-[#0b84e5] focus:outline-none focus:ring-2 focus:ring-[#37c5f3]/20"
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="h-12 rounded-lg bg-[#0b4edb] px-5 text-sm font-semibold text-white shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-colors hover:bg-[#073fba] active:bg-[#063493]"
-                >
-                    {t('tracking.search', 'Qidirish')}
-                </button>
-            </form>
-
-            <button
-                type="button"
-                onClick={onCargoClick}
-                className="mt-3 flex w-full items-center justify-between rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] px-3 py-2.5 text-sm font-semibold text-[#0b4edb] transition-colors hover:border-[#cfe0f1] hover:bg-[#eef7ff]"
-            >
-                <span className="flex items-center gap-2">
-                    <Package className="h-4 w-4" />
-                    {t('dashboard.sections.myCargo')}
-                </span>
-                <ChevronRight className="h-4 w-4" />
-            </button>
-        </section>
     );
 });
 
@@ -623,14 +632,11 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
         const valid = ["home", "track", "schedule", "request", "delivery_history"];
         return valid.includes(tab ?? "") ? (tab as string) : "home";
     });
-    const [initialTrackView] = useState<'search' | 'history'>('search');
     const [isChinaModalOpen, setIsChinaModalOpen] = useState(false);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
     const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
     const [isProhibitedModalOpen, setIsProhibitedModalOpen] = useState(false);
-    const [trackAutoFocus, setTrackAutoFocus] = useState(false);
-    const [initialTrackQuery, setInitialTrackQuery] = useState<string | undefined>();
     const [mediaModalItem, setMediaModalItem] = useState<CarouselItemData | null>(null);
 
     const { t } = useTranslation();
@@ -697,6 +703,11 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
         });
     }, [sortedCarouselItems.length]);
 
+    const handleCarouselSelect = useCallback((index: number) => {
+        setCarouselDirection(index > boundedCarouselIndex ? 1 : -1);
+        setActiveCarouselIndex(index);
+    }, [boundedCarouselIndex]);
+
     useEffect(() => {
         if (!activeCarouselItem?.fromApi || activeTab !== "home") {
             return;
@@ -730,12 +741,6 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
         }
         window.history.replaceState(null, "", url.toString());
     }, []);
-
-    const handleHomeTrackSearch = (code: string) => {
-        setTrackAutoFocus(false);
-        setInitialTrackQuery(code);
-        handleSetActiveTab("track");
-    };
 
     const handleCarouselItemClick = useCallback((item: CarouselItemData) => {
         if (item.fromApi) {
@@ -853,8 +858,8 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
         >
             <UniqueBackground />
 
-            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-4 sm:pt-6">
-                <DashboardHeader name={profile?.full_name} />
+            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-[60px]">
+                {activeTab !== "home" && <DashboardHeader name={profile?.full_name} />}
 
                 {activeTab !== "home" && (
                     <HeaderTabs activeTab={activeTab} setActiveTab={handleSetActiveTab} />
@@ -887,10 +892,21 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
 
                 {activeTab === "home" ? (
                     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <QuickTrackSearch
-                            onSubmit={handleHomeTrackSearch}
-                            onCargoClick={onNavigateToReports}
+                        <ImportantCarouselSection
+                            sortedCarouselItems={sortedCarouselItems}
+                            boundedCarouselIndex={boundedCarouselIndex}
+                            carouselDirection={carouselDirection}
+                            activeCarouselItem={activeCarouselItem}
+                            onStep={handleCarouselStep}
+                            onSelect={handleCarouselSelect}
+                            onItemClick={handleCarouselItemClick}
+                            onTouchStart={onCarouselTouchStart}
+                            onTouchEnd={onCarouselTouchEnd}
+                            onPause={() => setIsCarouselPaused(true)}
+                            onResume={() => setIsCarouselPaused(false)}
                         />
+
+                        <TrackCodeTab embedded onCargoClick={onNavigateToReports} />
 
                         <section>
                             <SectionTitle eyebrow={t('dashboard.sections.priority', 'Asosiy yo\'nalishlar')}>
@@ -911,75 +927,6 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                                         onClick={() => handleActionClick(action.id)}
                                     />
                                 ))}
-                            </div>
-                        </section>
-
-                        <section>
-                            <SectionTitle eyebrow={t('dashboard.sections.info', 'Muhim ma\'lumotlar')} accessory={
-                                <div className="hidden md:flex items-center gap-2">
-                                    <button
-                                        onClick={() => handleCarouselStep(-1)}
-                                        disabled={sortedCarouselItems.length <= 1}
-                                        className="p-1.5 rounded-lg bg-white text-[#0b4edb] border border-[#dbe8f4] hover:bg-[#0b4edb] hover:text-white disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#0b4edb] transition-colors active:scale-95"
-                                    >
-                                        <ChevronLeft className="w-5 h-5" />
-                                    </button>
-                                    <button
-                                        onClick={() => handleCarouselStep(1)}
-                                        disabled={sortedCarouselItems.length <= 1}
-                                        className="p-1.5 rounded-lg bg-white text-[#0b4edb] border border-[#dbe8f4] hover:bg-[#0b4edb] hover:text-white disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#0b4edb] transition-colors active:scale-95"
-                                    >
-                                        <ChevronRight className="w-5 h-5" />
-                                    </button>
-                                </div>
-                            }>
-                                {t('dashboard.sections.important')}
-                            </SectionTitle>
-
-                            <div
-                                className="relative -mx-1 px-1 pb-4 sm:mx-0 sm:px-0"
-                                onTouchStart={onCarouselTouchStart}
-                                onTouchEnd={onCarouselTouchEnd}
-                                onMouseEnter={() => setIsCarouselPaused(true)}
-                                onMouseLeave={() => setIsCarouselPaused(false)}
-                            >
-                                <div className="relative h-[168px] overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-sm sm:h-[196px] [perspective:1200px]">
-                                    <AnimatePresence initial={false} custom={carouselDirection}>
-                                        {activeCarouselItem && (
-                                            <motion.button
-                                                type="button"
-                                                key={`${activeCarouselItem.fromApi ? "api" : "static"}-${activeCarouselItem.id}`}
-                                                custom={carouselDirection}
-                                                variants={cubeCardVariants}
-                                                initial="enter"
-                                                animate="center"
-                                                exit="exit"
-                                                transition={{ type: "spring", stiffness: 230, damping: 27, mass: 0.72 }}
-                                                className="group absolute inset-0 h-full w-full text-left outline-none [transform-style:preserve-3d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                                                onClick={() => handleCarouselItemClick(activeCarouselItem)}
-                                            >
-                                                <CarouselCard item={activeCarouselItem} />
-                                            </motion.button>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-
-                                {sortedCarouselItems.length > 1 && (
-                                    <div className="mt-3 flex items-center justify-center gap-1.5">
-                                        {sortedCarouselItems.map((item, index) => (
-                                            <button
-                                                key={`${item.fromApi ? "api" : "static"}-dot-${item.id}`}
-                                                type="button"
-                                                onClick={() => {
-                                                    setCarouselDirection(index > boundedCarouselIndex ? 1 : -1);
-                                                    setActiveCarouselIndex(index);
-                                                }}
-                                                className={`h-1.5 rounded-full transition-all duration-300 ${index === boundedCarouselIndex ? "w-6 bg-[#0b4edb]" : "w-1.5 bg-[#cfe0f1] hover:bg-[#9edcf0]"}`}
-                                                aria-label={`${index + 1}`}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
                             </div>
                         </section>
 
@@ -1040,11 +987,7 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                     </div>
                 ) : activeTab === "track" ? (
                         <TrackCodeTab
-                            key={`${initialTrackView}-${initialTrackQuery ?? "empty"}`}
-                            initialView={initialTrackView}
-                            initialQuery={initialTrackQuery}
-                            autoFocus={trackAutoFocus}
-                            onFocusConsumed={() => setTrackAutoFocus(false)}
+                            onCargoClick={onNavigateToReports}
                         />
                 ) : null
                 }
