@@ -218,7 +218,7 @@ export default function AdminProfilePage({ onBack }: AdminProfilePageProps) {
 
   if (onBack) {
     return (
-      <div className="min-h-screen bg-[#f5f5f4] dark:bg-[#09090b]">
+      <div className="min-h-screen bg-transparent">
         <div className="sticky top-0 z-20 bg-white dark:bg-[#111] border-b border-gray-200 dark:border-white/[0.08]">
           <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
             <button

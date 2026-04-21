@@ -358,6 +358,184 @@ html.customer-ui.dark {
     animation-delay: 4s;
   }
 
+  @keyframes akbBlobFloatOne {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate3d(2.75rem, 1.5rem, 0) scale(1.08);
+    }
+  }
+
+  @keyframes akbBlobFloatTwo {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    35% {
+      transform: translate3d(-2.25rem, 2rem, 0) scale(1.06);
+    }
+
+    70% {
+      transform: translate3d(1.5rem, -1.75rem, 0) scale(0.96);
+    }
+  }
+
+  @keyframes akbBlobFloatThree {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    40% {
+      transform: translate3d(2rem, -2.25rem, 0) scale(1.05);
+    }
+
+    75% {
+      transform: translate3d(-1.5rem, 1.25rem, 0) scale(0.95);
+    }
+  }
+
+  @keyframes akbBlobFloatFour {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    45% {
+      transform: translate3d(-1.75rem, -1.25rem, 0) scale(1.04);
+    }
+
+    80% {
+      transform: translate3d(1.25rem, 1.5rem, 0) scale(0.97);
+    }
+  }
+
+  .akb-light-blob {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    contain: layout paint;
+  }
+
+  .akb-light-blob--one {
+    animation: akbBlobFloatOne 18s ease-in-out infinite;
+  }
+
+  .akb-light-blob--two {
+    animation: akbBlobFloatTwo 22s ease-in-out infinite;
+  }
+
+  .akb-light-blob--three {
+    animation: akbBlobFloatThree 20s ease-in-out infinite;
+  }
+
+  .akb-light-blob--four {
+    animation: akbBlobFloatFour 24s ease-in-out infinite;
+  }
+
+  @keyframes akbGalaxyDriftOne {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate3d(2.5rem, -1.5rem, 0) scale(1.06);
+    }
+  }
+
+  @keyframes akbGalaxyDriftTwo {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    45% {
+      transform: translate3d(-2rem, 1.75rem, 0) scale(1.05);
+    }
+
+    75% {
+      transform: translate3d(1.25rem, -1rem, 0) scale(0.97);
+    }
+  }
+
+  @keyframes akbGalaxyDriftThree {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate3d(1.5rem, 1.75rem, 0) scale(1.04);
+    }
+  }
+
+  @keyframes akbGalaxyStarFloatFar {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.45;
+    }
+
+    50% {
+      transform: translate3d(-1.25rem, 1rem, 0) scale(1.02);
+      opacity: 0.62;
+    }
+  }
+
+  @keyframes akbGalaxyStarFloatNear {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.72;
+    }
+
+    50% {
+      transform: translate3d(1.5rem, -1rem, 0) scale(1.03);
+      opacity: 0.92;
+    }
+  }
+
+  .akb-galaxy-stars,
+  .akb-galaxy-nebula {
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    contain: layout paint;
+  }
+
+  .akb-galaxy-stars {
+    background-repeat: repeat;
+  }
+
+  .akb-galaxy-stars--far {
+    animation: akbGalaxyStarFloatFar 24s ease-in-out infinite;
+  }
+
+  .akb-galaxy-stars--near {
+    animation: akbGalaxyStarFloatNear 18s ease-in-out infinite;
+  }
+
+  .akb-galaxy-nebula {
+    filter: blur(20px);
+    mix-blend-mode: screen;
+  }
+
+  .akb-galaxy-nebula--one {
+    animation: akbGalaxyDriftOne 28s ease-in-out infinite;
+  }
+
+  .akb-galaxy-nebula--two {
+    animation: akbGalaxyDriftTwo 32s ease-in-out infinite;
+  }
+
+  .akb-galaxy-nebula--three {
+    animation: akbGalaxyDriftThree 30s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .akb-light-blob,
+    .akb-galaxy-stars,
+    .akb-galaxy-nebula {
+      animation: none !important;
+    }
+  }
+
   /* Smooth scroll */
   html {
     scroll-behavior: smooth;

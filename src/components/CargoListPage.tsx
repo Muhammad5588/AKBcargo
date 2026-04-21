@@ -498,7 +498,7 @@ export default function CargoListPage({ flightName, onBack, onAddCargo, onLogout
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#080604] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-[3px] border-orange-200 border-t-orange-500 rounded-full animate-spin" />
           <p className="text-sm text-gray-400 font-medium">Yuklanmoqda...</p>
@@ -512,7 +512,7 @@ export default function CargoListPage({ flightName, onBack, onAddCargo, onLogout
       <ToastRenderer />
       <ConfirmDialog />
 
-      <div className="min-h-screen bg-gray-50 dark:bg-[#080604]">
+      <div className="min-h-screen bg-transparent">
         <div className="container mx-auto px-4 pt-2 pb-8 max-w-6xl">
 
           {/* Offline Banner */}

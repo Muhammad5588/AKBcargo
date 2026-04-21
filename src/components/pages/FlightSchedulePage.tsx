@@ -215,8 +215,8 @@ const FlightSchedulePage: React.FC<FlightSchedulePageProps> = ({ onBack, onNavig
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
 
   return (
-    <div className="relative min-h-screen rounded-lg bg-[#f4f8fc]">
-      <header className="sticky top-0 z-50 w-full rounded-t-lg border-b border-[#dbe8f4] bg-white">
+    <div className="relative min-h-screen rounded-lg bg-transparent">
+      <header className="sticky top-0 z-50 w-full rounded-t-lg border-b border-[#dbe8f4] bg-white/88 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <button
             onClick={onBack}

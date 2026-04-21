@@ -139,7 +139,7 @@ export default function AdminLoginForm({ onAdminLoginSuccess }: AdminLoginFormPr
   }, [pin]);
 
   return (
-    <div className="min-h-[100vh] flex flex-col items-center justify-center p-4 md:p-8 overflow-y-auto w-full relative bg-[#fafaf9] dark:bg-[#09090b]">
+    <div className="min-h-[100vh] flex flex-col items-center justify-center p-4 md:p-8 overflow-y-auto w-full relative bg-transparent">
 
       {/* Animated background orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">

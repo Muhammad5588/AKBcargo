@@ -32,6 +32,7 @@ import {
 import CarouselMediaModal from "@/components/carousel/CarouselMediaModal";
 import { toast } from "sonner";
 import { ActionButton, type ActionItemData } from "@/components/user_page/ActionButtons";
+import { UniqueBackground } from "@/components/ui/UniqueBackground";
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from "framer-motion";
 import { useProfile } from "@/hooks/useProfile";
@@ -382,22 +383,6 @@ return (
     </div>
 );
 });
-
-const UniqueBackground = () => (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div
-            className="absolute inset-0"
-            style={{
-                background:
-                    "linear-gradient(180deg, var(--akb-page-top, #f7fbff) 0%, var(--akb-page-bg, #f4f8fc) 48%, var(--akb-page-bottom, #eef5fb) 100%)",
-            }}
-        />
-        <div
-            className="absolute inset-x-0 top-0 h-px"
-            style={{ backgroundColor: "var(--akb-border-strong, #cfe0f1)" }}
-        />
-    </div>
-);
 
 const SectionTitle = memo(({
     children,

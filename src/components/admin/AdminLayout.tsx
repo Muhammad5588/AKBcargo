@@ -43,7 +43,7 @@ export default function AdminLayout({ children, currentPage, onNavigate, onLogou
   };
 
   return (
-    <div className="fixed inset-0 flex bg-[#f5f5f4] dark:bg-[#09090b] text-gray-900 dark:text-gray-100 transition-colors z-50">
+    <div className="fixed inset-0 flex bg-transparent text-gray-900 dark:text-gray-100 transition-colors z-50">
 
       {/* ── Desktop Sidebar ── */}
       <aside className="hidden md:flex flex-col w-[260px] border-r border-black/[0.06] dark:border-white/[0.06] bg-white dark:bg-[#0f0f0f] shrink-0 z-20">

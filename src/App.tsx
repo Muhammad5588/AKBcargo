@@ -41,6 +41,7 @@ import PasskeyPage from "./pages/admin/PasskeyPage";
 import WarehousePage from "./pages/admin/WarehousePage";
 import ExpectedCargoPage from "./pages/admin/ExpectedCargoPage";
 import { useCustomerTheme } from "./hooks/useCustomerTheme";
+import { UniqueBackground } from "./components/ui/UniqueBackground";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -663,38 +664,41 @@ function AppContent() {
           : "bg-[#f5f5f7] dark:bg-[#111214]"
       }`}
     >
-      {!isAdminArea && (
-        <>
-          <NavigationBar
-            onStatisticsClick={() => navigateToPage("statistics")}
-            onVerificationClick={() => navigateToPage("verification-search")}
-            currentPage={currentPage}
-          />
+      {!isUserPages && <UniqueBackground />}
 
-          {isVerificationPage && (
-            <VerificationNav
-              currentPage={currentPage as VerificationPage}
-              onNavigate={(page) =>
-                navigateToPage(
-                  page as Page,
-                  undefined,
-                  selectedClientId,
-                  selectedClientCode,
-                )
-              }
-              clientCode={selectedClientCode}
-              clientId={selectedClientId}
-            />
-          )}
-
-          {isUserPages && (
-            <UserNav
+      <div className="relative z-10">
+        {!isAdminArea && (
+          <>
+            <NavigationBar
+              onStatisticsClick={() => navigateToPage("statistics")}
+              onVerificationClick={() => navigateToPage("verification-search")}
               currentPage={currentPage}
-              onNavigate={(page) => navigateToPage(page as Page)}
             />
-          )}
-        </>
-      )}
+
+            {isVerificationPage && (
+              <VerificationNav
+                currentPage={currentPage as VerificationPage}
+                onNavigate={(page) =>
+                  navigateToPage(
+                    page as Page,
+                    undefined,
+                    selectedClientId,
+                    selectedClientCode,
+                  )
+                }
+                clientCode={selectedClientCode}
+                clientId={selectedClientId}
+              />
+            )}
+
+            {isUserPages && (
+              <UserNav
+                currentPage={currentPage}
+                onNavigate={(page) => navigateToPage(page as Page)}
+              />
+            )}
+          </>
+        )}
 
       {isCheckingAuth ? (
         <div className="flex h-[60vh] items-center justify-center">
@@ -932,6 +936,7 @@ function AppContent() {
         onClose={() => setPassportModalOpen(false)}
         clientId={passportClientId}
       />
+      </div>
     </div>
   );
 }

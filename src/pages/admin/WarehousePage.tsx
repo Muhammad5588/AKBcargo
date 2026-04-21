@@ -187,7 +187,7 @@ export default function WarehousePage({ onLogout }: WarehousePageProps) {
   if (!canView) return <AccessDenied />;
 
   return (
-    <div className="min-h-screen bg-[#f5f5f4] dark:bg-[#0a0a0a]">
+    <div className="min-h-screen bg-transparent">
 
       {/* ── Sticky Header ──────────────────────────────────────────────────── */}
       <div className="sticky top-0 z-20 bg-white dark:bg-[#111] border-b border-gray-200 dark:border-white/[0.08]">

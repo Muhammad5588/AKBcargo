@@ -185,7 +185,7 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
         />
       )}
 
-      <div className="min-h-[calc(100vh-2rem)] w-full bg-[#f4f8fc] px-4 py-5 sm:px-6 sm:py-8 dark:bg-[#0b1420]">
+      <div className="min-h-[calc(100vh-2rem)] w-full bg-transparent px-4 py-5 sm:px-6 sm:py-8">
         <div className="mx-auto flex w-full max-w-md flex-col gap-5">
           <header className="pt-1">
             <div className="flex items-center justify-between gap-3">

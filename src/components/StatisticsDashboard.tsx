@@ -305,7 +305,7 @@ export default function StatisticsDashboard({ onBack }: StatisticsDashboardProps
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-orange-50/30 to-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-transparent">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -381,7 +381,7 @@ export default function StatisticsDashboard({ onBack }: StatisticsDashboardProps
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-[1400px] bg-gradient-to-br from-gray-50 via-orange-50/30 to-gray-100 min-h-screen"
+        className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-[1400px] bg-transparent min-h-screen"
       >
         {/* Header */}
         <motion.div variants={itemVariants} className="mb-6">

@@ -201,7 +201,7 @@ function ExpectedCargoPageContent({ onNavigate }: { onNavigate: (page: string) =
   const bottomTabsHeight = 64;
 
   return (
-    <div className="min-h-screen bg-[#ffffff] dark:bg-[#09090b] flex flex-col">
+    <div className="min-h-screen bg-transparent flex flex-col">
       {/* ── Fixed header ────────────────────────────────────────────────────── */}
       <ExpectedCargoHeader
         activeFlightName={activeFlightName}
