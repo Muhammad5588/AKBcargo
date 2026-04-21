@@ -46,9 +46,9 @@ interface CarouselItemData {
     subKey?: string;
     title?: string;
     sub?: string;
-    /** Tailwind gradient classes — used for static (hardcoded) items */
+    /** Tailwind accent classes for static items */
     gradient?: string;
-    /** CSS gradient value — used for items fetched from the API */
+    /** CSS accent value for items fetched from the API */
     gradientStyle?: string;
     bgIcon?: React.ReactNode;
     mainIcon?: React.ReactNode;
@@ -69,7 +69,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
     //     type: "feature",
     //     titleKey: "dashboard.carousel.news.title",
     //     subKey: "dashboard.carousel.news.sub",
-    //     gradient: "from-pink-900 to-pink-600",
+    //     gradient: "from-[#eef7ff] to-[#eafaff]",
     //     bgIcon: <Newspaper className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
     //     mainIcon: <Newspaper className="text-white/90" style={{ width: 32, height: 32 }} />,
     // },
@@ -78,7 +78,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         type: "feature",
         titleKey: "dashboard.carousel.prohibited.title",
         subKey: "dashboard.carousel.prohibited.sub",
-        gradient: "from-rose-900 to-rose-700",
+        gradient: "from-[#fff5f5] to-[#eef7ff]",
         bgIcon: <ShieldAlert className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
         mainIcon: <ShieldOff style={{ width: 32, height: 32 }} />,
     },
@@ -87,7 +87,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         type: "feature",
         titleKey: "dashboard.carousel.id.title",
         subKey: "dashboard.carousel.id.sub",
-        gradient: "from-zinc-900 to-zinc-700",
+        gradient: "from-[#f8fbfe] to-[#eef7ff]",
         bgIcon: <IdCard className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
         mainIcon: <IdCard style={{ width: 32, height: 32 }} />,
     },
@@ -96,7 +96,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         type: "feature",
         titleKey: "dashboard.carousel.delivery.title",
         subKey: "dashboard.carousel.delivery.sub",
-        gradient: "from-cyan-900 to-cyan-700",
+        gradient: "from-[#eafaff] to-[#eef7ff]",
         bgIcon: <Rocket className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
         mainIcon: <Plane style={{ width: 32, height: 32 }} />,
     },
@@ -105,7 +105,7 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
     //     type: "feature",
     //     titleKey: "dashboard.carousel.help.title",
     //     subKey: "dashboard.carousel.help.sub",
-    //     gradient: "from-cyan-900 to-cyan-600",
+    //     gradient: "from-[#eafaff] to-[#eef7ff]",
     //     bgIcon: <HelpCircle className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
     //     mainIcon: <Info className="text-white/90" style={{ width: 32, height: 32 }} />,
     // },
@@ -245,15 +245,15 @@ const CarouselCard = memo(({ item, onView }: { item: CarouselItemData; onView?: 
                 className="
                     h-full w-full rounded-lg relative overflow-hidden text-left
                     cursor-pointer transition-all duration-300
-                    border border-sky-100/20 bg-sky-950 shadow-[0_18px_38px_rgba(15,23,42,0.22)] group
-                    hover:border-sky-300/60 dark:border-white/10 dark:hover:border-sky-300/40
+                    border border-[#dbe8f4] bg-white shadow-[0_10px_24px_rgba(15,47,87,0.08)] group
+                    hover:border-[#0b84e5]
                 "
             >
                 {item.mediaUrl && (
                     item.mediaType === "video" ? (
                         <video
                             src={item.mediaUrl}
-                            className="absolute inset-y-0 right-0 h-full w-[72%] object-cover opacity-85 transition-transform duration-700 group-hover:scale-105"
+                            className="absolute inset-y-0 right-0 h-full w-[58%] object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
                             autoPlay
                             muted
                             loop
@@ -263,28 +263,30 @@ const CarouselCard = memo(({ item, onView }: { item: CarouselItemData; onView?: 
                         <img
                             src={item.mediaUrl}
                             alt={item.title || "Ad"}
-                            className="absolute inset-y-0 right-0 h-full w-[72%] object-cover opacity-85 transition-transform duration-700 group-hover:scale-105"
+                            className="absolute inset-y-0 right-0 h-full w-[58%] object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
                         />
                     )
                 )}
 
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,#082f49_0%,rgba(8,47,73,0.92)_42%,rgba(8,47,73,0.18)_100%)]" />
-                <div className="absolute left-0 top-0 h-full w-1 bg-sky-300" />
-                <div className="absolute left-4 top-4 rounded-md border border-white/15 bg-white/10 px-2 py-1 text-[10px] font-semibold uppercase text-sky-100">
+                {item.mediaUrl && (
+                    <div className="absolute inset-y-0 right-0 w-[62%] bg-[linear-gradient(90deg,#ffffff_0%,rgba(255,255,255,0.84)_26%,rgba(255,255,255,0)_100%)]" />
+                )}
+                <div className="absolute inset-x-0 top-0 h-1 bg-[#0b4edb]" />
+                <div className="absolute left-4 top-4 rounded-md border border-[#cfe0f1] bg-[#eef7ff] px-2 py-1 text-[10px] font-semibold uppercase text-[#0b4edb]">
                     {t('dashboard.carousel.badge', 'Yangilik')}
                 </div>
 
-                <div className="absolute inset-0 p-5 sm:p-6 flex max-w-[74%] flex-col justify-end">
+                <div className="absolute inset-0 flex max-w-[72%] flex-col justify-end p-5 sm:p-6">
                     {title && (
-            <h3
-                className="font-semibold text-lg sm:text-xl leading-tight mb-2"
-                            style={{ color: item.textColor || "white" }}
+                        <h3
+                            className="mb-2 text-lg font-semibold leading-tight text-[#07182f] sm:text-xl"
+                            style={item.textColor && item.textColor !== "#ffffff" ? { color: item.textColor } : undefined}
                         >
                             {title}
                         </h3>
                     )}
                     {sub && (
-                    <p className="text-white/75 text-sm font-medium leading-snug flex items-center gap-1">
+                        <p className="flex items-center gap-1 text-sm font-medium leading-snug text-[#63758a]">
                             {sub} <ChevronRight className="w-4 h-4" />
                         </p>
                     )}
@@ -300,8 +302,8 @@ return (
         className={`
             h-full w-full rounded-lg relative overflow-hidden
             cursor-pointer transition-all duration-300
-            border border-sky-100 bg-white shadow-[0_16px_34px_rgba(14,165,233,0.13)]
-            hover:border-sky-300
+            border border-[#dbe8f4] bg-white shadow-[0_10px_24px_rgba(15,47,87,0.08)]
+            hover:border-[#0b84e5]
         `}
     >
         {/* Background media — faqat mediaUrl bo'lib, mainIcon bo'lmaganda */}
@@ -312,22 +314,22 @@ return (
                     alt={item.title || "Feature"}
                     className="absolute inset-y-0 right-0 h-full w-[72%] object-cover"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,#082f49_0%,rgba(8,47,73,0.92)_44%,rgba(8,47,73,0.18)_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,#ffffff_0%,rgba(255,255,255,0.92)_45%,rgba(255,255,255,0.12)_100%)]" />
             </>
         )}
 
         {/* Content */}
         <div className="absolute inset-x-0 top-0 h-1 bg-[#0b4edb]" />
-        <div className="absolute right-4 top-4 h-16 w-16 rotate-12 rounded-lg border border-sky-100 bg-sky-50/80" />
+        <div className="absolute right-4 top-4 h-16 w-16 rounded-lg border border-[#dbe8f4] bg-[#f8fbfe]" />
         <div className="h-full flex flex-col justify-between relative z-10 p-5 sm:p-6">
             {/* Top: icon yoki thumbnail */}
             {item.mainIcon ? (
-                <div className="w-12 h-12 rounded-lg border border-sky-100 bg-sky-50 text-sky-700 flex items-center justify-center [&_svg]:h-6 [&_svg]:w-6 [&_svg]:text-current">
+                <div className="w-12 h-12 rounded-lg border border-[#cfe0f1] bg-[#eef7ff] text-[#0b4edb] flex items-center justify-center [&_svg]:h-6 [&_svg]:w-6 [&_svg]:text-current">
                     {item.mainIcon}
                 </div>
             ) : item.mediaUrl ? (
                 // mediaUrl bor, mainIcon yo'q — top-left badge
-                <div className="self-start px-2 py-1 rounded-md bg-white/15 text-white text-[10px] font-bold uppercase tracking-wide">
+                <div className="self-start rounded-md border border-[#cfe0f1] bg-[#eef7ff] px-2 py-1 text-[10px] font-bold uppercase tracking-normal text-[#0b4edb]">
                     {t('dashboard.carousel.badge', 'Yangilik')}
                 </div>
             ) : (
@@ -337,15 +339,14 @@ return (
             {/* Bottom: title + sub */}
             <div className={item.mediaUrl && !item.mainIcon ? "max-w-[72%]" : ""}>
                 <h3
-                    className={`font-semibold text-lg sm:text-xl leading-tight mb-2 ${item.mediaUrl && !item.mainIcon ? "text-white" : "text-[#07182f]"}`}
-                    style={item.mediaUrl && !item.mainIcon ? { color: item.textColor || "white" } : undefined}
+                    className="mb-2 text-lg font-semibold leading-tight text-[#07182f] sm:text-xl"
+                    style={item.textColor && item.textColor !== "#ffffff" ? { color: item.textColor } : undefined}
                 >
                     {title}
                 </h3>
                 {sub && (
                     <p
-                        className={`text-sm font-medium leading-snug ${item.mediaUrl && !item.mainIcon ? "text-white/75" : "text-[#63758a]"}`}
-                        style={item.mediaUrl && !item.mainIcon && item.textColor ? { color: `${item.textColor}b3` } : undefined}
+                        className="text-sm font-medium leading-snug text-[#63758a]"
                     >
                         {sub}
                     </p>
@@ -365,30 +366,21 @@ const UniqueBackground = () => (
 
 const SectionTitle = memo(({
     children,
-    tone = "cyan",
-    index,
+    eyebrow,
     accessory,
 }: {
     children: React.ReactNode;
-    tone?: "cyan" | "emerald" | "rose";
-    index: string;
+    eyebrow?: string;
     accessory?: React.ReactNode;
 }) => {
-    const toneLine = {
-        cyan: "bg-blue-600",
-        emerald: "bg-emerald-500",
-        rose: "bg-rose-500",
-    }[tone];
-
     return (
         <div className="mb-3 flex items-center justify-between gap-3">
             <div className="min-w-0">
-                <div className="mb-1 flex items-center gap-2">
-                    <span className={`h-1 w-6 rounded-lg ${toneLine}`} />
-                    <span className="text-[10px] font-bold uppercase tracking-normal text-[#7d91a8]">
-                        {index}
-                    </span>
-                </div>
+                {eyebrow && (
+                    <p className="mb-1 text-[11px] font-semibold uppercase text-[#0b84e5]">
+                        {eyebrow}
+                    </p>
+                )}
                 <h2 className="text-lg font-semibold leading-tight tracking-normal text-[#07182f]">
                     {children}
                 </h2>
@@ -491,7 +483,7 @@ const DashboardHeader = memo(({ name }: { name?: string }) => {
     const firstName = name?.trim().split(/\s+/)[0];
 
     return (
-        <header className="mb-4 space-y-4">
+        <header className="mb-4 space-y-3">
             <div className="flex items-center justify-between gap-3">
                 <AKBLogo />
                 <div className="flex items-center gap-2">
@@ -500,9 +492,9 @@ const DashboardHeader = memo(({ name }: { name?: string }) => {
                 </div>
             </div>
 
-            <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-sm">
+            <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
                 <p className="text-xs font-medium text-[#63758a]">{t('dashboard.greeting', 'Assalomu alaykum,')}</p>
-                <h1 className="mt-1 text-xl font-semibold leading-tight text-[#07182f]">
+                <h1 className="mt-1 truncate text-xl font-semibold leading-tight text-[#07182f]">
                     {firstName || t('dashboard.customer', 'AKB Cargo mijozi')}
                 </h1>
                 <p className="mt-2 text-sm leading-snug text-[#63758a]">
@@ -534,22 +526,25 @@ const QuickTrackSearch = memo(({
     };
 
     return (
-        <section className="mb-5 rounded-lg border border-[#cfe0f1] bg-white p-4 shadow-[0_10px_24px_rgba(15,47,87,0.07)]">
-            <div className="mb-3 flex items-start justify-between gap-3">
+        <section className="rounded-lg border border-[#cfe0f1] bg-white p-4 shadow-[0_12px_28px_rgba(15,47,87,0.08)]">
+            <div className="mb-4 flex items-start justify-between gap-3">
                 <div>
-                    <p className="text-xs font-bold uppercase text-[#0b84e5]">
+                    <p className="text-[11px] font-semibold uppercase text-[#0b84e5]">
                         {t('dashboard.trackModule.kicker', 'Tezkor qidiruv')}
                     </p>
                     <h2 className="mt-1 text-lg font-semibold text-[#07182f]">
                         {t('tracking.title')}
                     </h2>
+                    <p className="mt-1 text-sm leading-snug text-[#63758a]">
+                        {t('dashboard.trackModule.subtitle', 'Trek-kodni kiriting va yuk holatini tez tekshiring.')}
+                    </p>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#eef6ff] text-[#0b4edb]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#eef7ff] text-[#0b4edb]">
                     <ScanBarcode className="h-5 w-5" />
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="grid grid-cols-[1fr_auto] gap-2">
+            <form onSubmit={handleSubmit} className="grid gap-2 sm:grid-cols-[1fr_auto]">
                 <div className="relative min-w-0">
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#7d91a8]" />
                     <input
@@ -561,7 +556,7 @@ const QuickTrackSearch = memo(({
                 </div>
                 <button
                     type="submit"
-                    className="h-12 rounded-lg bg-[#0b4edb] px-4 text-sm font-semibold text-white shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-colors hover:bg-[#073fba] active:bg-[#063493]"
+                    className="h-12 rounded-lg bg-[#0b4edb] px-5 text-sm font-semibold text-white shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-colors hover:bg-[#073fba] active:bg-[#063493]"
                 >
                     {t('tracking.search', 'Qidirish')}
                 </button>
@@ -570,7 +565,7 @@ const QuickTrackSearch = memo(({
             <button
                 type="button"
                 onClick={onCargoClick}
-                className="mt-3 flex w-full items-center justify-between rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] px-3 py-2.5 text-sm font-semibold text-[#0b4edb] transition-colors hover:bg-[#eef6ff]"
+                className="mt-3 flex w-full items-center justify-between rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] px-3 py-2.5 text-sm font-semibold text-[#0b4edb] transition-colors hover:border-[#cfe0f1] hover:bg-[#eef7ff]"
             >
                 <span className="flex items-center gap-2">
                     <Package className="h-4 w-4" />
@@ -633,7 +628,7 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                     type: item.type as "ad" | "feature",
                     title: item.title ?? undefined,
                     sub: item.sub_title ?? undefined,
-                    gradientStyle: item.gradient ?? 'linear-gradient(135deg, #18181b, #27272a)',
+                    gradientStyle: item.gradient ?? 'linear-gradient(135deg, #eef7ff, #eafaff)',
                     mediaType: item.media_type,
                     mediaUrl: item.media_url,
                     actionUrl: item.action_url ?? undefined,
@@ -865,14 +860,14 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                 )}
 
                 {activeTab === "home" ? (
-                    <div className="space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <QuickTrackSearch
                             onSubmit={handleHomeTrackSearch}
                             onCargoClick={onNavigateToReports}
                         />
 
                         <section>
-                            <SectionTitle index="01" tone="cyan">
+                            <SectionTitle eyebrow={t('dashboard.sections.priority', 'Asosiy yo\'nalishlar')}>
                                 {t('dashboard.sections.mainActions', 'Asosiy amallar')}
                             </SectionTitle>
 
@@ -894,7 +889,7 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                         </section>
 
                         <section>
-                            <SectionTitle index="02" tone="emerald" accessory={
+                            <SectionTitle eyebrow={t('dashboard.sections.info', 'Muhim ma\'lumotlar')} accessory={
                                 <div className="hidden md:flex items-center gap-2">
                                     <button
                                         onClick={() => handleCarouselStep(-1)}
@@ -922,7 +917,7 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                                 onMouseEnter={() => setIsCarouselPaused(true)}
                                 onMouseLeave={() => setIsCarouselPaused(false)}
                             >
-                                <div className="relative h-[178px] overflow-hidden rounded-lg bg-white shadow-sm sm:h-[204px] [perspective:1200px]">
+                                <div className="relative h-[168px] overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-sm sm:h-[196px] [perspective:1200px]">
                                     <AnimatePresence initial={false} custom={carouselDirection}>
                                         {activeCarouselItem && (
                                             <motion.button
@@ -963,7 +958,7 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                         </section>
 
                         <section>
-                            <SectionTitle index="03" tone="cyan">
+                            <SectionTitle eyebrow={t('dashboard.sections.more', 'Qo\'shimcha xizmatlar')}>
                                 {t('dashboard.sections.services')}
                             </SectionTitle>
 
@@ -988,19 +983,19 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                             <button
                                 className="
                                     group relative grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 overflow-hidden rounded-lg p-3
-                                    bg-[#07182f] text-white
-                                    border border-[#07182f]
-                                    active:scale-[0.98] transition-all duration-300 shadow-sm hover:-translate-y-1
+                                    bg-white text-[#07182f]
+                                    border border-[#dbe8f4]
+                                    active:scale-[0.98] transition-all duration-300 shadow-sm hover:border-[#0b84e5] hover:bg-[#f8fbfe]
                                 "
                                 onClick={() => window.open("https://t.me/mandarin_admin", "_blank")}
                             >
-                                <div className="absolute inset-y-2 left-2 w-1 rounded-lg bg-blue-500" />
-                                <div className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center transition-transform group-hover:scale-105">
+                                <div className="absolute inset-y-2 left-2 w-1 rounded-lg bg-[#0b84e5]" />
+                                <div className="w-11 h-11 rounded-lg bg-[#eef7ff] text-[#0b4edb] flex items-center justify-center transition-transform group-hover:scale-105">
                                     <MessageSquare className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0 text-left">
                                     <h3 className="text-sm font-bold">{t('dashboard.sections.feedback')}</h3>
-                                    <p className="text-[10px] text-white/65 font-medium">
+                                    <p className="text-[10px] text-[#63758a] font-medium">
                                         {t('dashboard.sections.contactUs')}
                                     </p>
                                 </div>

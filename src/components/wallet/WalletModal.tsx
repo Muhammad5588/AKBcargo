@@ -41,13 +41,13 @@ const ReminderCard = memo(({ reminder, idx, onPay }: { reminder: PaymentReminder
             <Card
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={cn(
-                    "relative overflow-hidden border border-[#dbe8f4] shadow-sm bg-white transition-all cursor-pointer group",
-                    isExpanded ? "ring-2 ring-[#c44747]/20" : "hover:shadow-md"
+                    "relative overflow-hidden border border-[#dbe8f4] shadow-[0_8px_20px_rgba(10,35,70,0.05)] bg-white transition-all cursor-pointer group",
+                    isExpanded ? "border-[#0b84e5] ring-2 ring-[#37c5f3]/20" : "hover:border-[#0b84e5]"
                 )}
             >
                 <div className={cn(
                     "absolute left-0 top-0 bottom-0 w-1 transition-colors duration-300",
-                    isExpanded ? "bg-[#c44747]" : "bg-[#cfe0f1] group-hover:bg-[#c44747]"
+                    isExpanded ? "bg-[#0b4edb]" : "bg-[#cfe0f1] group-hover:bg-[#0b84e5]"
                 )} />
 
                 <CardContent className="p-4 pl-5">
@@ -103,7 +103,7 @@ const ReminderCard = memo(({ reminder, idx, onPay }: { reminder: PaymentReminder
                                     </div>
                                     <div className="pt-2">
                                         <Button
-                                            className="w-full rounded-lg bg-[#c44747] hover:bg-[#a83a3a] text-white shadow-sm h-10 font-semibold"
+                                            className="w-full rounded-lg bg-[#0b4edb] hover:bg-[#073fba] text-white shadow-sm h-10 font-semibold"
                                             onClick={(e) => { e.stopPropagation(); onPay(reminder.flight); }}
                                         >
                                             <CreditCard className="w-4 h-4 mr-2" />
@@ -290,10 +290,10 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                             className={cn(
                                 "relative w-full max-h-[92vh] flex flex-col",
-                    "bg-[#f4f8fc]",
-                    "rounded-t-lg md:rounded-lg",
+                                "bg-[#f4f8fc]",
+                                "rounded-t-lg md:rounded-lg",
                                 "md:max-w-lg md:mx-4",
-                                "shadow-2xl border border-[#dbe8f4]",
+                                "shadow-[0_18px_48px_rgba(10,35,70,0.18)] border border-[#dbe8f4]",
                                 "overflow-hidden"
                             )}
                         >
@@ -303,13 +303,21 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                             </div>
 
                             {/* Header with close */}
-                            <div className="flex items-center justify-between px-5 pt-3 pb-2 md:pt-5">
-                                <h2 className="text-xl font-bold text-[#07182f]">
-                                    {t('wallet.modal.title', "Moliyaviy markaz")}
-                                </h2>
+                            <div className="flex items-start justify-between gap-4 px-5 pt-3 pb-3 md:pt-5">
+                                <div className="min-w-0">
+                                    <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                                        {t('wallet.modal.subtitle', 'AKB Cargo')}
+                                    </p>
+                                    <h2 className="mt-1 text-2xl font-semibold text-[#07182f]">
+                                        {t('wallet.modal.title', "Moliyaviy markaz")}
+                                    </h2>
+                                    <p className="mt-1 text-sm text-[#63758a]">
+                                        {t('wallet.modal.description', "Balans, qarz va to'lov amallari")}
+                                    </p>
+                                </div>
                                 <button
                                     onClick={handleClose}
-                                    className="p-2 rounded-full hover:bg-[#eef6ff] transition-colors"
+                                    className="shrink-0 p-2 rounded-lg border border-[#dbe8f4] bg-white hover:bg-[#eef6ff] transition-colors"
                                     aria-label="Close"
                                 >
                                     <X className="w-5 h-5 text-[#63758a]" />
@@ -334,11 +342,10 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                                 initial={{ opacity: 0, scale: 0.95 }}
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 transition={{ delay: 0.1 }}
-                                                className="relative overflow-hidden rounded-lg bg-white border border-[#ccebdc] p-4 shadow-sm"
+                                                className="relative overflow-hidden rounded-lg bg-[#f6fffb] border border-[#ccebdc] p-4 shadow-[0_8px_20px_rgba(10,35,70,0.05)]"
                                             >
-                                                <div className="absolute top-0 right-0 w-16 h-16 bg-[#22a06b]/10 rounded-bl-[3rem] pointer-events-none" />
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <div className="p-1.5 bg-[#effbf5] rounded-lg">
+                                                    <div className="p-1.5 bg-[#effbf5] rounded-lg border border-[#ccebdc]">
                                                         <Wallet className="w-4 h-4 text-[#15835b]" />
                                                     </div>
                                                     <span className="text-[11px] font-semibold text-[#63758a] uppercase tracking-normal">
@@ -356,11 +363,10 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                                 initial={{ opacity: 0, scale: 0.95 }}
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 transition={{ delay: 0.15 }}
-                                                className="relative overflow-hidden rounded-lg bg-white border border-[#f0cccc] p-4 shadow-sm"
+                                                className="relative overflow-hidden rounded-lg bg-[#fff8f8] border border-[#f0cccc] p-4 shadow-[0_8px_20px_rgba(10,35,70,0.05)]"
                                             >
-                                                <div className="absolute top-0 right-0 w-16 h-16 bg-[#c44747]/10 rounded-bl-[3rem] pointer-events-none" />
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <div className="p-1.5 bg-[#fff1f1] rounded-lg">
+                                                    <div className="p-1.5 bg-[#fff1f1] rounded-lg border border-[#f0cccc]">
                                                         <TrendingDown className="w-4 h-4 text-[#c44747]" />
                                                     </div>
                                                     <span className="text-[11px] font-semibold text-[#63758a] uppercase tracking-normal">
@@ -479,14 +485,16 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                                     {isActiveCardLoading ? (
                                                         <div className="h-40 w-full bg-[#dbe8f4] animate-pulse rounded-lg" />
                                                     ) : activeCard ? (
-                                                        <div className="relative overflow-hidden rounded-lg bg-[#07182f] p-5 text-white shadow-sm border border-[#0b2b53]">
+                                                        <div className="relative overflow-hidden rounded-lg bg-white p-5 text-[#07182f] shadow-[0_8px_20px_rgba(10,35,70,0.05)] border border-[#dbe8f4]">
                                                             <div className="relative z-10">
                                                                 <div className="flex justify-between items-start mb-5">
-                                                                    <div className="h-8 w-12 rounded bg-white/20" />
+                                                                    <div className="flex h-9 w-12 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef6ff]">
+                                                                        <CreditCard className="h-5 w-5 text-[#0b4edb]" />
+                                                                    </div>
                                                                     <Button
-                                                                        variant="ghost"
+                                                                        variant="outline"
                                                                         size="sm"
-                                                                        className="text-white hover:bg-white/20 hover:text-white"
+                                                                        className="rounded-lg border-[#cfe0f1] bg-[#eef6ff] text-[#0b4edb] hover:bg-[#e1f0ff] hover:text-[#0b4edb]"
                                                                         onClick={() => copyToClipboard(activeCard.card_number)}
                                                                     >
                                                                         {copied ? <Check className="h-4 w-4 mr-1.5" /> : <Copy className="h-4 w-4 mr-1.5" />}
@@ -495,12 +503,12 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                                                 </div>
                                                                 <div className="space-y-3">
                                                                     <div>
-                                                                        <p className="text-xs text-white/60 uppercase mb-1">{t('wallet.cards.cardNumber', "Karta raqami")}</p>
-                                                                        <p className="font-mono text-lg tracking-normal truncate">{activeCard.card_number.replace(/(\d{4})/g, '$1 ').trim()}</p>
+                                                                        <p className="text-xs text-[#63758a] uppercase mb-1 font-semibold">{t('wallet.cards.cardNumber', "Karta raqami")}</p>
+                                                                        <p className="font-mono text-lg tracking-normal truncate text-[#07182f]">{activeCard.card_number.replace(/(\d{4})/g, '$1 ').trim()}</p>
                                                                     </div>
                                                                     <div>
-                                                                        <p className="text-xs text-white/60 uppercase mb-1">{t('wallet.cards.cardHolder', "Egasi")}</p>
-                                                                        <p className="font-medium uppercase tracking-normal truncate">{activeCard.holder_name}</p>
+                                                                        <p className="text-xs text-[#63758a] uppercase mb-1 font-semibold">{t('wallet.cards.cardHolder', "Egasi")}</p>
+                                                                        <p className="font-medium uppercase tracking-normal truncate text-[#07182f]">{activeCard.holder_name}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -543,8 +551,9 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                                                         </>
                                                                     ) : (
                                                                         <>
-                                                                            <Upload className="h-7 w-7 text-[#7d91a8] mb-2" />
-                                                                            <p className="text-sm font-medium text-[#63758a]">{t('wallet.modal.clickToSelect', "Chekni tanlash uchun bosing")}</p>
+                                                                            <Upload className="h-7 w-7 text-[#0b4edb] mb-2" />
+                                                                            <p className="text-sm font-medium text-[#07182f]">{t('wallet.modal.clickToSelect', "Chekni tanlash uchun bosing")}</p>
+                                                                            <p className="mt-1 text-xs text-[#63758a]">JPG, PNG, HEIC, PDF - 10MB</p>
                                                                         </>
                                                                     )}
                                                                 </div>

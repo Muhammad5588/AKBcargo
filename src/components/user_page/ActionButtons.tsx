@@ -20,19 +20,19 @@ const THEME_CLASSES: Record<ActionItemData["theme"], {
   badge: string;
 }> = {
   blue: {
-    card: "border-[#c7dcf3] bg-white hover:border-[#0b84e5]",
+    card: "border-[#c7dcf3] bg-white hover:border-[#0b84e5] hover:bg-[#fbfdff]",
     icon: "bg-[#eef6ff] text-[#0b4edb]",
     badge: "bg-[#eef6ff] text-[#0b4edb] border-[#c7dcf3]",
   },
   cyan: {
-    card: "border-[#c9edf8] bg-white hover:border-[#37c5f3]",
+    card: "border-[#c9edf8] bg-white hover:border-[#37c5f3] hover:bg-[#fbfdff]",
     icon: "bg-[#eafaff] text-[#0784a6]",
     badge: "bg-[#eafaff] text-[#0784a6] border-[#bdebf7]",
   },
   green: {
-    card: "border-[#cfeadf] bg-white hover:border-[#22a06b]",
-    icon: "bg-[#effbf5] text-[#15835b]",
-    badge: "bg-[#effbf5] text-[#15835b] border-[#ccebdc]",
+    card: "border-[#cfe0f1] bg-white hover:border-[#0b84e5] hover:bg-[#fbfdff]",
+    icon: "bg-[#eef7ff] text-[#0b4edb]",
+    badge: "bg-[#eef7ff] text-[#0b4edb] border-[#cfe0f1]",
   },
   red: {
     card: "border-[#f1d2d2] bg-white hover:border-[#d95c5c]",
@@ -40,9 +40,9 @@ const THEME_CLASSES: Record<ActionItemData["theme"], {
     badge: "bg-[#fff1f1] text-[#c44747] border-[#f0cccc]",
   },
   slate: {
-    card: "border-[#dbe8f4] bg-white hover:border-[#9fb7cc]",
-    icon: "bg-[#f2f6fa] text-[#334a62]",
-    badge: "bg-[#f2f6fa] text-[#334a62] border-[#dbe8f4]",
+    card: "border-[#dbe8f4] bg-white hover:border-[#0b84e5] hover:bg-[#fbfdff]",
+    icon: "bg-[#f2f7fc] text-[#0b2b53]",
+    badge: "bg-[#f2f7fc] text-[#0b2b53] border-[#dbe8f4]",
   },
   amber: {
     card: "border-[#dbe8f4] bg-white hover:border-[#0b84e5]",
@@ -72,10 +72,10 @@ const THEME_CLASSES: Record<ActionItemData["theme"], {
 };
 
 const ACTION_LAYOUTS: Record<string, string> = {
-  request: "min-h-[112px]",
-  report: "min-h-[112px]",
-  payment: "min-h-[112px]",
-  china: "min-h-[112px]",
+  request: "min-h-[118px]",
+  report: "min-h-[118px]",
+  payment: "min-h-[118px]",
+  china: "min-h-[118px]",
 };
 
 export const ActionButton = memo(({
@@ -94,23 +94,23 @@ export const ActionButton = memo(({
       onClick={onClick}
       className={cn(
         "group relative flex w-full min-w-0 flex-col justify-between overflow-hidden rounded-lg border p-3 text-left",
-        "shadow-[0_8px_18px_rgba(15,47,87,0.05)] transition-all duration-200 active:scale-[0.98]",
+        "shadow-[0_8px_18px_rgba(15,47,87,0.04)] transition-all duration-200 active:scale-[0.98]",
         theme.card,
-        isPrimary ? ACTION_LAYOUTS[item.id] ?? "min-h-[112px]" : "min-h-[76px] flex-row items-center gap-3",
+        isPrimary ? ACTION_LAYOUTS[item.id] ?? "min-h-[118px]" : "min-h-[70px] flex-row items-center gap-3",
       )}
     >
       {item.bgIcon && (
-        <div className="pointer-events-none absolute -bottom-5 -right-4 text-[#0b84e5]/[0.05] transition-transform duration-300 group-hover:scale-105">
+        <div className="pointer-events-none absolute -bottom-5 -right-4 text-[#0b84e5]/[0.04] transition-transform duration-300 group-hover:scale-105">
           {item.bgIcon}
         </div>
       )}
 
       <div className={cn("relative z-10 flex min-w-0", isPrimary ? "items-start justify-between" : "items-center")}>
-        <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-lg", theme.icon)}>
+        <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/70", theme.icon)}>
           {item.icon}
         </span>
         {isPrimary && (
-          <span className={cn("rounded-md border px-2 py-0.5 text-[9px] font-bold uppercase leading-4", theme.badge)}>
+          <span className={cn("rounded-md border px-2 py-0.5 text-[9px] font-semibold uppercase leading-4", theme.badge)}>
             {item.badge}
           </span>
         )}

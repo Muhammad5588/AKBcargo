@@ -76,9 +76,12 @@ export const EditProfileModal = ({ isOpen, onClose, user }: EditProfileModalProp
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[425px] bg-white border-[#dbe8f4] max-h-[90vh] overflow-y-auto rounded-lg">
+            <DialogContent className="sm:max-w-[425px] bg-[#f4f8fc] border-[#dbe8f4] max-h-[90vh] overflow-y-auto rounded-lg shadow-[0_18px_48px_rgba(10,35,70,0.18)]">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-[#07182f]">{t('profile.edit.title')}</DialogTitle>
+                    <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                        {t('profile.edit.secureLabel', 'Profil sozlamalari')}
+                    </p>
+                    <DialogTitle className="text-2xl font-semibold text-[#07182f]">{t('profile.edit.title')}</DialogTitle>
                     <DialogDescription className="text-[#63758a]">
                         {t('profile.edit.description')}
                     </DialogDescription>
@@ -170,11 +173,11 @@ export const EditProfileModal = ({ isOpen, onClose, user }: EditProfileModalProp
                         />
                     </div>
 
-                    <DialogFooter className="mt-6">
-                        <Button type="button" variant="outline" onClick={onClose} className="border-[#dbe8f4] text-[#63758a] hover:bg-[#f8fbfe]">
+                    <DialogFooter className="mt-6 gap-2">
+                        <Button type="button" variant="outline" onClick={onClose} className="rounded-lg border-[#dbe8f4] bg-white text-[#63758a] hover:bg-[#eef6ff]">
                             {t('profile.edit.cancel')}
                         </Button>
-                        <Button type="submit" disabled={isPending} className="bg-[#0b4edb] hover:bg-[#073fba] text-white">
+                        <Button type="submit" disabled={isPending} className="rounded-lg bg-[#0b4edb] hover:bg-[#073fba] text-white">
                             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {t('profile.edit.save')}
                         </Button>

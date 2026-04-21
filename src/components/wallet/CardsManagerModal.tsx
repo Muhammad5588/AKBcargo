@@ -129,7 +129,7 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-md bg-white border-[#dbe8f4] overflow-hidden h-[90vh] sm:h-auto flex flex-col rounded-lg">
+            <DialogContent className="sm:max-w-md bg-[#f4f8fc] border-[#dbe8f4] overflow-hidden h-[90vh] sm:h-auto flex flex-col rounded-lg shadow-[0_18px_48px_rgba(10,35,70,0.18)]">
                 <DialogHeader>
                     <div className="flex items-center gap-2">
                         {isAdding && (
@@ -142,7 +142,12 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                 <ChevronLeft className="h-5 w-5" />
                             </Button>
                         )}
-                        <DialogTitle>{isAdding ? t('wallet.cards.newCard', "Yangi karta") : t('wallet.cards.myCards', "Mening Kartalarim")}</DialogTitle>
+                        <div>
+                            <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                                {t('wallet.cards.centerLabel', 'Hamyon')}
+                            </p>
+                            <DialogTitle className="text-[#07182f]">{isAdding ? t('wallet.cards.newCard', "Yangi karta") : t('wallet.cards.myCards', "Mening Kartalarim")}</DialogTitle>
+                        </div>
                     </div>
                 </DialogHeader>
 
@@ -160,19 +165,19 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                 className="space-y-4 col-start-1 row-start-1 w-full h-full bg-transparent px-1 overflow-y-auto"
                             >
                                 <div className="space-y-4 pb-6">
-                                    <div className="p-6 rounded-lg bg-[#07182f] text-white shadow-sm mb-6 border border-[#0b2b53]">
+                                    <div className="p-6 rounded-lg bg-white text-[#07182f] shadow-[0_8px_20px_rgba(10,35,70,0.05)] mb-6 border border-[#dbe8f4]">
                                         <div className="flex justify-between items-start mb-8">
-                                            <div className="h-8 w-12 rounded bg-white/20" />
-                                            <CreditCard className="h-6 w-6 text-[#9ee8ff]" />
+                                            <div className="h-8 w-12 rounded-lg border border-[#cfe0f1] bg-[#eef6ff]" />
+                                            <CreditCard className="h-6 w-6 text-[#0b4edb]" />
                                         </div>
                                         <div className="space-y-4">
                                             <div>
-                                                <p className="text-xs text-white/60 uppercase mb-1">{t('wallet.cards.cardNumber', "Karta raqami")}</p>
+                                                <p className="text-xs text-[#63758a] font-semibold uppercase mb-1">{t('wallet.cards.cardNumber', "Karta raqami")}</p>
                                                 <p className="font-mono text-base sm:text-xl tracking-normal truncate">{cardNumber || '0000 0000 0000 0000'}</p>
                                             </div>
                                             <div className="flex justify-between">
                                                 <div>
-                                                    <p className="text-xs text-white/60 uppercase mb-1">{t('wallet.cards.cardHolder', "Egasi")}</p>
+                                                    <p className="text-xs text-[#63758a] font-semibold uppercase mb-1">{t('wallet.cards.cardHolder', "Egasi")}</p>
                                                     <p className="font-medium uppercase tracking-normal truncate max-w-[200px]">{cardHolder || 'ISMI FAMILIYASI'}</p>
                                                 </div>
                                             </div>
@@ -228,15 +233,15 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                             >
                                 {isLoading ? (
                                     <div className="flex justify-center p-8">
-                                        <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+                                        <Loader2 className="h-6 w-6 animate-spin text-[#0b4edb]" />
                                     </div>
                                 ) : cardsData?.cards.length === 0 ? (
-                                    <div className="text-center py-12 text-gray-500 flex flex-col items-center">
-                                        <div className="h-16 w-16 bg-[#eef6ff] rounded-lg flex items-center justify-center mb-4">
-                                            <CreditCard className="h-8 w-8 text-gray-400" />
+                                    <div className="text-center py-12 text-[#63758a] flex flex-col items-center rounded-lg border border-[#dbe8f4] bg-white px-5">
+                                        <div className="h-16 w-16 bg-[#eef6ff] border border-[#cfe0f1] rounded-lg flex items-center justify-center mb-4">
+                                            <CreditCard className="h-8 w-8 text-[#0b4edb]" />
                                         </div>
-                                        <p className="font-medium mb-1">{t('wallet.cards.noCards', "Hozircha kartalar yo'q")}</p>
-                                        <p className="text-sm text-gray-400 mb-6 max-w-xs">{t('wallet.cards.addPrompt', "To'lovlarni tezroq amalga oshirish uchun karta qo'shing")}</p>
+                                        <p className="font-semibold text-[#07182f] mb-1">{t('wallet.cards.noCards', "Hozircha kartalar yo'q")}</p>
+                                        <p className="text-sm text-[#63758a] mb-6 max-w-xs">{t('wallet.cards.addPrompt', "To'lovlarni tezroq amalga oshirish uchun karta qo'shing")}</p>
                                         <Button
                                             onClick={() => setIsAdding(true)}
                                             className="bg-[#0b4edb] hover:bg-[#073fba] text-white rounded-lg px-6"
@@ -253,16 +258,16 @@ export function CardsManagerModal({ isOpen, onClose }: CardsManagerModalProps) {
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: index * 0.1 }}
-                                                className="group relative overflow-hidden rounded-lg bg-[#07182f] p-5 text-white shadow-sm border border-[#0b2b53]"
+                                                className="group relative overflow-hidden rounded-lg bg-white p-5 text-[#07182f] shadow-[0_8px_20px_rgba(10,35,70,0.05)] border border-[#dbe8f4]"
                                             >
                                                 <div className="relative z-10 flex justify-between items-start">
                                                     <div>
                                                         <p className="font-mono text-xl tracking-normal">{card.masked_number}</p>
-                                                        <p className="mt-4 text-xs font-medium text-white/60 uppercase tracking-normal">
+                                                        <p className="mt-4 text-xs font-semibold text-[#63758a] uppercase tracking-normal">
                                                             {card.holder_name}
                                                         </p>
                                                     </div>
-                                                    <div className="h-8 w-12 rounded bg-white/10" />
+                                                    <div className="h-8 w-12 rounded-lg border border-[#cfe0f1] bg-[#eef6ff]" />
                                                 </div>
 
                                                 <Button

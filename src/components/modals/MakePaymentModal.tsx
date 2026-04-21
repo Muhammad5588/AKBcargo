@@ -200,7 +200,7 @@ const BottomDrawer = ({ open, onClose, children }: BottomDrawerProps) => (
           animate={{ y: 0 }}
           exit={{ y: '100%' }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="fixed bottom-0 left-0 right-0 z-[10010] bg-white rounded-t-lg max-h-[85vh] flex flex-col shadow-2xl border border-[#dbe8f4]"
+          className="fixed bottom-0 left-0 right-0 z-[10010] bg-white rounded-t-lg max-h-[85vh] flex flex-col shadow-[0_-18px_40px_rgba(15,47,87,0.14)] border border-[#dbe8f4]"
         >
           <div className="w-10 h-1 bg-[#cfe0f1] rounded-full mx-auto mt-4 mb-2 flex-shrink-0" />
           <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 pb-10">
@@ -584,7 +584,7 @@ const MakePaymentModal = ({ isOpen, onClose, preselectedFlightName }: MakePaymen
               {/* Left */}
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
                     flight.payment_status === 'partial'
                       ? 'bg-[#eef6ff]'
                       : 'bg-[#eef6ff]'
@@ -773,7 +773,7 @@ const MakePaymentModal = ({ isOpen, onClose, preselectedFlightName }: MakePaymen
           <div className="space-y-2">
             <button
               onClick={() => setIsPartial(!isPartial)}
-              className={`w-full flex items-center justify-between p-3.5 rounded-xl border transition-all duration-200 ${
+              className={`w-full flex items-center justify-between p-3.5 rounded-lg border transition-all duration-200 ${
                 isPartial
                   ? 'bg-[#eef6ff] border-[#0b84e5]'
                   : 'bg-white border-[#dbe8f4]'
@@ -967,9 +967,9 @@ const MakePaymentModal = ({ isOpen, onClose, preselectedFlightName }: MakePaymen
             whileTap={{ scale: 0.97 }}
             onClick={() => handleChooseMethod('cash')}
             className="h-14 rounded-lg font-bold text-base
-              bg-[#07182f]
-              hover:bg-[#0b2b53]
-              text-white shadow-sm
+              bg-white
+              hover:bg-[#eef6ff]
+              text-[#07182f] border border-[#dbe8f4] shadow-sm
               active:scale-[0.97] transition-all flex items-center justify-center gap-2.5"
           >
             <Banknote className="w-5 h-5" />
@@ -1155,27 +1155,27 @@ const MakePaymentModal = ({ isOpen, onClose, preselectedFlightName }: MakePaymen
           </div>
 
           {/* Card info */}
-          <div className="rounded-lg p-4 bg-[#07182f] border border-[#0b2b53]">
-            <p className="text-xs font-medium text-white/60 mb-1">
+          <div className="rounded-lg p-4 bg-white border border-[#dbe8f4] shadow-[0_8px_20px_rgba(10,35,70,0.05)]">
+            <p className="text-xs font-semibold text-[#63758a] mb-1 uppercase tracking-normal">
               {t('makePayment.transferTo')}
             </p>
             <div className="flex items-center justify-between">
-              <p className="text-2xl font-black tracking-normal text-white">
+              <p className="text-2xl font-black tracking-normal text-[#07182f]">
                 {details.card_number}
               </p>
               <button
                 onClick={handleCopyCard}
-                className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-90 transition-all"
+                className="p-2.5 rounded-lg border border-[#cfe0f1] bg-[#eef6ff] hover:bg-[#e1f0ff] active:scale-90 transition-all"
               >
                 {copied ? (
-                  <Check className="w-5 h-5 text-emerald-400" />
+                  <Check className="w-5 h-5 text-[#15835b]" />
                 ) : (
-                  <Copy className="w-5 h-5 text-white/70" />
+                  <Copy className="w-5 h-5 text-[#0b4edb]" />
                 )}
               </button>
             </div>
             {details.card_owner && (
-              <p className="text-xs text-white/60 mt-1.5">
+              <p className="text-xs text-[#63758a] mt-1.5">
                 {t('makePayment.cardOwner')}: {details.card_owner}
               </p>
             )}
@@ -1210,7 +1210,7 @@ const MakePaymentModal = ({ isOpen, onClose, preselectedFlightName }: MakePaymen
                   <img
                     src={receiptPreview}
                     alt="Receipt"
-                    className="max-h-36 mx-auto rounded-xl object-contain"
+                    className="max-h-36 mx-auto rounded-lg object-contain"
                   />
                 ) : (
                   <div className="w-16 h-16 mx-auto rounded-lg bg-[#effbf5] flex items-center justify-center">
@@ -1226,7 +1226,7 @@ const MakePaymentModal = ({ isOpen, onClose, preselectedFlightName }: MakePaymen
               </div>
             ) : (
               <div className="space-y-2 py-3">
-                <Upload className="w-10 h-10 text-[#9fb7cc] mx-auto" />
+                <Upload className="w-10 h-10 text-[#0b4edb] mx-auto" />
                 <p className="text-sm font-semibold text-[#63758a]">
                   {t('makePayment.dragOrClick')}
                 </p>
@@ -1310,7 +1310,7 @@ const MakePaymentModal = ({ isOpen, onClose, preselectedFlightName }: MakePaymen
                   ? 'bottom-0 left-0 right-0 rounded-t-lg max-h-[92vh]'
                   : 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md rounded-lg max-h-[90vh]'
               }
-              overflow-hidden shadow-2xl border border-[#dbe8f4]
+              overflow-hidden shadow-[0_18px_48px_rgba(10,35,70,0.18)] border border-[#dbe8f4]
               flex flex-col`}
           >
             {/* ---- Header ---- */}
@@ -1428,7 +1428,7 @@ const InfoCard = memo(
   }) => (
     <div
       onClick={onClick}
-      className={`rounded-xl p-3 border ${
+      className={`rounded-lg p-3 border ${
         accent
           ? 'bg-[#eef6ff] border-[#cfe0f1]'
           : 'bg-[#f8fbfe] border-[#dbe8f4]'

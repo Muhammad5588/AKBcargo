@@ -46,9 +46,9 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
          <div className="
             relative overflow-hidden rounded-lg p-6 text-center
             bg-white border border-[#dbe8f4]
-            shadow-sm
+            shadow-[0_8px_20px_rgba(10,35,70,0.05)]
          ">
-            <div className="w-12 h-12 bg-[#eef6ff] rounded-lg flex items-center justify-center mx-auto mb-3 text-[#0b4edb]">
+            <div className="w-12 h-12 bg-[#eef6ff] border border-[#cfe0f1] rounded-lg flex items-center justify-center mx-auto mb-3 text-[#0b4edb]">
                <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="font-semibold text-[#07182f] mb-1">{t('profile.documents.noDocuments')}</h3>
@@ -62,10 +62,17 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
    return (
       <>
          <div className="space-y-3">
-            <h3 className="text-sm font-semibold tracking-normal text-[#07182f] ml-1 flex items-center gap-2">
-               <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-[#0b4edb] px-1.5 text-[9px] font-black text-white">ID</span>
-               {t('profile.documents.title')}
-            </h3>
+            <div className="ml-1 flex items-center justify-between gap-3">
+               <div>
+                  <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                     {t('profile.documents.secureLabel', 'Hujjatlar')}
+                  </p>
+                  <h3 className="text-sm font-semibold tracking-normal text-[#07182f]">
+                     {t('profile.documents.title')}
+                  </h3>
+               </div>
+               <span className="inline-flex h-8 min-w-8 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef6ff] px-2 text-[10px] font-black text-[#0b4edb]">ID</span>
+            </div>
 
             <div className="flex gap-3 overflow-x-auto pb-4 -mx-1 px-1 snap-x scrollbar-hide">
                {images.map((src, idx) => (
@@ -75,7 +82,7 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
                         flex-shrink-0 relative overflow-hidden
                         w-40 sm:w-48 aspect-[3/2] snap-start rounded-lg
                         bg-[#f8fbfe] border border-[#dbe8f4]
-                        shadow-sm group cursor-pointer
+                        shadow-[0_8px_20px_rgba(10,35,70,0.05)] group cursor-pointer
                      "
                      onClick={() => setSelectedImage(src)}
                   >
@@ -132,7 +139,7 @@ const PassportImages = memo(({ images }: { images: string[] }) => {
                               max-h-[80vh] md:max-h-[85vh] 
                               max-w-full md:max-w-[90vw] 
                               object-contain 
-                              rounded-lg shadow-2xl
+                              rounded-lg shadow-[0_18px_48px_rgba(10,35,70,0.24)]
                               border border-white/10
                            "
                         />
@@ -220,6 +227,19 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                {/* Desktop Container Wrapper */}
                <div className="md:container md:mx-auto md:max-w-7xl md:p-6 lg:p-8">
                   <div className="flex flex-col md:grid md:grid-cols-12 md:gap-8 md:items-start pb-10 pt-6 md:pt-8">
+                     <div className="w-full px-4 md:px-0 md:col-span-12 mb-4">
+                        <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_10px_24px_rgba(10,35,70,0.06)]">
+                           <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                              {t('profile.pageLabel', 'Shaxsiy kabinet')}
+                           </p>
+                           <h1 className="mt-1 text-3xl font-semibold text-[#07182f]">
+                              {t('navigation.profile', 'Profil')}
+                           </h1>
+                           <p className="mt-1 text-sm text-[#63758a]">
+                              {t('profile.pageDescription', "Hisob ma'lumotlari va xavfsizlik sozlamalari")}
+                           </p>
+                        </div>
+                     </div>
 
                      {/* LEFT COLUMN (Desktop): Profile Hero & Quick Actions */}
                      <aside className="w-full md:col-span-5 lg:col-span-4 md:sticky md:top-8 self-start z-30">
@@ -249,7 +269,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                               </Button>
                               <Button
                                  variant="destructive"
-                                 className="w-full h-14 rounded-lg text-lg font-medium shadow-sm bg-[#c44747] hover:bg-[#a83a3a] transition-all active:scale-95"
+                                 className="w-full h-14 rounded-lg text-lg font-medium shadow-sm bg-[#fff1f1] hover:bg-[#ffe7e7] text-[#c44747] border border-[#f0cccc] transition-all active:scale-95"
                                  onClick={() => setIsLogoutModalOpen(true)}
                               >
                                  <LogOut className="mr-2 h-5 w-5" />
@@ -297,7 +317,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                               </Button>
                               <Button
                                  variant="destructive"
-                                 className="w-full h-14 rounded-lg text-lg font-medium shadow-sm bg-[#c44747] hover:bg-[#a83a3a] transition-all active:scale-95"
+                                 className="w-full h-14 rounded-lg text-lg font-medium shadow-sm bg-[#fff1f1] hover:bg-[#ffe7e7] text-[#c44747] border border-[#f0cccc] transition-all active:scale-95"
                                  onClick={() => setIsLogoutModalOpen(true)}
                               >
                                  <LogOut className="mr-2 h-5 w-5" />
@@ -354,7 +374,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
                            animate={{ opacity: 1, scale: 1, y: 0 }}
                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                           className="relative w-full max-w-sm bg-white border border-[#dbe8f4] rounded-lg p-6 shadow-2xl overflow-hidden"
+                           className="relative w-full max-w-sm bg-white border border-[#dbe8f4] rounded-lg p-6 shadow-[0_18px_48px_rgba(10,35,70,0.18)] overflow-hidden"
                         >
                            <div className="flex flex-col items-center text-center">
                               <div className="w-16 h-16 bg-[#fff1f1] rounded-lg flex items-center justify-center mb-4">
@@ -397,15 +417,14 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
 const ProfileSkeleton = memo(() => {
    return (
       <div className="min-h-screen bg-[#f4f8fc]">
-         <div className="bg-[#e8eff6] pt-25 pb-24 px-6 rounded-b-lg h-80 relative mb-24 overflow-hidden">
-            <div className="flex flex-col items-center relative z-10">
-               <Skeleton className="w-28 h-28 rounded-full mb-4 bg-white/10" />
-               <Skeleton className="h-8 w-48 bg-white/10 mb-2 rounded-lg" />
-               <Skeleton className="h-6 w-32 bg-white/10 rounded-full" />
+         <UniqueBackground />
+         <div className="container max-w-md mx-auto px-4 pt-6 relative z-10 space-y-5">
+            <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_10px_24px_rgba(10,35,70,0.06)]">
+               <Skeleton className="h-4 w-28 bg-[#e8eff6] rounded-lg mb-3" />
+               <Skeleton className="h-8 w-44 bg-[#e8eff6] rounded-lg mb-2" />
+               <Skeleton className="h-4 w-56 bg-[#e8eff6] rounded-lg" />
             </div>
-         </div>
-
-         <div className="container max-w-md mx-auto px-6 -mt-16 relative z-10 space-y-8">
+            <Skeleton className="h-36 w-full rounded-lg bg-[#e8eff6]" />
             <div className="grid grid-cols-3 gap-4">
                <Skeleton className="h-24 w-full rounded-lg bg-[#e8eff6]" />
                <Skeleton className="h-24 w-full rounded-lg bg-[#e8eff6]" />

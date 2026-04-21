@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { Phone, User, LogIn, MapPin } from 'lucide-react';
+import { LogIn, MapPin, Phone, ShieldCheck, User } from 'lucide-react';
 import { z } from 'zod';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -15,13 +15,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { regions, DISTRICTS } from '@/lib/validation';
 import TranslatedFormMessage from './TranslatedFormMessage';
 import {
-  premiumHeading,
-  premiumInput,
-  premiumMutedText,
-  premiumPrimaryButton,
-  premiumSecondaryButton,
-  premiumSurface,
+  akbHeading,
+  akbInput,
+  akbMutedText,
+  akbPrimaryButton,
+  akbSurface,
 } from '@/components/user_panel/premium';
+import { AKBLogo } from '@/components/user_panel/AKBLogo';
 
 const loginSchema = z.object({
   clientCode: z.string().min(1, 'login.validation.clientCodeRequired').regex(/^[A-Z][A-Z0-9-]*$/, 'login.validation.clientCodeInvalid'),
@@ -170,7 +170,10 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
     return { formatted: f, raw: c };
   };
 
-  const inp = premiumInput;
+  const inp = `${akbInput} text-base`;
+  const labelClass = 'flex items-center gap-2 text-sm font-semibold text-[#0b2b53]';
+  const selectContentClass = 'z-[10010] max-h-60 rounded-lg border-[#dbe8f4] bg-white text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)]';
+  const selectItemClass = 'cursor-pointer rounded-md text-[#0b2b53] focus:bg-[#eef7ff] focus:text-[#0b4edb] hover:bg-[#eef7ff]';
 
   return (
     <>
@@ -182,26 +185,27 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
         />
       )}
 
-      <div className="w-full max-w-md mx-auto px-5 py-8 sm:px-7 lg:py-12">
-        <div className={`relative overflow-hidden ${premiumSurface}`}>
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent dark:via-white/10" />
-          <div className="relative p-6 sm:p-8 lg:p-9">
-
-            {/* Header */}
-            <div className="mb-8">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black/[0.08] bg-white text-zinc-900 shadow-[0_6px_20px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-zinc-900 dark:text-white">
-                  <LogIn className="w-6 h-6" />
-                </div>
-                <div className="h-px flex-1 bg-black/[0.08] dark:bg-white/10" />
+      <div className="min-h-[calc(100vh-2rem)] w-full bg-[#f4f8fc] px-4 py-5 sm:px-6 sm:py-8">
+        <div className="mx-auto flex w-full max-w-md flex-col gap-5">
+          <header className="pt-1">
+            <div className="flex items-center justify-between gap-3">
+              <AKBLogo markClassName="h-12 w-12" textClassName="text-left" />
+              <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb]">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Telegram Mini App
               </div>
-              <h1 className={`text-3xl sm:text-4xl ${premiumHeading}`}>
+            </div>
+            <div className="mt-6">
+              <h1 className={`text-2xl ${akbHeading}`}>
                 {t('login.title')}
               </h1>
-              <p className={`${premiumMutedText} mt-2 text-sm`}>
+              <p className={`${akbMutedText} mt-2 text-sm leading-6`}>
                 {t('login.subtitle')}
               </p>
             </div>
+          </header>
+
+          <div className={`relative overflow-hidden p-5 sm:p-6 ${akbSurface}`}>
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -209,8 +213,8 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 {/* Client Code */}
                 <FormField control={form.control} name="clientCode" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
-                      <User className="w-4 h-4 text-zinc-500 dark:text-zinc-300" />
+                    <FormLabel className={labelClass}>
+                      <User className="h-4 w-4 text-[#0b84e5]" />
                       {t('login.clientCode')}
                     </FormLabel>
                     <FormControl>
@@ -218,7 +222,7 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                         placeholder={t('login.clientCodePlaceholder')}
                         {...field}
                         onChange={(e) => field.onChange(handleClientCodeInput(e.target.value))}
-                        className={`${inp} uppercase font-mono text-base tracking-widest placeholder:tracking-normal placeholder:font-normal`}
+                        className={`${inp} uppercase font-mono placeholder:font-normal`}
                       />
                     </FormControl>
                     <TranslatedFormMessage />
@@ -228,21 +232,21 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 {/* Phone */}
                 <FormField control={form.control} name="phoneNumber" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-zinc-500 dark:text-zinc-300" />
+                    <FormLabel className={labelClass}>
+                      <Phone className="h-4 w-4 text-[#0b84e5]" />
                       {t('login.phoneNumber')}
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center gap-2">
-                          <span className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">+998</span>
-                          <div className="w-px h-4 bg-zinc-300 dark:bg-white/20" />
+                          <span className="text-sm font-semibold text-[#0b2b53]">+998</span>
+                          <div className="h-4 w-px bg-[#cfe0f1]" />
                         </div>
                         <Input
                           placeholder={t('login.phoneNumberPlaceholder')}
                           value={handlePhoneInput(field.value).formatted}
                           onChange={(e) => field.onChange(handlePhoneInput(e.target.value).raw)}
-                          className={`${inp} pl-[4.5rem] font-mono tracking-wider placeholder:tracking-normal placeholder:font-normal`}
+                          className={`${inp} pl-[4.5rem] font-mono placeholder:font-normal`}
                         />
                       </div>
                     </FormControl>
@@ -255,19 +259,20 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                   <Button
                     type="submit"
                     disabled={submitStatus === 'loading'}
-                    className={`w-full text-base ${premiumPrimaryButton}`}
+                    className={`w-full text-base ${akbPrimaryButton}`}
                   >
+                    <LogIn className="h-4 w-4" />
                     {t('login.submit')}
                   </Button>
                 </div>
 
                 <div className="text-center pb-1">
-                  <p className={`text-sm ${premiumMutedText}`}>
+                  <p className={`text-sm ${akbMutedText}`}>
                     {t('login.noAccount')}{' '}
                     <button
                       type="button"
                       onClick={onNavigateToRegister}
-                      className="text-cyan-700 hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200 font-semibold transition-colors underline underline-offset-2 decoration-cyan-400/50"
+                      className="font-semibold text-[#0b4edb] underline underline-offset-2 decoration-[#37c5f3]/60 transition-colors hover:text-[#073fba]"
                     >
                       {t('login.register')}
                     </button>
@@ -288,7 +293,7 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/70 z-[9999] backdrop-blur-sm"
+                className="fixed inset-0 z-[9999] bg-[#07182f]/25 backdrop-blur-sm"
                 onClick={() => setShowAddressDrawer(false)}
               />
               <motion.div
@@ -296,14 +301,14 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white dark:bg-zinc-950 z-[10000] rounded-t-lg border border-zinc-200 dark:border-white/10 p-5 pb-8 shadow-2xl h-[80vh] overflow-y-auto flex flex-col"
+                className="fixed bottom-0 left-0 right-0 z-[10000] mx-auto flex h-[80vh] max-w-lg flex-col overflow-y-auto rounded-t-lg border border-[#dbe8f4] bg-[#f8fbfe] p-5 pb-8 shadow-[0_-18px_44px_rgba(15,47,87,0.16)]"
               >
-                <div className="w-10 h-1 bg-zinc-300 dark:bg-zinc-800 rounded-full mx-auto mb-6" />
+                <div className="mx-auto mb-6 h-1 w-10 rounded-full bg-[#cfe0f1]" />
                 <div className="text-center mb-6">
-                  <h2 className={`text-xl ${premiumHeading}`}>
+                  <h2 className={`text-xl ${akbHeading}`}>
                     {t('login.addressDrawer.title', 'Yashash manzilingizni kiriting')}
                   </h2>
-                  <p className={`text-sm ${premiumMutedText} mt-1`}>
+                  <p className={`text-sm ${akbMutedText} mt-1`}>
                     {t('login.addressDrawer.subtitle', 'Davom etish uchun viloyat va tumaningizni belgilang')}
                   </p>
                 </div>
@@ -312,8 +317,8 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                   <form onSubmit={addressForm.handleSubmit(onAddressSubmit)} className="space-y-5">
                     <FormField control={addressForm.control} name="region" render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
-                          <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                        <FormLabel className={labelClass}>
+                          <MapPin className="h-4 w-4 text-[#0b84e5]" />
                           {t('form.region')}
                         </FormLabel>
                         <Select onValueChange={(value) => {
@@ -325,12 +330,12 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                               <SelectValue placeholder={t('form.regionPlaceholder')} />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="z-[10010] dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl max-h-60">
+                          <SelectContent className={selectContentClass}>
                             {regions.map((r) => (
                               <SelectItem
                                 key={r.value}
                                 value={r.value}
-                                className="rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/10 dark:text-zinc-200"
+                                className={selectItemClass}
                               >
                                 {t(r.label)}
                               </SelectItem>
@@ -343,8 +348,8 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
 
                     <FormField control={addressForm.control} name="district" render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
-                          <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400 opacity-70" />
+                        <FormLabel className={labelClass}>
+                          <MapPin className="h-4 w-4 text-[#0b84e5]" />
                           {t('form.district')}
                         </FormLabel>
                         <Select
@@ -357,12 +362,12 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                               <SelectValue placeholder={t('form.districtPlaceholder')} />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="z-[10010] dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl max-h-60">
+                          <SelectContent className={selectContentClass}>
                             {addressForm.watch('region') && DISTRICTS[addressForm.watch('region')]?.map((d) => (
                               <SelectItem
                                 key={d.value}
                                 value={d.value}
-                                className="rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/10 dark:text-zinc-200"
+                                className={selectItemClass}
                               >
                                 {t(d.label)}
                               </SelectItem>
@@ -377,7 +382,7 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                       <Button
                         type="submit"
                         disabled={submitStatus === 'loading'}
-                        className={`w-full text-base ${premiumSecondaryButton}`}
+                        className={`w-full text-base ${akbPrimaryButton}`}
                       >
                         {t('login.addressDrawer.submit', 'Saqlash va Kirish')}
                       </Button>

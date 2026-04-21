@@ -55,23 +55,43 @@ const FlightCard = memo(({ flightName, onClick }: FlightCardProps) => {
     <motion.div
         layoutId={`flight-${flightName}`}
         onClick={onClick}
-        className="group cursor-pointer relative overflow-hidden rounded-lg bg-white border border-[#dbe8f4] shadow-sm transition-all duration-300 transform hover:-translate-y-[1px] hover:border-[#0b84e5]"
+        className="group cursor-pointer relative overflow-hidden rounded-lg bg-white border border-[#dbe8f4] shadow-[0_8px_22px_rgba(10,35,70,0.06)] transition-all duration-300 hover:-translate-y-[1px] hover:border-[#0b84e5]"
     >
-        <CardContent className="p-6 relative z-10">
-            <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 rounded-lg bg-[#eef6ff] flex items-center justify-center text-[#0b4edb] transition-transform duration-500">
-                    <Plane className="w-7 h-7" />
+        <CardContent className="p-4 relative z-10">
+            <div className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg bg-[#eef6ff] border border-[#cfe0f1] flex items-center justify-center text-[#0b4edb]">
+                        <Plane className="w-6 h-6" />
+                    </div>
+                    <div className="min-w-0">
+                        <p className="text-[11px] text-[#63758a] font-semibold uppercase tracking-normal mb-1">{t('reports.flight')}</p>
+                        <h3 className="text-xl font-semibold text-[#07182f] group-hover:text-[#0b4edb] transition-colors tracking-normal truncate">
+                            {flightName}
+                        </h3>
+                    </div>
                 </div>
-                <div className="text-[#9fb7cc] group-hover:text-[#0b4edb] transition-colors">
-                    <ArrowRight className="w-6 h-6" />
+                <div className="shrink-0 text-[#9fb7cc] group-hover:text-[#0b4edb] transition-colors">
+                    <ArrowRight className="w-5 h-5" />
                 </div>
             </div>
 
-            <div>
-                <p className="text-xs text-[#63758a] font-medium uppercase tracking-normal mb-1">{t('reports.flight')}</p>
-                <h3 className="text-2xl font-semibold text-[#07182f] group-hover:text-[#0b4edb] transition-colors tracking-normal">
-                    {flightName}
-                </h3>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+                <div className="rounded-lg border border-[#edf3f8] bg-[#f8fbfe] px-3 py-2">
+                    <p className="text-[10px] font-semibold uppercase tracking-normal text-[#7d91a8]">
+                        {t('reports.statusLabel', 'Holat')}
+                    </p>
+                    <p className="mt-1 text-sm font-bold text-[#0b4edb]">
+                        {t('cargoSummary.active', 'Aktiv')}
+                    </p>
+                </div>
+                <div className="rounded-lg border border-[#edf3f8] bg-[#f8fbfe] px-3 py-2">
+                    <p className="text-[10px] font-semibold uppercase tracking-normal text-[#7d91a8]">
+                        {t('reports.actionLabel', 'Amal')}
+                    </p>
+                    <p className="mt-1 text-sm font-bold text-[#07182f]">
+                        {t('reports.openDetails', "Tafsilotlarni ko'rish")}
+                    </p>
+                </div>
             </div>
         </CardContent>
     </motion.div>
@@ -84,19 +104,33 @@ const ReportHistoryItem = memo(({ report, onPay, onTrackClick, onImageClick }: R
         ? format(new Date(report.is_sent_web_date), 'dd MMMM, HH:mm', { locale: uz })
         : t('reports.unknownDate');
 
+    const isPaid = report.payment_status === 'paid';
+    const isPartial = report.payment_status === 'partial';
+    const StatusIcon = isPaid ? CheckCircle2 : isPartial ? Clock : XCircle;
+    const statusLabel = isPaid
+        ? t('reports.status.paid')
+        : isPartial
+            ? t('reports.status.partial')
+            : t('reports.status.unpaid');
+    const statusClasses = isPaid
+        ? 'bg-[#effbf5] text-[#15835b] border-[#ccebdc]'
+        : isPartial
+            ? 'bg-[#eef6ff] text-[#0b4edb] border-[#c7dcf3]'
+            : 'bg-[#fff1f1] text-[#c44747] border-[#f0cccc]';
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-lg p-5 border border-[#dbe8f4] shadow-sm space-y-4"
+            className="bg-white rounded-lg p-4 border border-[#dbe8f4] shadow-[0_8px_22px_rgba(10,35,70,0.06)] space-y-4"
         >
             {/* Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-[#edf3f8]">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-[#eef6ff] flex items-center justify-center text-[#0b4edb]">
+            <div className="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-[#edf3f8]">
+                <div className="flex min-w-0 items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-[#eef6ff] border border-[#cfe0f1] flex items-center justify-center text-[#0b4edb] shrink-0">
                         <Package className="w-5 h-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                         <p className="text-sm font-bold text-[#07182f]">{t('reports.cargoReport')}</p>
                         <p className="text-xs text-[#63758a] flex items-center gap-1">
                             <Calendar className="w-3 h-3" /> {sentDate}
@@ -104,21 +138,9 @@ const ReportHistoryItem = memo(({ report, onPay, onTrackClick, onImageClick }: R
                     </div>
                 </div>
                 {/* Status Badge */}
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border"
-                    style={{
-                        backgroundColor: report.payment_status === 'paid' ? 'rgba(16, 185, 129, 0.1)' :
-                            report.payment_status === 'partial' ? 'rgba(11, 78, 219, 0.10)' : 'rgba(196, 71, 71, 0.10)',
-                        borderColor: report.payment_status === 'paid' ? 'rgba(16, 185, 129, 0.2)' :
-                            report.payment_status === 'partial' ? 'rgba(11, 78, 219, 0.22)' : 'rgba(196, 71, 71, 0.22)',
-                        color: report.payment_status === 'paid' ? '#15835b' :
-                            report.payment_status === 'partial' ? '#0b4edb' : '#c44747'
-                    }}
-                >
-                    {report.payment_status === 'paid' ? <CheckCircle2 className="w-3 h-3" /> :
-                        report.payment_status === 'partial' ? <Clock className="w-3 h-3" /> :
-                            <XCircle className="w-3 h-3" />}
-                    {report.payment_status === 'paid' ? t('reports.status.paid') :
-                        report.payment_status === 'partial' ? t('reports.status.partial') : t('reports.status.unpaid')}
+                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border ${statusClasses}`}>
+                    <StatusIcon className="w-3.5 h-3.5" />
+                    {statusLabel}
                 </div>
             </div>
 
@@ -182,7 +204,7 @@ const ReportHistoryItem = memo(({ report, onPay, onTrackClick, onImageClick }: R
                             <button
                                 key={i}
                                 onClick={() => onTrackClick(code)}
-                                className="px-3 py-1.5 bg-[#eef6ff] hover:bg-[#e1f0ff] text-[#0b4edb] text-xs font-mono rounded-lg transition-colors border border-[#cfe0f1] active:scale-95"
+                                className="px-3 py-2 bg-[#eef6ff] hover:bg-[#e1f0ff] text-[#0b4edb] text-xs font-mono rounded-lg transition-colors border border-[#cfe0f1] active:scale-95"
                             >
                                 {code}
                             </button>
@@ -194,7 +216,7 @@ const ReportHistoryItem = memo(({ report, onPay, onTrackClick, onImageClick }: R
             {/* Payment Action */}
             {report.payment_status !== 'paid' && (
                 <Button
-                    className={`w-full rounded-lg font-bold text-white shadow-sm active:scale-[0.98] transition-all
+                    className={`w-full min-h-11 rounded-lg font-bold text-white shadow-sm active:scale-[0.98] transition-all
                 ${report.payment_status === 'unpaid'
                             ? 'bg-[#c44747] hover:bg-[#a83a3a]'
                             : 'bg-[#0b4edb] hover:bg-[#073fba]'
@@ -241,7 +263,7 @@ const ImagePreviewModal = ({ src, onClose }: ImagePreviewModalProps) => (
                     transition={{ type: "spring", damping: 25, stiffness: 300 }}
                     src={src}
                     alt="Preview"
-                    className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl cursor-default"
+                    className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-[0_18px_48px_rgba(15,47,87,0.24)] cursor-default"
                     onClick={(e) => e.stopPropagation()}
                 />
             </motion.div>
@@ -274,7 +296,7 @@ const BottomDrawer = ({ open, onClose, children }: BottomDrawerProps) => (
                     animate={{ y: 0 }}
                     exit={{ y: "100%" }}
                     transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                    className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-lg max-h-[85vh] flex flex-col shadow-2xl border border-[#dbe8f4]"
+                    className="fixed bottom-0 left-0 right-0 z-50 bg-[#f8fbfe] rounded-t-lg max-h-[85vh] flex flex-col shadow-[0_-18px_40px_rgba(10,35,70,0.16)] border border-[#dbe8f4]"
                 >
                     {/* Handle */}
                     <div className="w-12 h-1.5 bg-[#cfe0f1] rounded-full mx-auto mt-4 mb-2 flex-shrink-0" />
@@ -293,20 +315,28 @@ const SummaryChips = memo(({ flightsCount, history }: { flightsCount: number; hi
     const unpaidCount = history.filter((item) => item.payment_status !== 'paid').length;
     const paidCount = history.filter((item) => item.payment_status === 'paid').length;
     const chips = [
-        { label: t('cargoSummary.active', 'Aktiv'), value: flightsCount, className: 'bg-[#eef6ff] text-[#0b4edb] border-[#cfe0f1]' },
-        { label: t('cargoSummary.onWay', "Yo'lda"), value: history.length, className: 'bg-[#eafaff] text-[#0784a6] border-[#bdebf7]' },
-        { label: t('cargoSummary.billing', 'Hisob'), value: unpaidCount, className: 'bg-[#fff1f1] text-[#c44747] border-[#f0cccc]' },
-        { label: t('cargoSummary.delivered', 'Yetkazilgan'), value: paidCount, className: 'bg-[#effbf5] text-[#15835b] border-[#ccebdc]' },
+        { label: t('cargoSummary.active', 'Aktiv'), value: flightsCount, icon: Package, valueClass: 'text-[#0b4edb]', iconClass: 'bg-[#eef6ff] text-[#0b4edb] border-[#cfe0f1]' },
+        { label: t('cargoSummary.onWay', "Yo'lda"), value: history.length, icon: Plane, valueClass: 'text-[#0784a6]', iconClass: 'bg-[#eafaff] text-[#0784a6] border-[#bdebf7]' },
+        { label: t('cargoSummary.billing', 'Hisob'), value: unpaidCount, icon: CreditCard, valueClass: 'text-[#c44747]', iconClass: 'bg-[#fff1f1] text-[#c44747] border-[#f0cccc]' },
+        { label: t('cargoSummary.delivered', 'Yetkazilgan'), value: paidCount, icon: CheckCircle2, valueClass: 'text-[#15835b]', iconClass: 'bg-[#effbf5] text-[#15835b] border-[#ccebdc]' },
     ];
 
     return (
-        <div className="grid grid-cols-4 gap-2">
-            {chips.map((chip) => (
-                <div key={chip.label} className={`rounded-lg border px-2.5 py-2 text-center ${chip.className}`}>
-                    <p className="text-[10px] font-semibold leading-none">{chip.label}</p>
-                    <p className="mt-1 text-base font-black leading-none">{chip.value}</p>
-                </div>
-            ))}
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {chips.map((chip) => {
+                const Icon = chip.icon;
+                return (
+                    <div key={chip.label} className="rounded-lg border border-[#dbe8f4] bg-white px-3 py-3 shadow-[0_6px_16px_rgba(10,35,70,0.05)]">
+                        <div className="flex items-center justify-between gap-2">
+                            <p className={`text-2xl font-black leading-none ${chip.valueClass}`}>{chip.value}</p>
+                            <div className={`w-8 h-8 rounded-lg border flex items-center justify-center ${chip.iconClass}`}>
+                                <Icon className="w-4 h-4" />
+                            </div>
+                        </div>
+                        <p className="mt-2 text-xs font-semibold leading-none text-[#63758a]">{chip.label}</p>
+                    </div>
+                );
+            })}
         </div>
     );
 });
@@ -413,7 +443,7 @@ export default function UserReportsPage() {
     if (isUserLoading) {
         return (
             <div className="container max-w-md mx-auto p-4 pt-24 space-y-4 bg-[#f4f8fc]">
-                <Skeleton className="h-10 w-1/2 rounded-xl" />
+                <Skeleton className="h-10 w-1/2 rounded-lg" />
                 <Skeleton className="h-32 w-full rounded-lg" />
                 <Skeleton className="h-32 w-full rounded-lg" />
             </div>
@@ -439,40 +469,53 @@ export default function UserReportsPage() {
             <div className="container max-w-lg mx-auto px-4 relative z-10">
 
                 {/* Header / Navigation */}
-                <div className="mb-6 flex items-center justify-between">
-                    {view === 'detail' ? (
-                        <button
-                            onClick={() => setSelectedFlight(null)}
-                            className="flex items-center gap-2 text-[#63758a] hover:text-[#07182f] transition-colors"
-                        >
-                            <div className="p-2 rounded-lg bg-white border border-[#dbe8f4] hover:bg-[#eef6ff] transition-colors">
-                                <ChevronLeft className="w-5 h-5" />
+                <div className="mb-5 rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_10px_24px_rgba(10,35,70,0.06)]">
+                    <div className="flex items-start justify-between gap-4">
+                        {view === 'detail' ? (
+                            <div className="min-w-0">
+                                <button
+                                    onClick={() => setSelectedFlight(null)}
+                                    className="mb-3 flex items-center gap-2 text-[#63758a] hover:text-[#07182f] transition-colors"
+                                >
+                                    <span className="p-2 rounded-lg bg-[#f8fbfe] border border-[#dbe8f4] hover:bg-[#eef6ff] transition-colors">
+                                        <ChevronLeft className="w-5 h-5" />
+                                    </span>
+                                    <span className="font-bold text-sm">{t('reports.back')}</span>
+                                </button>
+                                <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                                    {t('reports.selectedFlight', 'Tanlangan reys')}
+                                </p>
+                                <h1 className="mt-1 truncate text-2xl font-semibold text-[#07182f]">
+                                    {selectedFlight}
+                                </h1>
                             </div>
-                            <span className="font-bold text-lg">{t('reports.back')}</span>
+                        ) : (
+                            <div className="min-w-0">
+                                <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                                    {t('reports.shipmentDashboard', 'Yuklar paneli')}
+                                </p>
+                                <h1 className="mt-1 text-3xl font-semibold text-[#07182f]">
+                                    {t('reports.title')}
+                                </h1>
+                                <p className="mt-1 text-sm text-[#63758a] font-medium">
+                                    {t('reports.subtitle')}
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Refresh Button */}
+                        <button
+                            onClick={handleRefresh}
+                            disabled={isRefreshing}
+                            className="shrink-0 p-3 rounded-lg bg-[#eef6ff] border border-[#cfe0f1] hover:bg-[#e1f0ff] active:scale-90 transition-all text-[#0b4edb] disabled:opacity-60"
+                        >
+                            <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
                         </button>
-                    ) : (
-                        <div>
-                            <h1 className="text-3xl font-semibold text-[#07182f]">
-                                {t('reports.title')}
-                            </h1>
-                            <p className="text-sm text-[#63758a] font-medium">
-                                {t('reports.subtitle')}
-                            </p>
-                        </div>
-                    )}
+                    </div>
 
-                    {/* Refresh Button */}
-                    <button
-                        onClick={handleRefresh}
-                        disabled={isRefreshing}
-                        className="p-3 rounded-lg bg-white border border-[#dbe8f4] hover:bg-[#eef6ff] active:scale-90 transition-all text-[#0b4edb]"
-                    >
-                        <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
-                    </button>
-                </div>
-
-                <div className="mb-5">
-                    <SummaryChips flightsCount={flights.length} history={history} />
+                    <div className="mt-4">
+                        <SummaryChips flightsCount={flights.length} history={history} />
+                    </div>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -496,9 +539,14 @@ export default function UserReportsPage() {
                                     />
                                 ))
                             ) : (
-                                <div className="text-center py-20 text-gray-400">
-                                    <Search className="w-12 h-12 mx-auto mb-3 opacity-30 text-[#7d91a8]" />
-                                    <p>{t('reports.noReports')}</p>
+                                <div className="rounded-lg border border-[#dbe8f4] bg-white px-6 py-12 text-center shadow-[0_8px_22px_rgba(10,35,70,0.06)]">
+                                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef6ff] text-[#0b4edb]">
+                                        <Search className="w-7 h-7" />
+                                    </div>
+                                    <p className="text-base font-bold text-[#07182f]">{t('reports.noReports')}</p>
+                                    <p className="mt-2 text-sm text-[#63758a]">
+                                        {t('reports.noReportsHint', "Yuklar kelganda ular shu yerda ko'rinadi.")}
+                                    </p>
                                 </div>
                             )}
                         </motion.div>
@@ -512,9 +560,11 @@ export default function UserReportsPage() {
                             className="space-y-4"
                         >
                             {/* Detail Title */}
-                            <div className="flex items-center gap-3 mb-2">
-                                <span className="w-1.5 h-6 bg-cyan-500 rounded-full" />
-                                <h2 className="text-xl font-bold">{t('reports.details', { flight: selectedFlight })}</h2>
+                            <div className="rounded-lg border border-[#dbe8f4] bg-[#eef6ff] px-4 py-3">
+                                <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                                    {t('reports.detailsLabel', 'Reys tafsilotlari')}
+                                </p>
+                                <h2 className="mt-1 text-lg font-semibold text-[#07182f]">{t('reports.details', { flight: selectedFlight })}</h2>
                             </div>
 
                             {isLoadingHistory ? (
@@ -530,7 +580,15 @@ export default function UserReportsPage() {
                                     />
                                 ))
                             ) : (
-                                <div className="text-center py-10 opacity-50">{t('reports.notFound')}</div>
+                                <div className="rounded-lg border border-[#dbe8f4] bg-white px-6 py-10 text-center shadow-[0_8px_22px_rgba(10,35,70,0.06)]">
+                                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef6ff] text-[#0b4edb]">
+                                        <Package className="w-7 h-7" />
+                                    </div>
+                                    <p className="text-base font-bold text-[#07182f]">{t('reports.notFound')}</p>
+                                    <p className="mt-2 text-sm text-[#63758a]">
+                                        {t('reports.notFoundHint', "Bu reys bo'yicha yuk ma'lumotlari hali mavjud emas.")}
+                                    </p>
+                                </div>
                             )}
                         </motion.div>
                     )}
@@ -546,11 +604,20 @@ export default function UserReportsPage() {
 
             {/* Custom Bottom Drawer for Track Details */}
             <BottomDrawer open={!!selectedTrackCode} onClose={() => setSelectedTrackCode(null)}>
-                <div className="text-left mb-4">
-                    <h3 className="text-xl font-bold flex items-center gap-2 text-[#07182f]">
-                        <Search className="w-5 h-5 text-[#0b4edb]" />
-                        {t('reports.searchResult')}
-                    </h3>
+                <div className="mb-4 rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_6px_16px_rgba(10,35,70,0.05)]">
+                    <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef6ff] text-[#0b4edb]">
+                            <Search className="w-5 h-5" />
+                        </div>
+                        <div className="min-w-0">
+                            <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                                {t('reports.searchResult')}
+                            </p>
+                            <h3 className="truncate text-lg font-semibold text-[#07182f]">
+                                {selectedTrackCode}
+                            </h3>
+                        </div>
+                    </div>
                 </div>
 
                 {isTrackLoading ? (

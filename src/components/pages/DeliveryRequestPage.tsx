@@ -41,7 +41,6 @@ interface DeliveryOption {
   label: string;
   descKey: string;
   icon: React.ReactNode;
-  gradient: string;
   iconBg: string;
 }
 
@@ -61,7 +60,6 @@ const DELIVERY_OPTIONS: DeliveryOption[] = [
     label: 'UzPost',
     descKey: 'deliveryRequest.options.uzpost',
     icon: <Mail className="w-8 h-8" />,
-    gradient: 'from-blue-500 to-sky-500',
     iconBg: 'bg-[#eef6ff] text-[#0b4edb]',
   },
   {
@@ -69,7 +67,6 @@ const DELIVERY_OPTIONS: DeliveryOption[] = [
     label: 'Yandex',
     descKey: 'deliveryRequest.options.yandex',
     icon: <Zap className="w-8 h-8" />,
-    gradient: 'from-red-500 to-rose-500',
     iconBg: 'bg-[#fff1f1] text-[#c44747]',
   },
   {
@@ -77,7 +74,6 @@ const DELIVERY_OPTIONS: DeliveryOption[] = [
     label: 'AKB Dostavka',
     descKey: 'deliveryRequest.options.mandarin',
     icon: <Package className="w-8 h-8" />,
-    gradient: 'from-emerald-500 to-green-500',
     iconBg: 'bg-[#effbf5] text-[#15835b]',
   },
   {
@@ -85,7 +81,6 @@ const DELIVERY_OPTIONS: DeliveryOption[] = [
     label: 'BTS',
     descKey: 'deliveryRequest.options.bts',
     icon: <Truck className="w-8 h-8" />,
-    gradient: 'from-blue-500 to-sky-500',
     iconBg: 'bg-[#eafaff] text-[#0784a6]',
   },
 ];
@@ -118,66 +113,131 @@ const CalcSkeleton = () => (
 // STEP INDICATOR
 // ============================================
 
-const StepIndicator = memo(({ current, total }: { current: number; total: number }) => (
-  <div className="flex items-center justify-center gap-2 mb-6">
-    {Array.from({ length: total }, (_, i) => (
-      <div
-        key={i}
-        className={`h-1.5 rounded-full transition-all duration-500 ${
-          i + 1 === current
-            ? 'w-8 bg-[#0b4edb]'
-            : i + 1 < current
-            ? 'w-4 bg-[#37c5f3]'
-            : 'w-4 bg-[#dbe8f4]'
-        }`}
-      />
-    ))}
+const StepIndicator = memo(({ current, total }: { current: number; total: number }) => {
+  const { t } = useTranslation();
+  const labels = [
+    t('deliveryRequest.stepper.type', 'Tur'),
+    t('deliveryRequest.stepper.flight', 'Reys'),
+    t('deliveryRequest.stepper.confirm', 'Tasdiq'),
+    t('deliveryRequest.stepper.done', 'Yakun'),
+  ];
+
+  return (
+    <div className="mb-5 rounded-lg border border-[#dbe8f4] bg-white p-3 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
+      <div className="grid grid-cols-4 gap-2">
+        {Array.from({ length: total }, (_, i) => {
+          const step = i + 1;
+          const isActive = step === current;
+          const isComplete = step < current;
+
+          return (
+            <div key={step} className="min-w-0">
+              <div
+                className={`mb-2 h-1.5 rounded-full transition-colors duration-300 ${
+                  isActive
+                    ? 'bg-[#0b4edb]'
+                    : isComplete
+                    ? 'bg-[#37c5f3]'
+                    : 'bg-[#dbe8f4]'
+                }`}
+              />
+              <div className="flex items-center gap-1.5">
+                <span
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] font-bold ${
+                    isActive
+                      ? 'bg-[#0b4edb] text-white'
+                      : isComplete
+                      ? 'bg-[#eef7ff] text-[#0b4edb]'
+                      : 'bg-[#f2f6fa] text-[#7d91a8]'
+                  }`}
+                >
+                  {isComplete ? <Check className="h-3 w-3" /> : step}
+                </span>
+                <span
+                  className={`truncate text-[10px] font-semibold ${
+                    isActive ? 'text-[#07182f]' : 'text-[#7d91a8]'
+                  }`}
+                >
+                  {labels[i]}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+});
+
+StepIndicator.displayName = 'StepIndicator';
+
+const StepHeader = memo(({ title, subtitle }: { title: string; subtitle?: string }) => (
+  <div className="mb-5">
+    <p className="mb-1 text-[11px] font-semibold uppercase text-[#0b84e5]">AKB Cargo</p>
+    <h2 className="text-2xl font-semibold leading-tight text-[#07182f]">{title}</h2>
+    {subtitle && <p className="mt-2 text-sm leading-6 text-[#63758a]">{subtitle}</p>}
   </div>
 ));
+
+StepHeader.displayName = 'StepHeader';
 
 // ============================================
 // STEP 1 — Delivery Type Selection
 // ============================================
 
 const StepTypeSelection = memo(
-  ({ onSelect }: { onSelect: (type: DeliveryType) => void }) => {
+  ({ selectedType, onSelect }: { selectedType: DeliveryType | null; onSelect: (type: DeliveryType) => void }) => {
     const { t } = useTranslation();
     return (
     <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-      <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.type.title')}</h2>
-      <p className="text-[#63758a] text-sm mb-6">
-        {t('deliveryRequest.steps.type.subtitle')}
-      </p>
+      <StepHeader
+        title={t('deliveryRequest.steps.type.title')}
+        subtitle={t('deliveryRequest.steps.type.subtitle')}
+      />
 
       <div className="grid grid-cols-2 gap-3">
-        {DELIVERY_OPTIONS.map((opt) => (
-          <button
-            key={opt.id}
-            onClick={() => onSelect(opt.id)}
-            className="
-              relative overflow-hidden rounded-lg p-5 text-left
-              bg-white border border-[#dbe8f4]
-              hover:border-[#0b84e5] hover:bg-[#f8fbfe]
-              active:scale-[0.96] transition-all duration-200
-              shadow-sm group
-            "
-          >
-            <div className="relative z-10">
-              <div
-                className={`
-                  w-14 h-14 rounded-lg flex items-center justify-center mb-4
-                  ${opt.iconBg}
-                `}
-              >
-                {opt.icon}
-              </div>
-              <h3 className="font-semibold text-base leading-tight mb-0.5 text-[#07182f]">{opt.label}</h3>
-              <p className="text-xs text-[#63758a]">{t(opt.descKey)}</p>
-            </div>
+        {DELIVERY_OPTIONS.map((opt) => {
+          const selected = selectedType === opt.id;
 
-            <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9fb7cc] group-hover:text-[#0b4edb] transition-colors" />
-          </button>
-        ))}
+          return (
+            <button
+              key={opt.id}
+              onClick={() => onSelect(opt.id)}
+              className={`
+                relative min-h-[148px] overflow-hidden rounded-lg p-4 text-left
+                border transition-all duration-200 active:scale-[0.97]
+                ${selected
+                  ? 'border-[#0b4edb] bg-[#eef7ff] shadow-[0_10px_22px_rgba(11,78,219,0.12)]'
+                  : 'border-[#dbe8f4] bg-white shadow-[0_8px_18px_rgba(15,47,87,0.04)] hover:border-[#0b84e5] hover:bg-[#f8fbfe]'
+                }
+              `}
+            >
+              <div className="relative z-10 flex h-full flex-col">
+                <div className="mb-4 flex items-start justify-between gap-2">
+                  <div
+                    className={`
+                      flex h-12 w-12 items-center justify-center rounded-lg border border-white/70
+                      ${selected ? 'bg-[#0b4edb] text-white' : opt.iconBg}
+                    `}
+                  >
+                    {opt.icon}
+                  </div>
+                  <span
+                    className={`flex h-6 w-6 items-center justify-center rounded-md border ${
+                      selected
+                        ? 'border-[#0b4edb] bg-[#0b4edb] text-white'
+                        : 'border-[#cfe0f1] bg-white text-transparent'
+                    }`}
+                  >
+                    <Check className="h-3.5 w-3.5" />
+                  </span>
+                </div>
+                <h3 className="text-base font-semibold leading-tight text-[#07182f]">{opt.label}</h3>
+                <p className="mt-1 text-xs leading-5 text-[#63758a]">{t(opt.descKey)}</p>
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
     );
@@ -203,33 +263,35 @@ const StepFlightSelection = memo(
     const { t } = useTranslation();
     return (
     <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-      <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.flight.title')}</h2>
-      <p className="text-[#63758a] text-sm mb-6">
-        {t('deliveryRequest.steps.flight.subtitle')}
-      </p>
+      <StepHeader
+        title={t('deliveryRequest.steps.flight.title')}
+        subtitle={t('deliveryRequest.steps.flight.subtitle')}
+      />
       {deliveryType === 'mandarin' && (
-        <span className="inline-flex items-center gap-1 text-xs text-[#15835b] mb-4 font-medium">
-          <Wallet className="w-4 h-4 text-[#15835b] inline-block mr-1" />
+        <div className="mb-4 flex items-start gap-2 rounded-lg border border-[#cfe0f1] bg-[#eef7ff] p-3 text-xs font-medium text-[#0b2b53]">
+          <Wallet className="mt-0.5 h-4 w-4 shrink-0 text-[#0b4edb]" />
           {t('deliveryRequest.steps.flight.mandarinNote')}
-        </span>
+        </div>
       )}
       {deliveryType === 'yandex' && (
-        <span className="inline-flex items-center gap-1 text-xs text-[#0b4edb] mb-4 font-medium">
-          <Clock className="w-4 h-4 text-[#0b4edb] inline-block mr-1" />
+        <div className="mb-4 flex items-start gap-2 rounded-lg border border-[#cfe0f1] bg-[#eef7ff] p-3 text-xs font-medium text-[#0b2b53]">
+          <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#0b4edb]" />
           {t('deliveryRequest.steps.flight.yandexNote')}
-        </span>
+        </div>
       )}
       {deliveryType === 'bts' && (
-        <span className="inline-flex items-center gap-1 text-xs text-[#0784a6] mb-4 font-medium">
-          <Clock className="w-4 h-4 text-[#0784a6] inline-block mr-1" />
+        <div className="mb-4 flex items-start gap-2 rounded-lg border border-[#cfe0f1] bg-[#eef7ff] p-3 text-xs font-medium text-[#0b2b53]">
+          <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#0b4edb]" />
           {t('deliveryRequest.steps.flight.btsNote')}
-        </span>
+        </div>
       )}
       {loading ? (
         <FlightSkeleton />
       ) : flights.length === 0 ? (
-        <div className="text-center py-16">
-          <Plane className="w-16 h-16 mx-auto text-[#9fb7cc] mb-4" />
+        <div className="rounded-lg border border-[#dbe8f4] bg-white px-5 py-12 text-center shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-[#eef7ff] text-[#0b4edb]">
+            <Plane className="h-8 w-8" />
+          </div>
           <p className="text-[#63758a] font-semibold text-lg">
             {t('deliveryRequest.steps.flight.empty')}
           </p>
@@ -248,11 +310,11 @@ const StepFlightSelection = memo(
                 className={`
                   w-full flex items-center gap-4 p-4 rounded-lg text-left
                   transition-all duration-200 active:scale-[0.98]
-                  border-2
+                  border shadow-[0_8px_18px_rgba(15,47,87,0.04)]
                   ${
                     isChecked
-                      ? 'border-[#0b84e5] bg-[#eef6ff] shadow-sm'
-                      : 'border-[#dbe8f4] bg-white hover:bg-[#f8fbfe]'
+                      ? 'border-[#0b4edb] bg-[#eef7ff]'
+                      : 'border-[#dbe8f4] bg-white hover:border-[#0b84e5] hover:bg-[#f8fbfe]'
                   }
                 `}
               >
@@ -260,7 +322,7 @@ const StepFlightSelection = memo(
                 <div
                   className={`
                     w-7 h-7 rounded-lg flex items-center justify-center shrink-0
-                    transition-all duration-200 border-2
+                    transition-all duration-200 border
                     ${
                       isChecked
                         ? 'bg-[#0b4edb] border-[#0b4edb]'
@@ -273,7 +335,7 @@ const StepFlightSelection = memo(
 
                 {/* Flight Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-base text-[#07182f]">{f.flight_name}</h3>
+                  <h3 className="font-semibold text-base text-[#07182f]">{f.flight_name}</h3>
                   <p className="text-xs text-[#63758a]">{t('deliveryRequest.steps.flight.flightLabel')}</p>
                 </div>
 
@@ -291,7 +353,7 @@ const StepFlightSelection = memo(
           className="
             flex-shrink-0 w-14 h-14 rounded-lg flex items-center justify-center
             bg-white border border-[#dbe8f4] text-[#63758a]
-            active:scale-95 transition-transform
+            active:scale-95 transition-colors hover:bg-[#f8fbfe]
           "
         >
           <ArrowLeft className="w-5 h-5" />
@@ -300,12 +362,12 @@ const StepFlightSelection = memo(
           onClick={onContinue}
           disabled={selected.length === 0}
           className={`
-            flex-1 h-14 rounded-lg font-bold text-base
+            flex-1 h-14 rounded-lg font-semibold text-base
             flex items-center justify-center gap-2
             transition-all duration-200 active:scale-[0.98]
             ${
               selected.length > 0
-                ? 'bg-[#0b4edb] text-white shadow-sm hover:bg-[#073fba]'
+                ? 'bg-[#0b4edb] text-white shadow-[0_10px_20px_rgba(11,78,219,0.18)] hover:bg-[#073fba]'
                 : 'bg-[#e8eff6] text-[#9fb7cc] cursor-not-allowed'
             }
           `}
@@ -339,20 +401,20 @@ const StepStandardConfirm = memo(
 
     return (
       <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-        <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.confirm.title')}</h2>
-        <p className="text-[#63758a] text-sm mb-6">
-          {t('deliveryRequest.steps.confirm.subtitle')}
-        </p>
+        <StepHeader
+          title={t('deliveryRequest.steps.confirm.title')}
+          subtitle={t('deliveryRequest.steps.confirm.subtitle')}
+        />
 
         {/* Summary Card */}
-        <div className="rounded-lg bg-white border border-[#dbe8f4] p-5 mb-4 shadow-sm">
+        <div className="mb-4 rounded-lg border border-[#dbe8f4] bg-white p-5 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-lg bg-[#eef6ff] flex items-center justify-center text-[#0b4edb]">
               <Truck className="w-6 h-6" />
             </div>
             <div>
               <p className="text-xs text-[#63758a]">{t('deliveryRequest.steps.confirm.deliveryType')}</p>
-              <h3 className="font-bold text-lg text-[#07182f]">{typeLabel}</h3>
+              <h3 className="text-lg font-semibold text-[#07182f]">{typeLabel}</h3>
             </div>
           </div>
 
@@ -364,7 +426,7 @@ const StepStandardConfirm = memo(
               {selectedFlights.map((f) => (
                 <span
                   key={f}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#eef6ff] text-[#0b4edb] text-sm font-semibold"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[#cfe0f1] bg-[#eef7ff] px-3 py-1.5 text-sm font-semibold text-[#0b4edb]"
                 >
                   <Plane className="w-3.5 h-3.5" />
                   {f}
@@ -375,7 +437,7 @@ const StepStandardConfirm = memo(
         </div>
 
         {/* Info box */}
-        <div className="rounded-lg bg-[#eef6ff] border border-[#cfe0f1] p-4 mb-6">
+        <div className="mb-6 rounded-lg border border-[#cfe0f1] bg-[#eef7ff] p-4">
           <p className="text-sm text-[#0b2b53] font-medium">
             <Trans
               i18nKey="deliveryRequest.steps.confirm.infoMessage"
@@ -392,7 +454,7 @@ const StepStandardConfirm = memo(
             className="
               flex-shrink-0 w-14 h-14 rounded-lg flex items-center justify-center
               bg-white border border-[#dbe8f4] text-[#63758a]
-              active:scale-95 transition-transform
+              active:scale-95 transition-colors hover:bg-[#f8fbfe]
             "
           >
             <ArrowLeft className="w-5 h-5" />
@@ -401,10 +463,10 @@ const StepStandardConfirm = memo(
             onClick={onSubmit}
             disabled={submitting}
             className="
-              flex-1 h-14 rounded-lg font-bold text-base text-white
+              flex-1 h-14 rounded-lg font-semibold text-base text-white
               flex items-center justify-center gap-2
-              bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98]
-              shadow-sm transition-all duration-200
+              bg-[#0b4edb] hover:bg-[#073fba] active:scale-[0.98]
+              shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-all duration-200
               disabled:opacity-60 disabled:cursor-not-allowed
             "
           >
@@ -477,8 +539,10 @@ function StepUzpostPayment({
   if (loading) {
     return (
       <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-        <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.uzpost.calcTitle')}</h2>
-        <p className="text-[#63758a] text-sm mb-6">{t('deliveryRequest.steps.uzpost.calcDesc')}</p>
+        <StepHeader
+          title={t('deliveryRequest.steps.uzpost.calcTitle')}
+          subtitle={t('deliveryRequest.steps.uzpost.calcDesc')}
+        />
         <CalcSkeleton />
       </div>
     );
@@ -488,10 +552,12 @@ function StepUzpostPayment({
   if (calcData?.warning) {
     return (
       <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-        <h2 className="text-2xl font-semibold mb-4 text-[#07182f]">{t('deliveryRequest.steps.uzpost.warningTitle')}</h2>
+        <StepHeader title={t('deliveryRequest.steps.uzpost.warningTitle')} />
 
-        <div className="rounded-lg bg-[#fff1f1] border border-[#f0cccc] p-6 text-center mb-6">
-          <AlertTriangle className="w-16 h-16 mx-auto text-[#c44747] mb-4" />
+        <div className="mb-6 rounded-lg border border-[#f0cccc] bg-[#fff7f7] p-6 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-[#fff1f1] text-[#c44747]">
+            <AlertTriangle className="h-8 w-8" />
+          </div>
           <p className="text-[#9f3131] font-bold text-lg mb-2">
             {t('deliveryRequest.steps.uzpost.weightExceeded')}
           </p>
@@ -504,7 +570,7 @@ function StepUzpostPayment({
             w-full h-14 rounded-lg font-bold text-base
             flex items-center justify-center gap-2
             bg-white border border-[#dbe8f4] text-[#63758a]
-            active:scale-[0.98] transition-all
+            active:scale-[0.98] transition-colors hover:bg-[#f8fbfe]
           "
         >
           <ArrowLeft className="w-5 h-5" />
@@ -520,18 +586,18 @@ function StepUzpostPayment({
 
   return (
     <div className="animate-in fade-in slide-in-from-right-4 duration-400">
-      <h2 className="text-2xl font-semibold mb-1 text-[#07182f]">{t('deliveryRequest.steps.uzpost.paymentTitle')}</h2>
-      <p className="text-[#63758a] text-sm mb-6">
-        {t('deliveryRequest.steps.uzpost.flightsFor', { flights: selectedFlights.join(', ') })}
-      </p>
+      <StepHeader
+        title={t('deliveryRequest.steps.uzpost.paymentTitle')}
+        subtitle={t('deliveryRequest.steps.uzpost.flightsFor', { flights: selectedFlights.join(', ') })}
+      />
 
       {/* Summary Grid */}
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 shadow-sm">
+        <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
           <p className="text-xs text-[#63758a] mb-1">{t('deliveryRequest.steps.uzpost.totalWeight')}</p>
           <p className="text-xl font-extrabold text-[#07182f]">{calcData.total_weight} kg</p>
         </div>
-        <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 shadow-sm">
+        <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
           <p className="text-xs text-[#63758a] mb-1">{t('deliveryRequest.steps.uzpost.totalAmount')}</p>
           <p className="text-xl font-extrabold text-[#0b4edb]">
             {calcData.total_amount.toLocaleString()} so'm
@@ -540,14 +606,14 @@ function StepUzpostPayment({
       </div>
 
       {/* Wallet Toggle */}
-      <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 mb-4 shadow-sm">
+      <div className="mb-4 rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#effbf5] flex items-center justify-center text-[#15835b]">
+            <div className="w-10 h-10 rounded-lg bg-[#eef7ff] flex items-center justify-center text-[#0b4edb]">
               <Wallet className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-bold text-sm">{t('deliveryRequest.steps.uzpost.walletPay')}</p>
+              <p className="font-semibold text-sm">{t('deliveryRequest.steps.uzpost.walletPay')}</p>
               <p className="text-xs text-[#63758a]">
                 {t('deliveryRequest.steps.uzpost.walletBalance', { balance: calcData.wallet_balance.toLocaleString() })}
               </p>
@@ -592,7 +658,7 @@ function StepUzpostPayment({
 
       {/* Card Info (only if payment remains) */}
       {!fullyCoveredByWallet && calcData.card && (
-        <div className="rounded-lg bg-white border border-[#dbe8f4] p-4 mb-4 shadow-sm">
+        <div className="mb-4 rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
           <p className="text-xs text-[#63758a] mb-2 font-medium">
             {t('deliveryRequest.steps.uzpost.paymentCard')}
           </p>
@@ -608,8 +674,8 @@ function StepUzpostPayment({
             <button
               onClick={() => handleCopy(calcData.card!.card_number)}
               className="
-                w-11 h-11 rounded-xl flex items-center justify-center
-                bg-[#eef6ff] text-[#0b4edb]
+                w-11 h-11 rounded-lg flex items-center justify-center
+                bg-[#eef7ff] text-[#0b4edb]
                 active:scale-90 transition-transform
               "
             >
@@ -627,17 +693,17 @@ function StepUzpostPayment({
           </p>
 
           {receiptFile ? (
-            <div className="rounded-lg bg-white border-2 border-dashed border-[#22a06b] p-4">
+            <div className="rounded-lg border-2 border-dashed border-[#0b84e5] bg-white p-4">
               {preview ? (
                 <div className="relative mb-3">
                   <img
                     src={preview}
                     alt="Receipt preview"
-                    className="w-full max-h-48 object-contain rounded-xl"
+                    className="w-full max-h-48 object-contain rounded-lg"
                   />
                   <button
                     onClick={clearFile}
-                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center active:scale-90 transition-transform shadow-lg"
+                    className="absolute top-2 right-2 w-8 h-8 rounded-lg bg-[#c44747] text-white flex items-center justify-center active:scale-90 transition-transform shadow-lg"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -645,7 +711,7 @@ function StepUzpostPayment({
               ) : (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <FileText className="w-8 h-8 text-emerald-500" />
+                    <FileText className="w-8 h-8 text-[#0b4edb]" />
                     <div>
                       <p className="font-semibold text-sm truncate max-w-[200px]">
                         {receiptFile.name}
@@ -676,7 +742,7 @@ function StepUzpostPayment({
                 transition-all duration-200 active:scale-[0.98] group
               "
             >
-              <div className="w-14 h-14 rounded-lg bg-[#eef6ff] flex items-center justify-center text-[#0b4edb] group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 rounded-lg bg-[#eef7ff] flex items-center justify-center text-[#0b4edb] group-hover:scale-105 transition-transform">
                 <Upload className="w-7 h-7" />
               </div>
               <div className="text-center">
@@ -707,7 +773,7 @@ function StepUzpostPayment({
           className="
             flex-shrink-0 w-14 h-14 rounded-lg flex items-center justify-center
             bg-white border border-[#dbe8f4] text-[#63758a]
-            active:scale-95 transition-transform
+            active:scale-95 transition-colors hover:bg-[#f8fbfe]
           "
         >
           <ArrowLeft className="w-5 h-5" />
@@ -716,13 +782,13 @@ function StepUzpostPayment({
           onClick={() => onSubmit(walletApplied, receiptFile)}
           disabled={submitting || (!fullyCoveredByWallet && !receiptFile)}
           className={`
-            flex-1 h-14 rounded-lg font-bold text-base text-white
+            flex-1 h-14 rounded-lg font-semibold text-base text-white
             flex items-center justify-center gap-2
             transition-all duration-200 active:scale-[0.98]
             ${
               submitting || (!fullyCoveredByWallet && !receiptFile)
                 ? 'bg-[#e8eff6] text-[#9fb7cc] cursor-not-allowed'
-                : 'bg-[#22a06b] hover:bg-[#15835b] shadow-sm'
+                : 'bg-[#0b4edb] hover:bg-[#073fba] shadow-[0_10px_20px_rgba(11,78,219,0.18)]'
             }
           `}
         >
@@ -747,9 +813,9 @@ function StepUzpostPayment({
 const StepSuccess = memo(({ onGoHome }: { onGoHome: () => void }) => {
   const { t } = useTranslation();
   return (
-  <div className="animate-in fade-in zoom-in-95 duration-500 text-center py-8">
-    <div className="w-24 h-24 mx-auto rounded-full bg-[#effbf5] flex items-center justify-center mb-6">
-      <CheckCircle2 className="w-14 h-14 text-[#22a06b]" />
+  <div className="animate-in fade-in zoom-in-95 duration-500 rounded-lg border border-[#dbe8f4] bg-white px-5 py-8 text-center shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
+    <div className="w-20 h-20 mx-auto rounded-lg bg-[#eef7ff] flex items-center justify-center mb-6">
+      <CheckCircle2 className="w-12 h-12 text-[#0b4edb]" />
     </div>
     <h2 className="text-2xl font-semibold mb-2 text-[#07182f]">{t('deliveryRequest.steps.success.title')}</h2>
     <p className="text-[#63758a] text-sm max-w-xs mx-auto mb-8">
@@ -759,10 +825,10 @@ const StepSuccess = memo(({ onGoHome }: { onGoHome: () => void }) => {
     <button
       onClick={onGoHome}
       className="
-        w-full max-w-xs mx-auto h-14 rounded-lg font-bold text-base text-white
+        w-full max-w-xs mx-auto h-14 rounded-lg font-semibold text-base text-white
         flex items-center justify-center gap-2
         bg-[#0b4edb] hover:bg-[#073fba] active:scale-[0.98]
-        shadow-sm transition-all duration-200
+        shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-all duration-200
       "
     >
       {t('deliveryRequest.steps.success.homeButton')}
@@ -779,11 +845,11 @@ const ProfileIncompleteAlert = memo(
   ({ onGoProfile, onBack }: { onGoProfile?: () => void; onBack: () => void }) => {
     const { t } = useTranslation();
     return (
-    <div className="animate-in fade-in zoom-in-95 duration-400 text-center py-8">
-      <div className="w-20 h-20 mx-auto rounded-full bg-[#fff1f1] flex items-center justify-center mb-5">
+    <div className="animate-in fade-in zoom-in-95 duration-400 rounded-lg border border-[#dbe8f4] bg-white px-5 py-8 text-center shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
+      <div className="w-20 h-20 mx-auto rounded-lg bg-[#fff1f1] flex items-center justify-center mb-5">
         <UserCog className="w-10 h-10 text-[#c44747]" />
       </div>
-      <h2 className="text-xl font-extrabold mb-2">{t('deliveryRequest.profile.title')}</h2>
+      <h2 className="text-xl font-semibold mb-2 text-[#07182f]">{t('deliveryRequest.profile.title')}</h2>
       <p className="text-[#63758a] text-sm max-w-xs mx-auto mb-6">
         {t('deliveryRequest.profile.desc')}
       </p>
@@ -793,10 +859,10 @@ const ProfileIncompleteAlert = memo(
           <button
             onClick={onGoProfile}
             className="
-              w-full h-14 rounded-lg font-bold text-base text-white
+              w-full h-14 rounded-lg font-semibold text-base text-white
               flex items-center justify-center gap-2
-              bg-blue-500 hover:bg-blue-600 active:scale-[0.98]
-              shadow-sm transition-all duration-200
+              bg-[#0b4edb] hover:bg-[#073fba] active:scale-[0.98]
+              shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-all duration-200
             "
           >
             <UserCog className="w-5 h-5" />
@@ -806,10 +872,10 @@ const ProfileIncompleteAlert = memo(
         <button
           onClick={onBack}
           className="
-            w-full h-14 rounded-lg font-bold text-base
+            w-full h-14 rounded-lg font-semibold text-base
             flex items-center justify-center gap-2
             bg-white border border-[#dbe8f4] text-[#63758a]
-            active:scale-[0.98] transition-all
+            active:scale-[0.98] transition-colors hover:bg-[#f8fbfe]
           "
         >
           <ArrowLeft className="w-5 h-5" />
@@ -942,14 +1008,17 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
     return (
       <div className="pb-8">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="mb-5 flex items-center gap-3">
           <button
             onClick={() => setProfileIncomplete(false)}
-            className="w-10 h-10 rounded-lg flex items-center justify-center bg-white border border-[#dbe8f4] text-[#63758a] active:scale-90 transition-transform"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#dbe8f4] bg-white text-[#63758a] transition-colors active:scale-95 hover:bg-[#f8fbfe]"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h1 className="text-lg font-bold">{t('deliveryRequest.headerTitleShort')}</h1>
+          <div>
+            <p className="text-[11px] font-semibold uppercase text-[#0b84e5]">AKB Cargo</p>
+            <h1 className="text-lg font-semibold text-[#07182f]">{t('deliveryRequest.headerTitleShort')}</h1>
+          </div>
         </div>
         <ProfileIncompleteAlert
           onGoProfile={onNavigateToProfile}
@@ -962,20 +1031,23 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
   return (
     <div className="pb-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-2">
+      <div className="mb-3 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <button
             onClick={currentStep === 1 ? onBack : goBackStep}
-            className="w-10 h-10 rounded-lg flex items-center justify-center bg-white border border-[#dbe8f4] text-[#63758a] active:scale-90 transition-transform"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#dbe8f4] bg-white text-[#63758a] transition-colors active:scale-95 hover:bg-[#f8fbfe]"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h1 className="text-lg font-bold">{t('deliveryRequest.headerTitle')}</h1>
+          <div>
+            <p className="text-[11px] font-semibold uppercase text-[#0b84e5]">AKB Cargo</p>
+            <h1 className="text-lg font-semibold leading-tight text-[#07182f]">{t('deliveryRequest.headerTitle')}</h1>
+          </div>
         </div>
         {onNavigateToHistory && (
           <button
             onClick={onNavigateToHistory}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#eef6ff] border border-[#cfe0f1] text-xs font-semibold text-[#0b4edb] active:scale-95 transition-transform hover:bg-[#e1f0ff]"
+            className="flex items-center gap-1.5 rounded-lg border border-[#cfe0f1] bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb] transition-colors active:scale-95 hover:bg-[#e1f0ff]"
           >
             <Clock className="w-3.5 h-3.5" />
             {t('deliveryRequest.historyButton')}
@@ -987,7 +1059,7 @@ export default function DeliveryRequestPage({ onBack, onNavigateToProfile, onNav
       {currentStep < 4 && <StepIndicator current={currentStep} total={totalSteps} />}
 
       {/* Steps */}
-      {currentStep === 1 && <StepTypeSelection onSelect={handleTypeSelect} />}
+      {currentStep === 1 && <StepTypeSelection selectedType={deliveryType} onSelect={handleTypeSelect} />}
 
       {currentStep === 2 && (
         <StepFlightSelection

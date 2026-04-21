@@ -38,21 +38,21 @@ export const FloatingNavbar = <T,>({
     };
 
     const containerClasses = cn(
-        "grid w-full max-w-[430px] grid-cols-4 gap-1 rounded-lg border border-[#d7e5f2] bg-white p-1.5 shadow-[0_12px_28px_rgba(10,35,70,0.12)] pointer-events-auto",
+        "grid w-full max-w-[430px] grid-cols-4 gap-1 rounded-lg border border-[#d7e5f2] bg-white p-1.5 shadow-[0_12px_28px_rgba(10,35,70,0.12)] pointer-events-auto backdrop-blur-md",
         "md:max-w-[460px]"
     );
 
     const buttonBaseClasses = "relative flex h-14 min-w-0 flex-col items-center justify-center gap-1 overflow-hidden rounded-md transition-colors duration-200";
 
     const buttonInactiveClasses = cn(
-        "text-[#63758a] hover:bg-[#eef6ff] hover:text-[#0b4edb]"
+        "text-[#63758a] hover:bg-[#eef7ff] hover:text-[#0b4edb]"
     );
 
     const buttonActiveClasses = cn(
-        "bg-[#eef6ff] text-[#0b4edb]"
+        "bg-[#0b4edb] text-white shadow-[0_8px_16px_rgba(11,78,219,0.18)]"
     );
 
-    const activePillClasses = "absolute inset-x-2 bottom-1 h-0.5 rounded-full bg-[#0b84e5]";
+    const activePillClasses = "absolute inset-x-4 bottom-1 h-0.5 rounded-full bg-white/80";
 
     const activeTransition = { type: "spring", stiffness: 240, damping: 28, mass: 0.9 } as const;
 

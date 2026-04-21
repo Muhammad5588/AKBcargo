@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -9,11 +9,15 @@ import {
   CheckCircle2,
   Clock,
   AlertCircle,
+  Wallet,
+  TrendingDown,
 } from 'lucide-react';
 import { paymentService, type TransactionHistoryItem } from '@/api/services/paymentService';
+import { walletService } from '@/api/services/walletService';
 import { formatTashkentDateTime } from '@/lib/format';
 import { UniqueBackground } from '@/components/ui/UniqueBackground';
 import { useTranslation } from 'react-i18next';
+import MakePaymentModal from '@/components/modals/MakePaymentModal';
 
 interface UserHistoryPageProps {
   onBack?: () => void;
@@ -47,6 +51,55 @@ const BreakdownBadge = ({ label, value }: { label: string; value: number }) => (
     <span className="text-xs sm:text-sm text-[#07182f] whitespace-nowrap">{value.toLocaleString('uz-UZ')}</span>
   </div>
 );
+
+const SummaryValueCard = ({
+  label,
+  amount,
+  helper,
+  tone,
+  icon: Icon,
+  loading,
+}: {
+  label: string;
+  amount: number;
+  helper: string;
+  tone: 'positive' | 'debt';
+  icon: typeof Wallet;
+  loading: boolean;
+}) => {
+  const toneClasses = tone === 'positive'
+    ? {
+      shell: 'border-[#ccebdc] bg-[#f6fffb]',
+      icon: 'bg-[#effbf5] text-[#15835b] border-[#ccebdc]',
+      value: 'text-[#15835b]',
+    }
+    : {
+      shell: 'border-[#f0cccc] bg-[#fff8f8]',
+      icon: 'bg-[#fff1f1] text-[#c44747] border-[#f0cccc]',
+      value: 'text-[#c44747]',
+    };
+
+  return (
+    <div className={`rounded-lg border p-4 shadow-[0_8px_20px_rgba(10,35,70,0.05)] ${toneClasses.shell}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[11px] font-bold uppercase tracking-normal text-[#63758a]">{label}</p>
+          {loading ? (
+            <div className="mt-3 h-7 w-28 animate-pulse rounded-lg bg-[#dbe8f4]" />
+          ) : (
+            <p className={`mt-2 text-2xl font-black leading-none tracking-normal ${toneClasses.value}`}>
+              {formatMoney(amount)}
+            </p>
+          )}
+          <p className="mt-1 text-xs font-medium text-[#63758a]">{helper}</p>
+        </div>
+        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border ${toneClasses.icon}`}>
+          <Icon className="h-5 w-5" />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const HistoryCard = ({ item }: { item: TransactionHistoryItem }) => {
   const { t } = useTranslation();
@@ -149,6 +202,7 @@ const SkeletonCard = () => (
 
 export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
   const { t } = useTranslation();
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const {
     data,
     isLoading,
@@ -167,29 +221,85 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
     initialPageParam: 0,
   });
 
+  const {
+    data: walletData,
+    isLoading: isWalletLoading,
+    refetch: refetchWallet,
+  } = useQuery({
+    queryKey: ['walletBalance'],
+    queryFn: walletService.getWalletBalance,
+  });
+
   const items = data?.pages.flatMap((page) => page.items) ?? [];
   const totalCount = data?.pages?.[0]?.total_count ?? 0;
+  const walletBalance = walletData?.wallet_balance ?? 0;
+  const debt = walletData?.debt ?? 0;
+  const debtAmount = debt < 0 ? Math.abs(debt) : 0;
+
+  const handlePaymentClose = () => {
+    setIsPaymentOpen(false);
+    refetch();
+    refetchWallet();
+  };
 
   return (
     <div className="min-h-screen bg-[#f4f8fc] text-[#07182f] pb-28 pt-6 md:pt-8 relative">
       <UniqueBackground />
 
       <div className="container mx-auto px-4 max-w-lg md:max-w-3xl lg:max-w-5xl relative z-10">
-        <div className="flex items-center gap-3">
-          {onBack && (
-            <button
-              onClick={onBack}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[#dbe8f4] bg-white text-sm font-semibold text-[#63758a] shadow-sm hover:-translate-y-[1px] hover:text-[#0b4edb] transition"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              {t('paymentHistory.back')}
-            </button>
-          )}
-          <div>
-            <p className="text-xs font-semibold text-[#63758a] uppercase tracking-normal">{t('paymentHistory.subtitle')}</p>
-          <h1 className="text-2xl font-semibold text-[#07182f]">{t('paymentHistory.title')}</h1>
-            <p className="text-sm text-[#63758a]">{t('paymentHistory.desc')}</p>
+        <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_10px_24px_rgba(10,35,70,0.06)]">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              {onBack && (
+                <button
+                  onClick={onBack}
+                  className="mb-3 inline-flex items-center gap-2 rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] px-3 py-2 text-sm font-semibold text-[#63758a] transition hover:bg-[#eef6ff] hover:text-[#0b4edb]"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  {t('paymentHistory.back')}
+                </button>
+              )}
+              <p className="text-[11px] font-bold text-[#0b4edb] uppercase tracking-normal">
+                {t('paymentHistory.subtitle')}
+              </p>
+              <h1 className="mt-1 text-3xl font-semibold text-[#07182f]">
+                {t('paymentHistory.financialCenter', 'Moliyaviy markaz')}
+              </h1>
+              <p className="mt-1 text-sm text-[#63758a]">
+                {t('paymentHistory.desc')}
+              </p>
+            </div>
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef6ff] text-[#0b4edb]">
+              <CreditCard className="h-5 w-5" />
+            </div>
           </div>
+
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <SummaryValueCard
+              label={t('wallet.modal.availableBalance', "Mavjud mablag'")}
+              amount={walletBalance}
+              helper={t('paymentHistory.summary.balanceHelper', 'Hamyon balansi')}
+              tone="positive"
+              icon={Wallet}
+              loading={isWalletLoading}
+            />
+            <SummaryValueCard
+              label={t('wallet.modal.activeDebt', 'Umumiy qarz')}
+              amount={debtAmount}
+              helper={t('paymentHistory.summary.debtHelper', "To'lanishi kerak")}
+              tone="debt"
+              icon={TrendingDown}
+              loading={isWalletLoading}
+            />
+          </div>
+
+          <button
+            onClick={() => setIsPaymentOpen(true)}
+            className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#0b4edb] px-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition hover:bg-[#073fba] active:scale-[0.99]"
+          >
+            <CreditCard className="h-5 w-5" />
+            {t('reports.pay', "To'lov qilish")}
+          </button>
         </div>
 
         {isError && (
@@ -220,8 +330,22 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
           </div>
         )}
 
+        <div className="mt-6 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+              {t('paymentHistory.historyLabel', "To'lovlar")}
+            </p>
+            <h2 className="text-xl font-semibold text-[#07182f]">
+              {t('paymentHistory.title')}
+            </h2>
+          </div>
+          <span className="rounded-full border border-[#dbe8f4] bg-white px-3 py-1.5 text-xs font-bold text-[#63758a]">
+            {totalCount}
+          </span>
+        </div>
+
         {isLoading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-4">
             {[...Array(3)].map((_, idx) => (
               <SkeletonCard key={idx} />
             ))}
@@ -229,7 +353,7 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
         )}
 
         {!isLoading && !isError && items.length === 0 && (
-          <div className="relative overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-sm p-8 text-center mt-6">
+          <div className="relative overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-[0_8px_22px_rgba(10,35,70,0.06)] p-8 text-center mt-4">
             <div className="flex items-center justify-center w-14 h-14 mx-auto rounded-lg bg-[#eef6ff] text-[#0b4edb] mb-3">
               <ReceiptText className="w-6 h-6" />
             </div>
@@ -238,7 +362,7 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-4">
           {items.map((item) => (
             <HistoryCard key={item.id} item={item} />
           ))}
@@ -256,6 +380,11 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
           </div>
         )}
       </div>
+
+      <MakePaymentModal
+        isOpen={isPaymentOpen}
+        onClose={handlePaymentClose}
+      />
     </div>
   );
 }

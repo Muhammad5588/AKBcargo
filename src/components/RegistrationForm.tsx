@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { Calendar as CalendarIcon, MapPin, Phone, Sparkles } from 'lucide-react';
+import { Calendar as CalendarIcon, FileText, Home, IdCard, MapPin, Phone, ShieldCheck, UserRound } from 'lucide-react';
 import { format, parse, isValid } from 'date-fns';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { register as registerApi, getTelegramWebAppData } from '@/api/services/auth';
 import StatusAnimation from './StatusAnimation';
 import { Button } from '@/components/ui/button';
@@ -16,15 +16,40 @@ import ImageUpload from './ImageUpload';
 import TranslatedFormMessage from './TranslatedFormMessage';
 import { formSchema, regions, DISTRICTS, type RegistrationFormData } from '@/lib/validation';
 import {
-  premiumHeading,
-  premiumInput,
-  premiumMutedText,
-  premiumPrimaryButton,
-  premiumSurface,
+  akbHeading,
+  akbInput,
+  akbMutedText,
+  akbPrimaryButton,
+  akbSurface,
 } from '@/components/user_panel/premium';
+import { AKBLogo } from '@/components/user_panel/AKBLogo';
 
 interface RegistrationFormProps {
   onNavigateToLogin?: () => void;
+}
+
+interface AuthSectionProps {
+  children: ReactNode;
+  description: string;
+  icon: ReactNode;
+  title: string;
+}
+
+function AuthSection({ children, description, icon, title }: AuthSectionProps) {
+  return (
+    <section className="space-y-4 border-b border-[#e5edf6] pb-5 last:border-b-0 last:pb-0">
+      <div className="flex items-start gap-3">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef7ff] text-[#0b4edb]">
+          {icon}
+        </div>
+        <div className="min-w-0">
+          <h2 className="text-base font-semibold text-[#07182f]">{title}</h2>
+          <p className="mt-1 text-sm leading-5 text-[#63758a]">{description}</p>
+        </div>
+      </div>
+      <div className="space-y-4">{children}</div>
+    </section>
+  );
 }
 
 export default function RegistrationForm({ onNavigateToLogin }: RegistrationFormProps) {
@@ -130,7 +155,11 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
     }
   };
 
-  const inp = premiumInput;
+  const inp = `${akbInput} text-base`;
+  const labelClass = 'flex items-center gap-2 text-sm font-semibold text-[#0b2b53]';
+  const plainLabelClass = 'text-sm font-semibold text-[#0b2b53]';
+  const selectContentClass = 'max-h-60 rounded-lg border-[#dbe8f4] bg-white text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)]';
+  const selectItemClass = 'cursor-pointer rounded-md text-[#0b2b53] focus:bg-[#eef7ff] focus:text-[#0b4edb] hover:bg-[#eef7ff]';
 
   return (
     <>
@@ -142,284 +171,304 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
         />
       )}
 
-      <div className="w-full max-w-3xl mx-auto px-5 py-8 sm:px-7 lg:py-12">
-        <div className={`relative overflow-hidden ${premiumSurface}`}>
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent dark:via-white/10" />
-          <div className="relative p-6 sm:p-8 lg:p-9">
-
-            {/* Header */}
-            <div className="mb-8">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black/[0.08] bg-white text-zinc-900 shadow-[0_6px_20px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-zinc-900 dark:text-white">
-                  <Sparkles className="w-6 h-6" />
-                </div>
-                <div className="h-px flex-1 bg-black/[0.08] dark:bg-white/10" />
+      <div className="min-h-screen w-full bg-[#f4f8fc] px-4 py-5 pb-8 sm:px-6 sm:py-8">
+        <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
+          <header className="pt-1">
+            <div className="flex items-center justify-between gap-3">
+              <AKBLogo markClassName="h-12 w-12" textClassName="text-left" />
+              <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb]">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Yangi hisob
               </div>
-              <h1 className={`text-3xl sm:text-4xl ${premiumHeading}`}>
+            </div>
+            <div className="mt-6">
+              <h1 className={`text-2xl ${akbHeading}`}>
                 {t('form.title')}
               </h1>
-              <p className={`${premiumMutedText} mt-2 text-sm`}>
-                {t('form.haveAccount')} {t('form.login')}
+              <p className={`${akbMutedText} mt-2 text-sm leading-6`}>
+                AKB Cargo xizmatlaridan foydalanish uchun ma'lumotlarni to'ldiring.
               </p>
             </div>
+          </header>
 
+          <div className={`relative overflow-hidden p-5 sm:p-6 ${akbSurface}`}>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-
-                {/* Full Name */}
-                <FormField control={form.control} name="fullName" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
-                      {t('form.fullName')}
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder={t('form.fullNamePlaceholder')} {...field} className={inp} />
-                    </FormControl>
-                    <TranslatedFormMessage />
-                  </FormItem>
-                )} />
-
-                {/* Passport + PINFL */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <FormField control={form.control} name="passportSeries" render={({ field }) => (
+                <AuthSection
+                  icon={<IdCard className="h-4 w-4" />}
+                  title="Shaxsiy ma'lumotlar"
+                  description="Ism, passport va tug'ilgan sana ma'lumotlarini kiriting."
+                >
+                  <FormField control={form.control} name="fullName" render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
-                        {t('form.passportSeries')}
+                      <FormLabel className={labelClass}>
+                        <UserRound className="h-4 w-4 text-[#0b84e5]" />
+                        {t('form.fullName')}
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder={t('form.passportSeriesPlaceholder')}
-                          {...field}
-                          onChange={(e) => field.onChange(handlePassportInput(e.target.value))}
-                          maxLength={9}
-                          className={`${inp} uppercase font-mono tracking-widest placeholder:tracking-normal placeholder:font-normal`}
-                        />
+                        <Input placeholder={t('form.fullNamePlaceholder')} {...field} className={inp} />
                       </FormControl>
                       <TranslatedFormMessage />
                     </FormItem>
                   )} />
 
-                  <FormField control={form.control} name="pinfl" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
-                        {t('form.pinfl')}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t('form.pinflPlaceholder')}
-                          {...field}
-                          onChange={(e) => field.onChange(e.target.value.replace(/\D/g, ''))}
-                          maxLength={14}
-                          className={`${inp} font-mono tracking-wider placeholder:tracking-normal placeholder:font-normal`}
-                        />
-                      </FormControl>
-                      <TranslatedFormMessage />
-                    </FormItem>
-                  )} />
-                </div>
-
-                {/* Date of Birth */}
-                <FormField control={form.control} name="dateOfBirth" render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
-                      {t('form.dateOfBirth')}
-                    </FormLabel>
-                    <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-                      <div className="relative">
-                        <Input
-                          placeholder="DD/MM/YYYY"
-                          value={field.value ? format(field.value, 'dd/MM/yyyy') : dateInputValue}
-                          onChange={(e) => handleDateInput(e.target.value, field.onChange)}
-                          onFocus={() => { if (!dateInputValue && !field.value) setDateInputValue(''); }}
-                          className={`${inp} pr-12 font-mono tracking-widest placeholder:tracking-normal placeholder:font-normal`}
-                        />
-                        <PopoverTrigger asChild>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 rounded-xl hover:bg-zinc-100 dark:hover:bg-white/10"
-                          >
-                            <CalendarIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-300" />
-                          </Button>
-                        </PopoverTrigger>
-                      </div>
-                      <PopoverContent
-                        align="start"
-                        className="w-auto p-0 dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl"
-                      >
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={(date) => {
-                            field.onChange(date);
-                            if (date) {
-                              setDateInputValue(format(date, 'dd/MM/yyyy'));
-                              setIsCalendarOpen(false);
-                            }
-                          }}
-                          disabled={(d) => d > new Date() || d < new Date('1900-01-01')}
-                          captionLayout="dropdown"
-                          fromYear={1900}
-                          toYear={new Date().getFullYear()}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <TranslatedFormMessage />
-                  </FormItem>
-                )} />
-
-                {/* Region & District */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <FormField control={form.control} name="region" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-                        {t('form.region')}
-                      </FormLabel>
-                      <Select onValueChange={(value) => {
-                        field.onChange(value);
-                        form.setValue('district', '');
-                      }} value={field.value}>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <FormField control={form.control} name="passportSeries" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className={plainLabelClass}>
+                          {t('form.passportSeries')}
+                        </FormLabel>
                         <FormControl>
-                          <SelectTrigger className={`${inp} w-full`}>
-                            <SelectValue placeholder={t('form.regionPlaceholder')} />
-                          </SelectTrigger>
+                          <Input
+                            placeholder={t('form.passportSeriesPlaceholder')}
+                            {...field}
+                            onChange={(e) => field.onChange(handlePassportInput(e.target.value))}
+                            maxLength={9}
+                            className={`${inp} uppercase font-mono placeholder:font-normal`}
+                          />
                         </FormControl>
-                        <SelectContent className="dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl max-h-60">
-                          {regions.map((r) => (
-                            <SelectItem
-                              key={r.value}
-                              value={r.value}
-                              className="rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/10 dark:text-zinc-200"
-                            >
-                              {t(r.label)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <TranslatedFormMessage />
-                    </FormItem>
-                  )} />
+                        <TranslatedFormMessage />
+                      </FormItem>
+                    )} />
 
-                  <FormField control={form.control} name="district" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400 opacity-70" />
-                        {t('form.district')}
-                      </FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={!form.watch('region')}>
+                    <FormField control={form.control} name="pinfl" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className={plainLabelClass}>
+                          {t('form.pinfl')}
+                        </FormLabel>
                         <FormControl>
-                          <SelectTrigger className={`${inp} w-full`}>
-                            <SelectValue placeholder={t('form.districtPlaceholder')} />
-                          </SelectTrigger>
+                          <Input
+                            placeholder={t('form.pinflPlaceholder')}
+                            {...field}
+                            onChange={(e) => field.onChange(e.target.value.replace(/\D/g, ''))}
+                            maxLength={14}
+                            className={`${inp} font-mono placeholder:font-normal`}
+                          />
                         </FormControl>
-                        <SelectContent className="dark:bg-zinc-950 dark:border-white/10 rounded-lg overflow-hidden shadow-xl max-h-60">
-                          {form.watch('region') && DISTRICTS[form.watch('region')]?.map((d) => (
-                            <SelectItem
-                              key={d.value}
-                              value={d.value}
-                              className="rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/10 dark:text-zinc-200"
+                        <TranslatedFormMessage />
+                      </FormItem>
+                    )} />
+                  </div>
+
+                  <FormField control={form.control} name="dateOfBirth" render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel className={labelClass}>
+                        <CalendarIcon className="h-4 w-4 text-[#0b84e5]" />
+                        {t('form.dateOfBirth')}
+                      </FormLabel>
+                      <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                        <div className="relative">
+                          <Input
+                            placeholder="DD/MM/YYYY"
+                            value={field.value ? format(field.value, 'dd/MM/yyyy') : dateInputValue}
+                            onChange={(e) => handleDateInput(e.target.value, field.onChange)}
+                            onFocus={() => { if (!dateInputValue && !field.value) setDateInputValue(''); }}
+                            className={`${inp} pr-12 font-mono placeholder:font-normal`}
+                          />
+                          <PopoverTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="absolute right-1 top-1/2 h-10 w-10 -translate-y-1/2 rounded-lg text-[#0b84e5] hover:bg-[#eef7ff]"
                             >
-                              {t(d.label)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <TranslatedFormMessage />
-                    </FormItem>
-                  )} />
-                </div>
-
-                {/* Address */}
-                <FormField control={form.control} name="address" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide">
-                      {t('form.address')}
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder={t('form.addressPlaceholder')} {...field} className={inp} />
-                    </FormControl>
-                    <TranslatedFormMessage />
-                  </FormItem>
-                )} />
-
-                {/* Phone */}
-                <FormField control={form.control} name="phoneNumber" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold text-sm text-zinc-700 dark:text-zinc-200 tracking-wide flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-                      {t('form.phoneNumber')}
-                    </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center gap-2">
-                          <span className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">+998</span>
-                          <div className="w-px h-4 bg-zinc-300 dark:bg-white/20" />
+                              <CalendarIcon className="h-4 w-4" />
+                            </Button>
+                          </PopoverTrigger>
                         </div>
-                        <Input
-                          placeholder={t('form.phoneNumberPlaceholder')}
-                          value={handlePhoneInput(field.value).formatted}
-                          onChange={(e) => field.onChange(handlePhoneInput(e.target.value).raw)}
-                          className={`${inp} pl-[4.5rem] font-mono tracking-wider placeholder:tracking-normal placeholder:font-normal`}
+                        <PopoverContent
+                          align="start"
+                          className="w-auto overflow-hidden rounded-lg border-[#dbe8f4] bg-white p-0 text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)]"
+                        >
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={(date) => {
+                              field.onChange(date);
+                              if (date) {
+                                setDateInputValue(format(date, 'dd/MM/yyyy'));
+                                setIsCalendarOpen(false);
+                              }
+                            }}
+                            disabled={(d) => d > new Date() || d < new Date('1900-01-01')}
+                            captionLayout="dropdown"
+                            fromYear={1900}
+                            toYear={new Date().getFullYear()}
+                            className="bg-white text-[#07182f] [&_[data-selected-single=true]]:!bg-[#0b4edb] [&_[data-selected-single=true]]:!text-white [&_[data-range-end=true]]:!bg-[#0b4edb] [&_[data-range-start=true]]:!bg-[#0b4edb]"
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <TranslatedFormMessage />
+                    </FormItem>
+                  )} />
+                </AuthSection>
+
+                <AuthSection
+                  icon={<Home className="h-4 w-4" />}
+                  title="Manzil ma'lumotlari"
+                  description="Hudud, aniq manzil va aloqa raqamini belgilang."
+                >
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <FormField control={form.control} name="region" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className={labelClass}>
+                          <MapPin className="h-4 w-4 text-[#0b84e5]" />
+                          {t('form.region')}
+                        </FormLabel>
+                        <Select onValueChange={(value) => {
+                          field.onChange(value);
+                          form.setValue('district', '');
+                        }} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger className={`${inp} w-full`}>
+                              <SelectValue placeholder={t('form.regionPlaceholder')} />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className={selectContentClass}>
+                            {regions.map((r) => (
+                              <SelectItem
+                                key={r.value}
+                                value={r.value}
+                                className={selectItemClass}
+                              >
+                                {t(r.label)}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <TranslatedFormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="district" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className={labelClass}>
+                          <MapPin className="h-4 w-4 text-[#0b84e5]" />
+                          {t('form.district')}
+                        </FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value} disabled={!form.watch('region')}>
+                          <FormControl>
+                            <SelectTrigger className={`${inp} w-full`}>
+                              <SelectValue placeholder={t('form.districtPlaceholder')} />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className={selectContentClass}>
+                            {form.watch('region') && DISTRICTS[form.watch('region')]?.map((d) => (
+                              <SelectItem
+                                key={d.value}
+                                value={d.value}
+                                className={selectItemClass}
+                              >
+                                {t(d.label)}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <TranslatedFormMessage />
+                      </FormItem>
+                    )} />
+                  </div>
+
+                  <FormField control={form.control} name="address" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={labelClass}>
+                        <Home className="h-4 w-4 text-[#0b84e5]" />
+                        {t('form.address')}
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder={t('form.addressPlaceholder')} {...field} className={inp} />
+                      </FormControl>
+                      <TranslatedFormMessage />
+                    </FormItem>
+                  )} />
+
+                  <FormField control={form.control} name="phoneNumber" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={labelClass}>
+                        <Phone className="h-4 w-4 text-[#0b84e5]" />
+                        {t('form.phoneNumber')}
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <div className="pointer-events-none absolute left-3 top-1/2 z-10 flex -translate-y-1/2 items-center gap-2">
+                            <span className="text-sm font-semibold text-[#0b2b53]">+998</span>
+                            <div className="h-4 w-px bg-[#cfe0f1]" />
+                          </div>
+                          <Input
+                            placeholder={t('form.phoneNumberPlaceholder')}
+                            value={handlePhoneInput(field.value).formatted}
+                            onChange={(e) => field.onChange(handlePhoneInput(e.target.value).raw)}
+                            className={`${inp} pl-[4.5rem] font-mono placeholder:font-normal`}
+                          />
+                        </div>
+                      </FormControl>
+                      <TranslatedFormMessage />
+                    </FormItem>
+                  )} />
+                </AuthSection>
+
+                <AuthSection
+                  icon={<FileText className="h-4 w-4" />}
+                  title="Hujjatlar"
+                  description="Passport rasmlarini yorug' va o'qilishi oson holatda yuklang."
+                >
+                  <FormField control={form.control} name="passportImages" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={plainLabelClass}>
+                        {t('form.passportImages')}
+                      </FormLabel>
+                      <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <ImageUpload
+                          label={t('form.passportImagesFront')}
+                          value={frontImage}
+                          variant="akb"
+                          onChange={(file) => {
+                            setFrontImage(file);
+                            field.onChange([file, backImage].filter((f): f is File => f !== null));
+                          }}
+                          error={
+                            form.formState.errors.passportImages?.message
+                              ? t(form.formState.errors.passportImages.message)
+                              : undefined
+                          }
+                        />
+                        <ImageUpload
+                          label={t('form.passportImagesBack')}
+                          value={backImage}
+                          variant="akb"
+                          onChange={(file) => {
+                            setBackImage(file);
+                            field.onChange([frontImage, file].filter((f): f is File => f !== null));
+                          }}
                         />
                       </div>
-                    </FormControl>
-                    <TranslatedFormMessage />
-                  </FormItem>
-                )} />
+                      <TranslatedFormMessage />
+                    </FormItem>
+                  )} />
+                </AuthSection>
 
-                {/* Passport Images */}
-                <FormField control={form.control} name="passportImages" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold text-base text-zinc-700 dark:text-zinc-200">
-                      {t('form.passportImages')}
-                    </FormLabel>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                      <ImageUpload
-                        label={t('form.passportImagesFront')}
-                        value={frontImage}
-                        onChange={(file) => {
-                          setFrontImage(file);
-                          field.onChange([file, backImage].filter((f): f is File => f !== null));
-                        }}
-                        error={
-                          form.formState.errors.passportImages?.message
-                            ? t(form.formState.errors.passportImages.message)
-                            : undefined
-                        }
-                      />
-                      <ImageUpload
-                        label={t('form.passportImagesBack')}
-                        value={backImage}
-                        onChange={(file) => {
-                          setBackImage(file);
-                          field.onChange([frontImage, file].filter((f): f is File => f !== null));
-                        }}
-                      />
-                    </div>
-                    <TranslatedFormMessage />
-                  </FormItem>
-                )} />
+                <div className="flex items-start gap-3 rounded-lg bg-[#eef7ff] px-4 py-3 text-sm leading-5 text-[#0b2b53]">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#0b4edb]" />
+                  <p>Ma'lumotlar tekshiruvga yuboriladi. Tasdiqlangandan keyin AKB Cargo hisobingizdan foydalanishingiz mumkin.</p>
+                </div>
 
-                {/* Submit */}
                 <div className="pt-2">
                   <Button
                     type="submit"
                     disabled={submitStatus === 'loading'}
-                    className={`w-full text-base ${premiumPrimaryButton}`}
+                    className={`w-full text-base ${akbPrimaryButton}`}
                   >
                     {t('form.submit')}
                   </Button>
                 </div>
 
                 <div className="text-center pb-1">
-                  <p className={`text-sm ${premiumMutedText}`}>
+                  <p className={`text-sm ${akbMutedText}`}>
                     {t('form.haveAccount')}{' '}
                     <button
                       type="button"
                       onClick={onNavigateToLogin}
-                      className="text-cyan-700 hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200 font-semibold transition-colors underline underline-offset-2 decoration-cyan-400/50"
+                      className="font-semibold text-[#0b4edb] underline underline-offset-2 decoration-[#37c5f3]/60 transition-colors hover:text-[#073fba]"
                     >
                       {t('form.login')}
                     </button>

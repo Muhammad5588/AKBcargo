@@ -10,6 +10,7 @@ interface ImageUploadProps {
   onChange: (file: File | null) => void;
   error?: string;
   isLoading?: boolean;
+  variant?: 'mandarin' | 'akb';
 }
 
 const STYLES = `
@@ -22,11 +23,19 @@ const STYLES = `
   .upload-icon  { animation: upload-float 2.5s ease-in-out infinite; }
 `;
 
-export default function ImageUpload({ label, value, onChange, error, isLoading = false }: ImageUploadProps) {
+export default function ImageUpload({
+  label,
+  value,
+  onChange,
+  error,
+  isLoading = false,
+  variant = 'mandarin',
+}: ImageUploadProps) {
   const { t } = useTranslation();
-  const [preview,    setPreview]    = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isAkb = variant === 'akb';
 
   React.useEffect(() => {
     if (typeof value === 'string') setPreview(value);
@@ -57,88 +66,167 @@ export default function ImageUpload({ label, value, onChange, error, isLoading =
     reader.readAsDataURL(file);
   };
 
-  const handleDrop      = (e: React.DragEvent) => { e.preventDefault(); setIsDragging(false); handleFileChange(e.dataTransfer.files[0]); };
-  const handleDragOver  = (e: React.DragEvent) => { e.preventDefault(); setIsDragging(true); };
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    handleFileChange(e.dataTransfer.files[0]);
+  };
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
   const handleDragLeave = () => setIsDragging(false);
-  const handleRemove    = () => { onChange(null); setPreview(null); if (fileInputRef.current) fileInputRef.current.value = ''; };
+  const handleRemove = () => {
+    onChange(null);
+    setPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   return (
     <>
       <style>{STYLES}</style>
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-1.5">
-          <ImageIcon className="w-3.5 h-3.5 text-orange-500" />
+        <label className={[
+          'flex items-center gap-1.5 text-sm font-semibold',
+          isAkb ? 'text-[#0b2b53]' : 'text-gray-700 dark:text-gray-200',
+        ].join(' ')}>
+          <ImageIcon className={[
+            'h-3.5 w-3.5',
+            isAkb ? 'text-[#0b84e5]' : 'text-orange-500',
+          ].join(' ')} />
           {label}
         </label>
 
         {isLoading ? (
-          <div className="relative border-2 border-dashed border-gray-200 dark:border-white/10 rounded-2xl h-[180px] overflow-hidden bg-gray-50 dark:bg-white/5">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-orange-100/50 dark:via-orange-500/8 to-transparent"
-              style={{ animation: 'shimmer 1.5s ease-in-out infinite' }} />
+          <div className={[
+            'relative h-[180px] overflow-hidden border-2 border-dashed',
+            isAkb
+              ? 'rounded-lg border-[#cfe0f1] bg-white'
+              : 'rounded-2xl border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5',
+          ].join(' ')}>
+            <div
+              className={[
+                'absolute inset-0 bg-gradient-to-r from-transparent to-transparent',
+                isAkb ? 'via-[#eef7ff]' : 'via-orange-100/50 dark:via-orange-500/8',
+              ].join(' ')}
+              style={{ animation: 'shimmer 1.5s ease-in-out infinite' }}
+            />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin" />
+              <div className={[
+                'h-10 w-10 animate-spin rounded-full border-4',
+                isAkb ? 'border-[#cfe0f1] border-t-[#0b4edb]' : 'border-orange-200 border-t-orange-500',
+              ].join(' ')} />
             </div>
           </div>
         ) : !preview ? (
           <div
             onClick={() => fileInputRef.current?.click()}
-            onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
             className={[
-              'relative border-2 border-dashed rounded-2xl p-6 cursor-pointer min-h-[180px]',
-              'flex flex-col items-center justify-center gap-4',
-              'transition-all duration-300 ease-in-out group',
-              isDragging
-                ? 'drag-active border-orange-500 bg-orange-50 dark:bg-orange-500/10 shadow-lg shadow-orange-500/20'
-                : 'border-gray-200 dark:border-white/10 hover:border-orange-400 dark:hover:border-orange-500/40 hover:bg-orange-50/40 dark:hover:bg-orange-500/5',
-              error ? 'border-red-400 dark:border-red-500/40' : '',
+              'group relative flex min-h-[180px] cursor-pointer flex-col items-center justify-center gap-4 border-2 border-dashed p-6 transition-all duration-300 ease-in-out',
+              isAkb ? 'rounded-lg' : 'rounded-2xl',
+              isDragging && !isAkb
+                ? 'drag-active border-orange-500 bg-orange-50 shadow-lg shadow-orange-500/20 dark:bg-orange-500/10'
+                : '',
+              !isDragging && !isAkb
+                ? 'border-gray-200 hover:border-orange-400 hover:bg-orange-50/40 dark:border-white/10 dark:hover:border-orange-500/40 dark:hover:bg-orange-500/5'
+                : '',
+              isDragging && isAkb
+                ? 'drag-active border-[#0b84e5] bg-[#eef7ff] shadow-[0_8px_22px_rgba(11,78,219,0.12)]'
+                : '',
+              !isDragging && isAkb
+                ? 'border-[#cfe0f1] bg-white hover:border-[#0b84e5] hover:bg-[#f8fbfe]'
+                : '',
+              error ? (isAkb ? 'border-red-400' : 'border-red-400 dark:border-red-500/40') : '',
             ].join(' ')}
           >
-            {/* drag glow overlay */}
             {isDragging && (
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 pointer-events-none" />
+              <div className={[
+                'pointer-events-none absolute inset-0',
+                isAkb ? 'rounded-lg bg-[#0b84e5]/10' : 'rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10',
+              ].join(' ')} />
             )}
 
             <div className={[
-              'p-4 rounded-2xl transition-all duration-300',
-              isDragging
-                ? 'bg-gradient-to-br from-orange-500 to-amber-500 shadow-xl shadow-orange-500/40 scale-110'
-                : 'bg-orange-100 dark:bg-orange-500/15 group-hover:bg-orange-200 dark:group-hover:bg-orange-500/25',
+              'p-4 transition-all duration-300',
+              isAkb ? 'rounded-lg' : 'rounded-2xl',
+              isDragging && !isAkb
+                ? 'scale-110 bg-gradient-to-br from-orange-500 to-amber-500 shadow-xl shadow-orange-500/40'
+                : '',
+              !isDragging && !isAkb
+                ? 'bg-orange-100 group-hover:bg-orange-200 dark:bg-orange-500/15 dark:group-hover:bg-orange-500/25'
+                : '',
+              isDragging && isAkb
+                ? 'scale-105 bg-[#0b4edb] shadow-[0_8px_18px_rgba(11,78,219,0.22)]'
+                : '',
+              !isDragging && isAkb
+                ? 'bg-[#eef7ff] group-hover:bg-[#e2f2ff]'
+                : '',
             ].join(' ')}>
               <Upload className={[
-                'w-7 h-7 transition-colors duration-300',
-                isDragging ? 'text-white upload-icon' : 'text-orange-500',
+                'h-7 w-7 transition-colors duration-300',
+                isDragging ? 'text-white upload-icon' : isAkb ? 'text-[#0b4edb]' : 'text-orange-500',
               ].join(' ')} />
             </div>
 
             <div className="text-center">
-              <p className="text-sm font-semibold text-gray-600 dark:text-gray-300 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-200">
+              <p className={[
+                'text-sm font-semibold transition-colors duration-200',
+                isAkb
+                  ? 'text-[#0b2b53] group-hover:text-[#0b4edb]'
+                  : 'text-gray-600 group-hover:text-orange-600 dark:text-gray-300 dark:group-hover:text-orange-400',
+              ].join(' ')}>
                 {t('form.dragDropImage')}
               </p>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 font-mono tracking-wider">{t('form.supportedFormats')}</p>
+              <p className={[
+                'mt-1 font-mono text-xs',
+                isAkb ? 'text-[#63758a]' : 'text-gray-400 dark:text-gray-500',
+              ].join(' ')}>
+                {t('form.supportedFormats')}
+              </p>
             </div>
 
-            <input ref={fileInputRef} type="file" accept="image/jpeg, image/png, image/webp, .heic, .heif"
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg, image/png, image/webp, .heic, .heif"
               onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
-              className="hidden" />
+              className="hidden"
+            />
           </div>
         ) : (
-          <div className="relative group rounded-2xl overflow-hidden h-[180px] border-2 border-orange-200 dark:border-orange-500/30 hover:border-orange-400 dark:hover:border-orange-500/60 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-orange-500/15">
-            <img src={preview} alt={label} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div className={[
+            'group relative h-[180px] overflow-hidden border-2 transition-all duration-300',
+            isAkb
+              ? 'rounded-lg border-[#cfe0f1] shadow-[0_8px_22px_rgba(15,47,87,0.06)] hover:border-[#0b84e5]'
+              : 'rounded-2xl border-orange-200 shadow-md hover:border-orange-400 hover:shadow-xl hover:shadow-orange-500/15 dark:border-orange-500/30 dark:hover:border-orange-500/60',
+          ].join(' ')}>
+            <img src={preview} alt={label} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
 
-            {/* gradient overlay on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-            {/* remove button */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-              <Button type="button" onClick={handleRemove} variant="destructive" size="icon"
-                className="rounded-xl shadow-xl scale-75 group-hover:scale-100 transition-transform duration-300">
-                <X className="w-5 h-5" />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover:opacity-100">
+              <Button
+                type="button"
+                onClick={handleRemove}
+                variant="destructive"
+                size="icon"
+                className={[
+                  'scale-75 shadow-xl transition-transform duration-300 group-hover:scale-100',
+                  isAkb ? 'rounded-lg' : 'rounded-xl',
+                ].join(' ')}
+              >
+                <X className="h-5 w-5" />
               </Button>
             </div>
 
-            {/* success badge */}
-            <div className="absolute top-2 right-2 flex items-center gap-1 bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-              <span>✓</span>
+            <div className={[
+              'absolute right-2 top-2 flex translate-y-1 items-center gap-1 px-2.5 py-1 text-xs font-bold text-white opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100',
+              isAkb ? 'rounded-lg bg-[#0b4edb]' : 'rounded-full bg-green-500',
+            ].join(' ')}>
+              <span>{isAkb ? 'OK' : '\u2713'}</span>
             </div>
           </div>
         )}

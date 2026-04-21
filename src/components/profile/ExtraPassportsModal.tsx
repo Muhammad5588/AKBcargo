@@ -262,7 +262,7 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                 animate="visible"
                                 exit="exit"
                                 variants={isDesktop ? desktopDrawerVariants : drawerVariants}
-                                className="fixed bottom-0 left-0 right-0 sm:left-auto sm:top-0 sm:bottom-0 sm:w-[450px] h-[92vh] sm:h-screen bg-white z-[999] rounded-t-lg sm:rounded-none sm:rounded-l-lg flex flex-col shadow-2xl border-t border-[#dbe8f4] sm:border-t-0 sm:border-l"
+                                className="fixed bottom-0 left-0 right-0 sm:left-auto sm:top-0 sm:bottom-0 sm:w-[450px] h-[92vh] sm:h-screen bg-[#f4f8fc] z-[999] rounded-t-lg sm:rounded-none sm:rounded-l-lg flex flex-col shadow-[0_18px_48px_rgba(10,35,70,0.18)] border-t border-[#dbe8f4] sm:border-t-0 sm:border-l"
                             >
                                 {/* Header */}
                                 <div className="p-4 border-b border-[#dbe8f4] flex items-center justify-between flex-shrink-0 bg-white rounded-t-lg sm:rounded-t-none">
@@ -277,9 +277,14 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                                 <ChevronLeft className="h-5 w-5" />
                                             </Button>
                                         )}
-                                        <h2 className="text-lg font-semibold text-[#07182f]">{isAdding ? t('passport.addNew', "Yangi pasport") : t('passport.extraPassports', "Qo'shimcha pasportlar")}</h2>
+                                        <div>
+                                            <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
+                                                {t('passport.documentsLabel', 'Hujjatlar')}
+                                            </p>
+                                            <h2 className="text-lg font-semibold text-[#07182f]">{isAdding ? t('passport.addNew', "Yangi pasport") : t('passport.extraPassports', "Qo'shimcha pasportlar")}</h2>
+                                        </div>
                                     </div>
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={onClose}>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg border border-[#dbe8f4] bg-white hover:bg-[#eef6ff]" onClick={onClose}>
                                         <X className="h-5 w-5" />
                                     </Button>
                                 </div>
@@ -401,6 +406,7 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                                                     <ImageUpload
                                                                         label={t('form.passportImagesFront', "Old tomon")}
                                                                         value={frontImage}
+                                                                        variant="akb"
                                                                         onChange={(file) => {
                                                                             setFrontImage(file);
                                                                             const currentBack = backImage;
@@ -416,6 +422,7 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                                                     <ImageUpload
                                                                         label={t('form.passportImagesBack', "Orqa tomon")}
                                                                         value={backImage}
+                                                                        variant="akb"
                                                                         onChange={(file) => {
                                                                             setBackImage(file);
                                                                             const currentFront = frontImage;
@@ -452,15 +459,15 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                             >
                                                 {isLoading ? (
                                                     <div className="flex justify-center p-8">
-                                                        <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+                                                        <Loader2 className="h-6 w-6 animate-spin text-[#0b4edb]" />
                                                     </div>
                                                 ) : passportsData?.items.length === 0 ? (
-                                                    <div className="text-center py-12 text-gray-500 flex flex-col items-center">
-                                                        <div className="h-16 w-16 bg-[#eef6ff] rounded-lg flex items-center justify-center mb-4">
-                                                            <FileText className="h-8 w-8 text-gray-400" />
+                                                    <div className="text-center py-12 text-[#63758a] flex flex-col items-center rounded-lg border border-[#dbe8f4] bg-white px-5 shadow-[0_8px_20px_rgba(10,35,70,0.05)]">
+                                                        <div className="h-16 w-16 bg-[#eef6ff] border border-[#cfe0f1] rounded-lg flex items-center justify-center mb-4">
+                                                            <FileText className="h-8 w-8 text-[#0b4edb]" />
                                                         </div>
-                                                        <p className="font-medium mb-1">{t('passport.noPassports', "Hozircha pasportlar yo'q")}</p>
-                                                        <p className="text-sm text-gray-400 mb-6 max-w-xs">{t('passport.addPrompt', "Yangi pasport qo'shish uchun pastdagi tugmani bosing")}</p>
+                                                        <p className="font-semibold text-[#07182f] mb-1">{t('passport.noPassports', "Hozircha pasportlar yo'q")}</p>
+                                                        <p className="text-sm text-[#63758a] mb-6 max-w-xs">{t('passport.addPrompt', "Yangi pasport qo'shish uchun pastdagi tugmani bosing")}</p>
                                                         <Button
                                                             onClick={() => setIsAdding(true)}
                                                             className="bg-[#0b4edb] hover:bg-[#073fba] text-white rounded-lg px-6"
@@ -490,7 +497,7 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                                                                 className="h-full w-full object-cover"
                                                                             />
                                                                         ) : (
-                                                                            <div className="h-full w-full flex items-center justify-center text-gray-400">
+                                                                            <div className="h-full w-full flex items-center justify-center text-[#9fb7cc]">
                                                                                 <FileText className="h-6 w-6" />
                                                                             </div>
                                                                         )}
@@ -505,7 +512,7 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="icon"
-                                                                        className="h-10 w-10 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                                                        className="h-10 w-10 text-[#c44747] hover:text-[#a83a3a] hover:bg-[#fff1f1] rounded-lg"
                                                                         onClick={(e) => handleDelete(passport.id, e)}
                                                                     >
                                                                         <Trash2 className="h-5 w-5" />
@@ -566,7 +573,7 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                     {/* Images */}
                                     <div className="space-y-4">
                                         {selectedPassport.image_urls?.map((url, idx) => (
-                                            <div key={idx} className="relative rounded-lg overflow-hidden shadow-2xl border border-white/10 bg-[#07182f]">
+                                            <div key={idx} className="relative rounded-lg overflow-hidden shadow-[0_12px_30px_rgba(10,35,70,0.18)] border border-white/20 bg-white">
                                                 <img
                                                     src={url}
                                                     alt={`Passport ${idx + 1}`}
@@ -575,14 +582,14 @@ export function ExtraPassportsModal({ isOpen, onClose }: ExtraPassportsModalProp
                                             </div>
                                         ))}
                                         {(!selectedPassport.image_urls || selectedPassport.image_urls.length === 0) && (
-                                            <div className="h-64 rounded-lg bg-[#0b2b53] flex items-center justify-center text-white/50">
+                                            <div className="h-64 rounded-lg bg-[#eef6ff] border border-[#cfe0f1] flex items-center justify-center text-[#0b4edb]">
                                                 <FileText className="h-12 w-12 opacity-50" />
                                             </div>
                                         )}
                                     </div>
 
                                     {/* Details Panel */}
-                                    <div className="p-6 rounded-lg bg-white border border-[#dbe8f4] text-[#07182f] shadow-xl md:sticky md:top-8">
+                                    <div className="p-6 rounded-lg bg-white border border-[#dbe8f4] text-[#07182f] shadow-[0_12px_30px_rgba(10,35,70,0.14)] md:sticky md:top-8">
                                         <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
                                             <FileText className="h-6 w-6 text-[#0b4edb]" />
                                             {t('passport.details', "Pasport ma'lumotlari")}
