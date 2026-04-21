@@ -269,7 +269,13 @@ const CarouselCard = memo(({ item, onView }: { item: CarouselItemData; onView?: 
                 )}
 
                 {item.mediaUrl && (
-                    <div className="absolute inset-y-0 right-0 w-[62%] bg-[linear-gradient(90deg,#ffffff_0%,rgba(255,255,255,0.84)_26%,rgba(255,255,255,0)_100%)]" />
+                    <div
+                        className="absolute inset-y-0 right-0 w-[62%]"
+                        style={{
+                            background:
+                                "linear-gradient(90deg, rgba(var(--akb-surface-rgb, 255, 255, 255), 1) 0%, rgba(var(--akb-surface-rgb, 255, 255, 255), 0.84) 26%, rgba(var(--akb-surface-rgb, 255, 255, 255), 0) 100%)",
+                        }}
+                    />
                 )}
                 <div className="absolute inset-x-0 top-0 h-1 bg-[#0b4edb]" />
                 <div className="absolute left-4 top-4 rounded-md border border-[#cfe0f1] bg-[#eef7ff] px-2 py-1 text-[10px] font-semibold uppercase text-[#0b4edb]">
@@ -314,7 +320,13 @@ return (
                     alt={item.title || "Feature"}
                     className="absolute inset-y-0 right-0 h-full w-[72%] object-cover"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,#ffffff_0%,rgba(255,255,255,0.92)_45%,rgba(255,255,255,0.12)_100%)]" />
+                <div
+                    className="absolute inset-0"
+                    style={{
+                        background:
+                            "linear-gradient(90deg, rgba(var(--akb-surface-rgb, 255, 255, 255), 1) 0%, rgba(var(--akb-surface-rgb, 255, 255, 255), 0.92) 45%, rgba(var(--akb-surface-rgb, 255, 255, 255), 0.12) 100%)",
+                    }}
+                />
             </>
         )}
 
@@ -359,8 +371,17 @@ return (
 
 const UniqueBackground = () => (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#f7fbff_0%,#f3f8fd_48%,#eef5fb_100%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-[#cfe0f1]" />
+        <div
+            className="absolute inset-0"
+            style={{
+                background:
+                    "linear-gradient(180deg, var(--akb-page-top, #f7fbff) 0%, var(--akb-page-bg, #f4f8fc) 48%, var(--akb-page-bottom, #eef5fb) 100%)",
+            }}
+        />
+        <div
+            className="absolute inset-x-0 top-0 h-px"
+            style={{ backgroundColor: "var(--akb-border-strong, #cfe0f1)" }}
+        />
     </div>
 );
 
@@ -480,7 +501,7 @@ const LanguageSwitcher = memo(() => {
 
 const DashboardHeader = memo(({ name }: { name?: string }) => {
     const { t } = useTranslation();
-    const firstName = name?.trim().split(/\s+/)[0];
+    const displayName = name?.trim().split(/\s+/)[0];
 
     return (
         <header className="mb-4 space-y-3">
@@ -493,11 +514,16 @@ const DashboardHeader = memo(({ name }: { name?: string }) => {
             </div>
 
             <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_8px_20px_rgba(15,47,87,0.05)]">
-                <p className="text-xs font-medium text-[#63758a]">{t('dashboard.greeting', 'Assalomu alaykum,')}</p>
-                <h1 className="mt-1 truncate text-xl font-semibold leading-tight text-[#07182f]">
-                    {firstName || t('dashboard.customer', 'AKB Cargo mijozi')}
+                <p className="text-sm font-medium text-[#0b84e5]">{t('dashboard.greeting', 'Assalomu alaykum 👋')}</p>
+                <h1 className="mt-1 max-w-md text-xl font-semibold leading-tight text-[#07182f]">
+                    {displayName
+                        ? `${displayName}, ${t('dashboard.welcomeCabinet', 'welcome to your AKB Cargo cabinet')}`
+                        : t('dashboard.customerWelcome', 'Welcome to your AKB Cargo cabinet')}
                 </h1>
-                <p className="mt-2 text-sm leading-snug text-[#63758a]">
+                <p className="mt-1 text-xs font-medium uppercase tracking-[0.08em] text-[#7d91a8]">
+                    {t('dashboard.customer', 'AKB Cargo mijozi')}
+                </p>
+                <p className="mt-3 max-w-md text-sm leading-6 text-[#63758a]">
                     {t('dashboard.heroSubtitle', 'Yukingizni kuzating, zayavka qoldiring va to‘lovlarni boshqaring.')}
                 </p>
             </div>

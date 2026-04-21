@@ -37,14 +37,14 @@ interface AuthSectionProps {
 
 function AuthSection({ children, description, icon, title }: AuthSectionProps) {
   return (
-    <section className="space-y-4 border-b border-[#e5edf6] pb-5 last:border-b-0 last:pb-0">
+    <section className="space-y-4 border-b border-[#e5edf6] pb-5 last:border-b-0 last:pb-0 dark:border-[#22364d]">
       <div className="flex items-start gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef7ff] text-[#0b4edb]">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef7ff] text-[#0b4edb] dark:border-[#2c4762] dark:bg-[#11233b] dark:text-[#69a0ff]">
           {icon}
         </div>
         <div className="min-w-0">
-          <h2 className="text-base font-semibold text-[#07182f]">{title}</h2>
-          <p className="mt-1 text-sm leading-5 text-[#63758a]">{description}</p>
+          <h2 className="text-base font-semibold text-[#07182f] dark:text-[#f3f7fc]">{title}</h2>
+          <p className="mt-1 text-sm leading-5 text-[#63758a] dark:text-[#9ab0c5]">{description}</p>
         </div>
       </div>
       <div className="space-y-4">{children}</div>
@@ -156,10 +156,10 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
   };
 
   const inp = `${akbInput} text-base`;
-  const labelClass = 'flex items-center gap-2 text-sm font-semibold text-[#0b2b53]';
-  const plainLabelClass = 'text-sm font-semibold text-[#0b2b53]';
-  const selectContentClass = 'max-h-60 rounded-lg border-[#dbe8f4] bg-white text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)]';
-  const selectItemClass = 'cursor-pointer rounded-md text-[#0b2b53] focus:bg-[#eef7ff] focus:text-[#0b4edb] hover:bg-[#eef7ff]';
+  const labelClass = 'flex items-center gap-2 text-sm font-semibold text-[#0b2b53] dark:text-[#dce8f7]';
+  const plainLabelClass = 'text-sm font-semibold text-[#0b2b53] dark:text-[#dce8f7]';
+  const selectContentClass = 'max-h-60 rounded-lg border-[#dbe8f4] bg-white text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)] dark:border-[#22364d] dark:bg-[#121e2f] dark:text-[#f3f7fc] dark:shadow-[0_20px_44px_rgba(2,10,20,0.34)]';
+  const selectItemClass = 'cursor-pointer rounded-md text-[#0b2b53] focus:bg-[#eef7ff] focus:text-[#0b4edb] hover:bg-[#eef7ff] dark:text-[#dce8f7] dark:focus:bg-[#11233b] dark:focus:text-[#4b86ff] dark:hover:bg-[#11233b]';
 
   return (
     <>
@@ -171,12 +171,12 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
         />
       )}
 
-      <div className="min-h-screen w-full bg-[#f4f8fc] px-4 py-5 pb-8 sm:px-6 sm:py-8">
+      <div className="min-h-screen w-full bg-[#f4f8fc] px-4 py-5 pb-8 sm:px-6 sm:py-8 dark:bg-[#0b1420]">
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
           <header className="pt-1">
             <div className="flex items-center justify-between gap-3">
               <AKBLogo markClassName="h-12 w-12" textClassName="text-left" />
-              <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb]">
+              <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb] dark:bg-[#11233b] dark:text-[#69a0ff]">
                 <ShieldCheck className="h-3.5 w-3.5" />
                 Yangi hisob
               </div>
@@ -270,7 +270,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                               type="button"
                               variant="ghost"
                               size="icon"
-                              className="absolute right-1 top-1/2 h-10 w-10 -translate-y-1/2 rounded-lg text-[#0b84e5] hover:bg-[#eef7ff]"
+                              className="absolute right-1 top-1/2 h-10 w-10 -translate-y-1/2 rounded-lg text-[#0b84e5] hover:bg-[#eef7ff] dark:text-[#69d2f8] dark:hover:bg-[#11233b]"
                             >
                               <CalendarIcon className="h-4 w-4" />
                             </Button>
@@ -278,7 +278,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                         </div>
                         <PopoverContent
                           align="start"
-                          className="w-auto overflow-hidden rounded-lg border-[#dbe8f4] bg-white p-0 text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)]"
+                          className="w-auto overflow-hidden rounded-lg border-[#dbe8f4] bg-white p-0 text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)] dark:border-[#22364d] dark:bg-[#121e2f] dark:text-[#f3f7fc] dark:shadow-[0_20px_44px_rgba(2,10,20,0.34)]"
                         >
                           <Calendar
                             mode="single"
@@ -294,7 +294,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                             captionLayout="dropdown"
                             fromYear={1900}
                             toYear={new Date().getFullYear()}
-                            className="bg-white text-[#07182f] [&_[data-selected-single=true]]:!bg-[#0b4edb] [&_[data-selected-single=true]]:!text-white [&_[data-range-end=true]]:!bg-[#0b4edb] [&_[data-range-start=true]]:!bg-[#0b4edb]"
+                            className="bg-white text-[#07182f] [&_[data-selected-single=true]]:!bg-[#0b4edb] [&_[data-selected-single=true]]:!text-white [&_[data-range-end=true]]:!bg-[#0b4edb] [&_[data-range-start=true]]:!bg-[#0b4edb] dark:bg-[#121e2f] dark:text-[#f3f7fc] dark:[&_[data-selected-single=true]]:!bg-[#4b86ff] dark:[&_[data-range-end=true]]:!bg-[#4b86ff] dark:[&_[data-range-start=true]]:!bg-[#4b86ff]"
                           />
                         </PopoverContent>
                       </Popover>
@@ -391,8 +391,8 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                       <FormControl>
                         <div className="relative">
                           <div className="pointer-events-none absolute left-3 top-1/2 z-10 flex -translate-y-1/2 items-center gap-2">
-                            <span className="text-sm font-semibold text-[#0b2b53]">+998</span>
-                            <div className="h-4 w-px bg-[#cfe0f1]" />
+                            <span className="text-sm font-semibold text-[#0b2b53] dark:text-[#dce8f7]">+998</span>
+                            <div className="h-4 w-px bg-[#cfe0f1] dark:bg-[#2c4762]" />
                           </div>
                           <Input
                             placeholder={t('form.phoneNumberPlaceholder')}
@@ -447,8 +447,8 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                   )} />
                 </AuthSection>
 
-                <div className="flex items-start gap-3 rounded-lg bg-[#eef7ff] px-4 py-3 text-sm leading-5 text-[#0b2b53]">
-                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#0b4edb]" />
+                <div className="flex items-start gap-3 rounded-lg bg-[#eef7ff] px-4 py-3 text-sm leading-5 text-[#0b2b53] dark:bg-[#11233b] dark:text-[#dce8f7]">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#0b4edb] dark:text-[#69a0ff]" />
                   <p>Ma'lumotlar tekshiruvga yuboriladi. Tasdiqlangandan keyin AKB Cargo hisobingizdan foydalanishingiz mumkin.</p>
                 </div>
 
@@ -468,7 +468,7 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
                     <button
                       type="button"
                       onClick={onNavigateToLogin}
-                      className="font-semibold text-[#0b4edb] underline underline-offset-2 decoration-[#37c5f3]/60 transition-colors hover:text-[#073fba]"
+                      className="font-semibold text-[#0b4edb] underline underline-offset-2 decoration-[#37c5f3]/60 transition-colors hover:text-[#073fba] dark:text-[#69a0ff] dark:hover:text-[#8ab7ff]"
                     >
                       {t('form.login')}
                     </button>

@@ -40,6 +40,7 @@ import ManagerPage from "./pages/admin/ManagerPage";
 import PasskeyPage from "./pages/admin/PasskeyPage";
 import WarehousePage from "./pages/admin/WarehousePage";
 import ExpectedCargoPage from "./pages/admin/ExpectedCargoPage";
+import { useCustomerTheme } from "./hooks/useCustomerTheme";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -639,6 +640,11 @@ function AppContent() {
   const canAccessExpectedCargo =
     userRole !== null &&
     (ROLE_CONFIG[userRole]?.allowed ?? []).includes("expected-cargo");
+  const isCustomerFacingPage =
+    currentPage === "login" ||
+    currentPage === "register" ||
+    USER_PAGES.includes(currentPage);
+  const customerTheme = useCustomerTheme(isCustomerFacingPage);
 
   const isAdminArea =
     isSuperAdminPages || isAdminLoginPage || isPOSPage ||
@@ -650,7 +656,9 @@ function AppContent() {
   return (
     <div
       className={`min-h-screen relative overflow-hidden transition-colors duration-300 ${
-        isAdminArea
+        isCustomerFacingPage
+          ? "bg-[#f4f8fc] text-[#07182f] dark:bg-[#0b1420] dark:text-[#f3f7fc]"
+          : isAdminArea
           ? "bg-[#f5f5f4] dark:bg-[#09090b]"
           : "bg-[#f5f5f7] dark:bg-[#111214]"
       }`}
@@ -909,7 +917,15 @@ function AppContent() {
         </main>
       )}
 
-      <Toaster />
+      <Toaster
+        theme={
+          isCustomerFacingPage
+            ? customerTheme
+            : (typeof window !== "undefined" && localStorage.getItem("adminTheme") === "dark")
+              ? "dark"
+              : "light"
+        }
+      />
 
       <PassportImagesModal
         isOpen={passportModalOpen}

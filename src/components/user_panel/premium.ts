@@ -30,32 +30,32 @@ export const premiumFocus =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
 
 export const akbPage =
-  "min-h-screen bg-[#f4f8fc] text-[#07182f] dark:bg-[#f4f8fc] dark:text-[#07182f] transition-colors duration-300";
+  "min-h-screen bg-[#f4f8fc] text-[#07182f] dark:bg-[#0c1521] dark:text-[#edf3fb] transition-colors duration-300";
 
 export const akbContainer =
   "relative z-10 mx-auto w-full max-w-4xl px-4 sm:px-6";
 
 export const akbSurface =
-  "rounded-lg border border-[#dbe8f4] bg-white shadow-[0_8px_22px_rgba(15,47,87,0.06)]";
+  "rounded-lg border border-[#dbe8f4] bg-white shadow-[0_8px_22px_rgba(15,47,87,0.06)] dark:border-[#1f2d3d] dark:bg-[#121b29] dark:shadow-[0_18px_40px_rgba(2,10,20,0.24)]";
 
 export const akbSoftSurface =
-  "rounded-lg border border-[#dbe8f4] bg-[#f8fbfe]";
+  "rounded-lg border border-[#dbe8f4] bg-[#f8fbfe] dark:border-[#1f2d3d] dark:bg-[#172230]";
 
 export const akbPrimaryButton =
-  "h-12 rounded-lg bg-[#0b4edb] text-white font-semibold shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-colors hover:bg-[#073fba] active:bg-[#063493] disabled:cursor-not-allowed disabled:opacity-60";
+  "h-12 rounded-lg bg-[#0b4edb] text-white font-semibold shadow-[0_10px_20px_rgba(11,78,219,0.18)] transition-colors hover:bg-[#073fba] active:bg-[#063493] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#5b82d9] dark:hover:bg-[#4b74c5] dark:active:bg-[#4067b2] dark:shadow-[0_14px_30px_rgba(2,10,20,0.24)]";
 
 export const akbSecondaryButton =
-  "h-12 rounded-lg border border-[#cfe0f1] bg-white text-[#0b2b53] font-semibold transition-colors hover:bg-[#eef6ff] active:bg-[#e3f0fc]";
+  "h-12 rounded-lg border border-[#cfe0f1] bg-white text-[#0b2b53] font-semibold transition-colors hover:bg-[#eef6ff] active:bg-[#e3f0fc] dark:border-[#26364a] dark:bg-[#121b29] dark:text-[#e3ecf6] dark:hover:bg-[#182333] dark:active:bg-[#1c2737]";
 
 export const akbInput =
-  "h-12 rounded-lg border border-[#cfe0f1] bg-white text-[#07182f] placeholder:text-[#7d91a8] transition-colors duration-150 focus:border-[#0b84e5] focus:ring-2 focus:ring-[#37c5f3]/20 focus:ring-offset-0 focus:outline-none";
+  "h-12 rounded-lg border border-[#cfe0f1] bg-white text-[#07182f] placeholder:text-[#7d91a8] transition-colors duration-150 focus:border-[#0b84e5] focus:ring-2 focus:ring-[#37c5f3]/20 focus:ring-offset-0 focus:outline-none dark:border-[#26364a] dark:bg-[#101923] dark:text-[#edf3fb] dark:placeholder:text-[#77889d] dark:focus:border-[#5b82d9] dark:focus:ring-[#5b82d9]/15";
 
 export const akbIconBox =
-  "flex items-center justify-center rounded-lg border border-[#dbe8f4] bg-[#eef7ff] text-[#0b4edb]";
+  "flex items-center justify-center rounded-lg border border-[#dbe8f4] bg-[#eef7ff] text-[#0b4edb] dark:border-[#26364a] dark:bg-[#172230] dark:text-[#9ab0c5]";
 
-export const akbMutedText = "text-[#63758a]";
+export const akbMutedText = "text-[#63758a] dark:text-[#9ab0c5]";
 
-export const akbHeading = "font-semibold tracking-tight text-[#07182f]";
+export const akbHeading = "font-semibold tracking-tight text-[#07182f] dark:text-[#fcfdff]";
 
 export const akbFocus =
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b84e5]";
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6f8fcf]";

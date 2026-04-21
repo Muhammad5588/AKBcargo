@@ -27,8 +27,8 @@ const STYLES = `
     100% { transform: scale(1.9); opacity: 0;   }
   }
   @keyframes glow-pulse {
-    0%,100% { opacity: .35; }
-    50%     { opacity: .75; }
+    0%,100% { opacity: .18; }
+    50%     { opacity: .38; }
   }
   @keyframes bounce-dot {
     0%,100% { transform: translateY(0);    }
@@ -51,21 +51,21 @@ const STYLES = `
 `;
 
 const GLOW: Record<string, string> = {
-  loading: 'rgba(249,115,22,0.28)',
-  success: 'rgba(34,197,94,0.28)',
-  error:   'rgba(239,68,68,0.28)',
+  loading: 'rgba(91,130,217,0.12)',
+  success: 'rgba(121,188,159,0.12)',
+  error:   'rgba(214,152,163,0.12)',
 };
 
 const BAR_GRADIENT: Record<string, string> = {
-  loading: 'linear-gradient(90deg, transparent, rgb(249,115,22), transparent)',
-  success: 'linear-gradient(90deg, transparent, rgb(34,197,94),  transparent)',
-  error:   'linear-gradient(90deg, transparent, rgb(239,68,68),  transparent)',
+  loading: 'linear-gradient(90deg, transparent, rgba(91,130,217,0.15), rgb(91,130,217), transparent)',
+  success: 'linear-gradient(90deg, transparent, rgba(121,188,159,0.15), rgb(121,188,159), transparent)',
+  error:   'linear-gradient(90deg, transparent, rgba(214,152,163,0.15), rgb(214,152,163), transparent)',
 };
 
 const RING_COLOR: Record<string, string> = {
-  loading: 'border-orange-300',
-  success: 'border-green-300',
-  error:   'border-red-300',
+  loading: 'border-[#86a4dc]',
+  success: 'border-[#79bc9f]',
+  error:   'border-[#d698a3]',
 };
 
 export default function StatusAnimation({ status, message, onComplete }: StatusAnimationProps) {
@@ -86,12 +86,12 @@ export default function StatusAnimation({ status, message, onComplete }: StatusA
       <div className={`backdrop-in fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}>
 
         {/* backdrop */}
-        <div className="absolute inset-0 bg-black/65 backdrop-blur-md" />
+        <div className="absolute inset-0 bg-[#07182f]/56 backdrop-blur-sm" />
 
         {/* card */}
         <div
-          className="anim-modal relative bg-white dark:bg-[#0d0a04] rounded-3xl p-10 border border-gray-100 dark:border-white/10 flex flex-col items-center gap-6 min-w-[300px] max-w-sm mx-4"
-          style={{ boxShadow: `0 0 70px ${GLOW[status]}, 0 30px 60px rgba(0,0,0,.35)` }}
+          className="anim-modal relative flex min-w-[300px] max-w-sm flex-col items-center gap-6 rounded-[28px] border border-[#dbe8f4] bg-white p-10 dark:border-[#22364d] dark:bg-[#121e2f] mx-4"
+          style={{ boxShadow: `0 24px 52px rgba(2,10,20,.34), 0 0 0 1px rgba(255,255,255,.03), 0 0 36px ${GLOW[status]}` }}
         >
           {/* top accent bar */}
           <div className="absolute top-0 inset-x-0 h-[3px] rounded-t-3xl" style={{ background: BAR_GRADIENT[status] }} />
@@ -107,22 +107,22 @@ export default function StatusAnimation({ status, message, onComplete }: StatusA
 
             {status === 'loading' && (
               <>
-                <Loader2 className="w-20 h-20 text-orange-500 animate-spin relative z-10 drop-shadow-lg" />
-                <div className="glow-pulse absolute w-20 h-20 rounded-full bg-orange-500/20 blur-xl" />
+                <Loader2 className="relative z-10 h-20 w-20 animate-spin text-[#0b4edb] dark:text-[#86a4dc]" />
+                <div className="glow-pulse absolute h-20 w-20 rounded-full bg-[#0b4edb]/10 blur-lg dark:bg-[#86a4dc]/12" />
               </>
             )}
 
             {status === 'success' && (
               <div className="anim-bounce relative z-10">
-                <CheckCircle2 className="w-20 h-20 text-green-500 drop-shadow-lg" />
-                <div className="glow-pulse absolute inset-0 w-20 h-20 rounded-full bg-green-500/25 blur-xl" />
+                <CheckCircle2 className="h-20 w-20 text-[#15835b] dark:text-[#79bc9f]" />
+                <div className="glow-pulse absolute inset-0 h-20 w-20 rounded-full bg-[#15835b]/12 blur-lg dark:bg-[#79bc9f]/12" />
               </div>
             )}
 
             {status === 'error' && (
               <div className="anim-shake relative z-10">
-                <XCircle className="w-20 h-20 text-red-500 drop-shadow-lg" />
-                <div className="glow-pulse absolute inset-0 w-20 h-20 rounded-full bg-red-500/25 blur-xl" />
+                <XCircle className="h-20 w-20 text-[#c44747] dark:text-[#d698a3]" />
+                <div className="glow-pulse absolute inset-0 h-20 w-20 rounded-full bg-[#c44747]/12 blur-lg dark:bg-[#d698a3]/12" />
               </div>
             )}
           </div>
@@ -130,9 +130,9 @@ export default function StatusAnimation({ status, message, onComplete }: StatusA
           {/* message */}
           {message && (
             <p className={`text-base font-semibold text-center max-w-xs leading-relaxed ${
-              status === 'loading' ? 'text-gray-700 dark:text-gray-200'
-              : status === 'success' ? 'text-green-700 dark:text-green-400'
-              : 'text-red-700 dark:text-red-400'
+              status === 'loading' ? 'text-[#334a62] dark:text-[#dce8f7]'
+              : status === 'success' ? 'text-[#15835b] dark:text-[#79bc9f]'
+              : 'text-[#c44747] dark:text-[#d698a3]'
             }`}>
               {message}
             </p>
@@ -141,9 +141,9 @@ export default function StatusAnimation({ status, message, onComplete }: StatusA
           {/* loading dots */}
           {status === 'loading' && (
             <div className="flex gap-2.5">
-              <div className="dot-0 w-3 h-3 rounded-full bg-orange-500 shadow-md shadow-orange-500/50" />
-              <div className="dot-1 w-3 h-3 rounded-full bg-orange-500 shadow-md shadow-orange-500/50" />
-              <div className="dot-2 w-3 h-3 rounded-full bg-orange-500 shadow-md shadow-orange-500/50" />
+              <div className="dot-0 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#86a4dc] dark:shadow-[#86a4dc]/16" />
+              <div className="dot-1 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#86a4dc] dark:shadow-[#86a4dc]/16" />
+              <div className="dot-2 h-3 w-3 rounded-full bg-[#0b4edb] shadow-md shadow-[#0b4edb]/20 dark:bg-[#86a4dc] dark:shadow-[#86a4dc]/16" />
             </div>
           )}
         </div>

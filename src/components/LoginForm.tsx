@@ -171,9 +171,9 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
   };
 
   const inp = `${akbInput} text-base`;
-  const labelClass = 'flex items-center gap-2 text-sm font-semibold text-[#0b2b53]';
-  const selectContentClass = 'z-[10010] max-h-60 rounded-lg border-[#dbe8f4] bg-white text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)]';
-  const selectItemClass = 'cursor-pointer rounded-md text-[#0b2b53] focus:bg-[#eef7ff] focus:text-[#0b4edb] hover:bg-[#eef7ff]';
+  const labelClass = 'flex items-center gap-2 text-sm font-semibold text-[#0b2b53] dark:text-[#dce8f7]';
+  const selectContentClass = 'z-[10010] max-h-60 rounded-lg border-[#dbe8f4] bg-white text-[#07182f] shadow-[0_16px_36px_rgba(15,47,87,0.14)] dark:border-[#22364d] dark:bg-[#121e2f] dark:text-[#f3f7fc] dark:shadow-[0_20px_44px_rgba(2,10,20,0.34)]';
+  const selectItemClass = 'cursor-pointer rounded-md text-[#0b2b53] focus:bg-[#eef7ff] focus:text-[#0b4edb] hover:bg-[#eef7ff] dark:text-[#dce8f7] dark:focus:bg-[#11233b] dark:focus:text-[#4b86ff] dark:hover:bg-[#11233b]';
 
   return (
     <>
@@ -185,12 +185,12 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
         />
       )}
 
-      <div className="min-h-[calc(100vh-2rem)] w-full bg-[#f4f8fc] px-4 py-5 sm:px-6 sm:py-8">
+      <div className="min-h-[calc(100vh-2rem)] w-full bg-[#f4f8fc] px-4 py-5 sm:px-6 sm:py-8 dark:bg-[#0b1420]">
         <div className="mx-auto flex w-full max-w-md flex-col gap-5">
           <header className="pt-1">
             <div className="flex items-center justify-between gap-3">
               <AKBLogo markClassName="h-12 w-12" textClassName="text-left" />
-              <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb]">
+              <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb] dark:bg-[#11233b] dark:text-[#69a0ff]">
                 <ShieldCheck className="h-3.5 w-3.5" />
                 Telegram Mini App
               </div>
@@ -239,8 +239,8 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                     <FormControl>
                       <div className="relative">
                         <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center gap-2">
-                          <span className="text-sm font-semibold text-[#0b2b53]">+998</span>
-                          <div className="h-4 w-px bg-[#cfe0f1]" />
+                          <span className="text-sm font-semibold text-[#0b2b53] dark:text-[#dce8f7]">+998</span>
+                          <div className="h-4 w-px bg-[#cfe0f1] dark:bg-[#2c4762]" />
                         </div>
                         <Input
                           placeholder={t('login.phoneNumberPlaceholder')}
@@ -272,7 +272,7 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                     <button
                       type="button"
                       onClick={onNavigateToRegister}
-                      className="font-semibold text-[#0b4edb] underline underline-offset-2 decoration-[#37c5f3]/60 transition-colors hover:text-[#073fba]"
+                      className="font-semibold text-[#0b4edb] underline underline-offset-2 decoration-[#37c5f3]/60 transition-colors hover:text-[#073fba] dark:text-[#69a0ff] dark:hover:text-[#8ab7ff]"
                     >
                       {t('login.register')}
                     </button>
@@ -301,9 +301,9 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="fixed bottom-0 left-0 right-0 z-[10000] mx-auto flex h-[80vh] max-w-lg flex-col overflow-y-auto rounded-t-lg border border-[#dbe8f4] bg-[#f8fbfe] p-5 pb-8 shadow-[0_-18px_44px_rgba(15,47,87,0.16)]"
+                className="fixed bottom-0 left-0 right-0 z-[10000] mx-auto flex h-[80vh] max-w-lg flex-col overflow-y-auto rounded-t-lg border border-[#dbe8f4] bg-[#f8fbfe] p-5 pb-8 shadow-[0_-18px_44px_rgba(15,47,87,0.16)] dark:border-[#22364d] dark:bg-[#121e2f] dark:shadow-[0_-18px_44px_rgba(2,10,20,0.42)]"
               >
-                <div className="mx-auto mb-6 h-1 w-10 rounded-full bg-[#cfe0f1]" />
+                <div className="mx-auto mb-6 h-1 w-10 rounded-full bg-[#cfe0f1] dark:bg-[#2c4762]" />
                 <div className="text-center mb-6">
                   <h2 className={`text-xl ${akbHeading}`}>
                     {t('login.addressDrawer.title', 'Yashash manzilingizni kiriting')}

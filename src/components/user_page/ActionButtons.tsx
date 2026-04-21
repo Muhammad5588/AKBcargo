@@ -94,19 +94,19 @@ export const ActionButton = memo(({
       onClick={onClick}
       className={cn(
         "group relative flex w-full min-w-0 flex-col justify-between overflow-hidden rounded-lg border p-3 text-left",
-        "shadow-[0_8px_18px_rgba(15,47,87,0.04)] transition-all duration-200 active:scale-[0.98]",
+        "shadow-[0_8px_18px_rgba(15,47,87,0.035)] transition-all duration-200 active:scale-[0.98]",
         theme.card,
         isPrimary ? ACTION_LAYOUTS[item.id] ?? "min-h-[118px]" : "min-h-[70px] flex-row items-center gap-3",
       )}
     >
       {item.bgIcon && (
-        <div className="pointer-events-none absolute -bottom-5 -right-4 text-[#0b84e5]/[0.04] transition-transform duration-300 group-hover:scale-105">
+        <div className="pointer-events-none absolute -bottom-5 -right-4 text-[#0b84e5]/[0.025] transition-transform duration-300 group-hover:scale-105 dark:text-[#9ab0c5]/[0.08]">
           {item.bgIcon}
         </div>
       )}
 
       <div className={cn("relative z-10 flex min-w-0", isPrimary ? "items-start justify-between" : "items-center")}>
-        <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/70", theme.icon)}>
+        <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#e5edf6]/80 dark:border-[#25374b]", theme.icon)}>
           {item.icon}
         </span>
         {isPrimary && (
@@ -128,7 +128,7 @@ export const ActionButton = memo(({
 
         <span
           className={cn(
-            "mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#0b4edb]",
+            "mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#334a62] transition-colors group-hover:text-[#0b4edb] dark:text-[#9ab0c5] dark:group-hover:text-[#e6edf7]",
             !isPrimary && "mt-0 shrink-0",
           )}
         >
