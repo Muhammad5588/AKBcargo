@@ -243,7 +243,7 @@ export default function UserHistoryPage({ onBack }: UserHistoryPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f8fc] text-[#07182f] pb-28 pt-6 md:pt-8 relative">
+    <div className="min-h-screen bg-[#f4f8fc] text-[#07182f] pb-28 pt-20 relative">
       <UniqueBackground />
 
       <div className="container mx-auto px-4 max-w-lg md:max-w-3xl lg:max-w-5xl relative z-10">

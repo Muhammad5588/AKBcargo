@@ -75,10 +75,10 @@ export const usePaymentReminders = () => {
     });
 };
 
-export const useSessionHistory = (page = 1) => {
+export const useSessionHistory = (page = 1, limit = 10) => {
     return useQuery({
-        queryKey: ['profile', 'sessions', page],
-        queryFn: () => getSessionHistory(page),
+        queryKey: ['profile', 'sessions', page, limit],
+        queryFn: () => getSessionHistory(page, limit),
         placeholderData: keepPreviousData,
     });
 };

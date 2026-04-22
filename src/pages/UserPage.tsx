@@ -280,9 +280,9 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                className="relative z-10"
             >
                {/* Desktop Container Wrapper */}
-               <div className="md:container md:mx-auto md:max-w-7xl md:p-6 lg:p-8">
-                  <div className="flex flex-col md:grid md:grid-cols-12 md:gap-8 md:items-start pb-10 pt-6 md:pt-8">
-                     <div className="w-full px-4 md:px-0 md:col-span-12 mb-4">
+               <div className="mx-auto w-full max-w-7xl px-4 pt-20 sm:px-5 md:px-6 lg:px-8">
+                  <div className="flex flex-col pb-10 md:grid md:grid-cols-12 md:items-start md:gap-8">
+                     <div className="w-full md:col-span-12 mb-4">
                         <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_10px_24px_rgba(10,35,70,0.06)]">
                            <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
                               {t('profile.pageLabel', 'Shaxsiy kabinet')}
@@ -298,7 +298,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
 
                      {/* LEFT COLUMN (Desktop): Profile Hero & Quick Actions */}
                      <aside className="w-full md:col-span-5 lg:col-span-4 md:sticky md:top-8 self-start z-30">
-                        <div className="relative overflow-hidden">
+                        <div className="relative mx-auto w-full max-w-md overflow-hidden md:mx-0 md:max-w-none">
                            <ProfileHero user={user} onBalanceClick={() => setIsWalletModalOpen(true)} />
                         </div>
 
@@ -339,12 +339,12 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                      </aside>
 
                      {/* RIGHT COLUMN (Desktop): Main Content */}
-                     <main className="w-full md:col-span-7 lg:col-span-8 relative z-20 md:mt-0 px-4 md:px-0">
+                     <main className="w-full md:col-span-7 lg:col-span-8 relative z-20 md:mt-0">
                         {/* Mobile Negative Margin Wrapper */}
-                        <div className="mt-6 md:mt-0 pb-10 md:pb-0 space-y-5 md:space-y-6">
+                        <div className="mt-4 md:mt-0 pb-10 md:pb-0 space-y-5 md:space-y-6">
 
                            {/* Mobile Only: Quick Actions */}
-                           <div className="md:hidden max-w-md mx-auto w-full">
+                           <div className="md:hidden mx-auto w-full max-w-md">
                               <QuickActions
                                  onWalletClick={() => setIsWalletModalOpen(true)}
                                  onCardsClick={() => setIsCardsModalOpen(true)}
@@ -353,7 +353,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                            </div>
 
                            {/* Mobile Only: Passport Images */}
-                           <div className="md:hidden max-w-md mx-auto w-full">
+                           <div className="md:hidden mx-auto w-full max-w-md">
                               <PassportImages images={user.passport_images} />
                            </div>
 
@@ -362,7 +362,7 @@ const UserPage = ({ onLogout }: { onLogout?: () => void }) => {
                            <SessionHistory />
 
                            {/* Mobile Only: Buttons */}
-                           <div className="md:hidden max-w-md mx-auto space-y-3 pt-4 px-4">
+                           <div className="md:hidden mx-auto w-full max-w-md space-y-3 pt-4">
                               {installAction}
                               <Button
                                  variant="outline"
@@ -475,7 +475,7 @@ const ProfileSkeleton = memo(() => {
    return (
       <div className="min-h-screen bg-[#f4f8fc]">
          <UniqueBackground />
-         <div className="container max-w-md mx-auto px-4 pt-6 relative z-10 space-y-5">
+         <div className="mx-auto max-w-md px-4 pt-20 relative z-10 space-y-5 sm:px-5">
             <div className="rounded-lg border border-[#dbe8f4] bg-white p-4 shadow-[0_10px_24px_rgba(10,35,70,0.06)]">
                <Skeleton className="h-4 w-28 bg-[#e8eff6] rounded-lg mb-3" />
                <Skeleton className="h-8 w-44 bg-[#e8eff6] rounded-lg mb-2" />

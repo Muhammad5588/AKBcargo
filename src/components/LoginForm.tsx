@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { LogIn, MapPin, Phone, ShieldCheck, User } from 'lucide-react';
+import { LogIn, MapPin, Phone, User } from 'lucide-react';
 import { z } from 'zod';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -21,7 +21,6 @@ import {
   akbPrimaryButton,
   akbSurface,
 } from '@/components/user_panel/premium';
-import { AKBLogo } from '@/components/user_panel/AKBLogo';
 
 const loginSchema = z.object({
   clientCode: z.string().min(1, 'login.validation.clientCodeRequired').regex(/^[A-Z][A-Z0-9-]*$/, 'login.validation.clientCodeInvalid'),
@@ -185,24 +184,15 @@ export default function LoginForm({ onNavigateToRegister, onLoginSuccess }: Logi
         />
       )}
 
-      <div className="min-h-[calc(100vh-2rem)] w-full bg-transparent px-4 py-5 sm:px-6 sm:py-8">
-        <div className="mx-auto flex w-full max-w-md flex-col gap-5">
-          <header className="pt-1">
-            <div className="flex items-center justify-between gap-3">
-              <AKBLogo markClassName="h-12 w-12" textClassName="text-left" />
-              <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb] dark:bg-[#11233b] dark:text-[#69a0ff]">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                Telegram Mini App
-              </div>
-            </div>
-            <div className="mt-6">
-              <h1 className={`text-2xl ${akbHeading}`}>
-                {t('login.title')}
-              </h1>
-              <p className={`${akbMutedText} mt-2 text-sm leading-6`}>
-                {t('login.subtitle')}
-              </p>
-            </div>
+      <div className="h-[100dvh] max-h-[100dvh] w-full overflow-hidden bg-transparent px-4 pb-4 pt-24 sm:px-6 sm:pb-6 sm:pt-28">
+        <div className="mx-auto flex h-full w-full max-w-md flex-col justify-center gap-4">
+          <header>
+            <h1 className={`text-2xl ${akbHeading}`}>
+              {t('login.title')}
+            </h1>
+            <p className={`${akbMutedText} mt-2 text-sm leading-6`}>
+              {t('login.subtitle')}
+            </p>
           </header>
 
           <div className={`relative overflow-hidden p-5 sm:p-6 ${akbSurface}`}>

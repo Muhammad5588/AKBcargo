@@ -3,8 +3,7 @@ import { History, Smartphone, LogOut, ShieldCheck, CalendarCheck } from 'lucide-
 import { useTranslation } from 'react-i18next';
 import { useSessionHistory } from '@/hooks/useProfile';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
-import { useState, memo } from 'react';
+import { memo } from 'react';
 import { cn } from '@/lib/utils';
 import { type SessionLogItem } from '@/types/profile';
 
@@ -54,14 +53,14 @@ const LogItem = memo(({ log, idx }: { log: SessionLogItem; idx: number }) => (
 LogItem.displayName = 'LogItem';
 
 export const SessionHistory = memo(() => {
-  const [page, setPage] = useState(1);
-  const { data, isLoading, isFetching } = useSessionHistory(page);
+  const { data, isLoading, isFetching } = useSessionHistory(1, 5);
   const { t } = useTranslation();
+  const visibleLogs = data?.logs.slice(0, 5) ?? [];
 
   if (isLoading) return <SessionHistorySkeleton />;
 
   return (
-    <div className="pb-10 max-w-md mx-auto md:max-w-none md:mx-0 md:px-0 md:pb-0">
+    <div className="w-full max-w-md mx-auto pb-10 md:max-w-none md:mx-0 md:pb-0">
       <div className="flex items-start justify-between gap-3 mb-4">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-normal text-[#0b4edb]">
@@ -78,7 +77,7 @@ export const SessionHistory = memo(() => {
       </div>
 
       <div className="bg-white rounded-lg shadow-[0_8px_20px_rgba(10,35,70,0.05)] border border-[#dbe8f4] overflow-hidden">
-        {data?.logs.length === 0 ? (
+        {visibleLogs.length === 0 ? (
           <div className="p-8 text-center text-[#63758a]">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg border border-[#cfe0f1] bg-[#eef6ff] text-[#0b4edb]">
               <History size={20} />
@@ -87,33 +86,11 @@ export const SessionHistory = memo(() => {
           </div>
         ) : (
           <div className="divide-y divide-[#eef3f8] md:divide-y-0 md:grid md:grid-cols-1 xl:grid-cols-2 md:gap-1">
-            {data?.logs.map((log, idx) => (
+            {visibleLogs.map((log, idx) => (
               <LogItem key={`${log.date}-${idx}`} log={log} idx={idx} />
             ))}
           </div>
         )}
-
-        <div className="p-3 bg-[#f8fbfe] border-t border-[#edf3f8] flex justify-between md:col-span-full">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="rounded-lg text-[#63758a] hover:bg-[#eef6ff] hover:text-[#0b4edb]"
-            disabled={page === 1}
-            onClick={() => setPage(p => Math.max(1, p - 1))}
-          >
-            {t('profile.session.prev')}
-          </Button>
-          <span className="text-sm text-[#63758a] flex items-center">{t('profile.session.page', { page })}</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="rounded-lg text-[#63758a] hover:bg-[#eef6ff] hover:text-[#0b4edb]"
-            disabled={!data?.logs || data.logs.length < 10}
-            onClick={() => setPage(p => p + 1)}
-          >
-            {t('profile.session.next')}
-          </Button>
-        </div>
       </div>
     </div>
   );
@@ -121,7 +98,7 @@ export const SessionHistory = memo(() => {
 SessionHistory.displayName = 'SessionHistory';
 
 const SessionHistorySkeleton = () => (
-  <div className="px-6 pb-24 max-w-md mx-auto">
+  <div className="w-full max-w-md mx-auto pb-10 md:max-w-none md:mx-0 md:pb-0">
     <Skeleton className="h-6 w-32 mb-4" />
     <div className="bg-white rounded-lg p-4 space-y-4 border border-[#dbe8f4]">
       <Skeleton className="h-12 w-full rounded-lg" />

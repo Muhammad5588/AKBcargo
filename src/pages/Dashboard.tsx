@@ -1,20 +1,15 @@
-import { useState, memo, useRef, useEffect, useMemo, lazy, Suspense, useCallback } from "react";
+import { useState, memo, useRef, useEffect, useMemo, lazy, Suspense, useCallback, type CSSProperties } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
     MapPin,
     Calendar,
-    Rocket,
     Edit3,
     // Info,
     ChevronLeft,
     ChevronRight,
-    IdCard,
     Home,
     ScanBarcode,
-    ShieldOff,
     Plane,
-    // HelpCircle,
-    ShieldAlert,
     // Newspaper,
     Wallet,
     MessageSquare,
@@ -34,7 +29,6 @@ import { toast } from "sonner";
 import { ActionButton, type ActionItemData } from "@/components/user_page/ActionButtons";
 import { UniqueBackground } from "@/components/ui/UniqueBackground";
 import { useTranslation } from 'react-i18next';
-import { AnimatePresence, motion } from "framer-motion";
 import { useProfile } from "@/hooks/useProfile";
 
 interface CarouselItemData {
@@ -77,8 +71,8 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         titleKey: "dashboard.carousel.prohibited.title",
         subKey: "dashboard.carousel.prohibited.sub",
         gradient: "from-[#ef4444] via-[#f97316] to-[#fb7185]",
-        bgIcon: <ShieldAlert className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
-        mainIcon: <ShieldOff style={{ width: 32, height: 32 }} />,
+        bgIcon: <span aria-hidden className="absolute -right-2 top-1 select-none text-[5.1rem] font-black leading-none tracking-[-0.08em] text-white/12">!</span>,
+        mainIcon: <span aria-hidden className="text-[1.55rem] font-black leading-none">!</span>,
     },
     {
         id: 2,
@@ -86,8 +80,8 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         titleKey: "dashboard.carousel.id.title",
         subKey: "dashboard.carousel.id.sub",
         gradient: "from-[#4338ca] via-[#2563eb] to-[#06b6d4]",
-        bgIcon: <IdCard className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
-        mainIcon: <IdCard style={{ width: 32, height: 32 }} />,
+        bgIcon: <span aria-hidden className="absolute -right-1 top-3 select-none text-[4.25rem] font-black leading-none tracking-[-0.06em] text-white/12">ID</span>,
+        mainIcon: <span aria-hidden className="text-[0.95rem] font-black leading-none tracking-[0.12em]">ID</span>,
     },
     {
         id: 3,
@@ -95,8 +89,8 @@ const CAROUSEL_ITEMS: CarouselItemData[] = [
         titleKey: "dashboard.carousel.delivery.title",
         subKey: "dashboard.carousel.delivery.sub",
         gradient: "from-[#0f766e] via-[#0891b2] to-[#1d4ed8]",
-        bgIcon: <Rocket className="text-white/10 absolute -right-4 -top-4" style={{ width: 96, height: 96 }} />,
-        mainIcon: <Plane style={{ width: 32, height: 32 }} />,
+        bgIcon: <span aria-hidden className="absolute -right-2 top-3 select-none text-[3.6rem] font-black leading-none tracking-[0.08em] text-white/12">AIR</span>,
+        mainIcon: <span aria-hidden className="text-[0.78rem] font-black leading-none tracking-[0.18em]">AIR</span>,
     },
     // {
     //     id: 4,
@@ -191,27 +185,6 @@ const SECONDARY_ACTIONS: (Omit<ActionItemData, 'label' | 'desc' | 'badge' | 'act
         priority: "secondary",
     },
 ];
-
-const cubeCardVariants = {
-    enter: (direction: number) => ({
-        opacity: 0,
-        x: direction > 0 ? 38 : -38,
-        rotateY: direction > 0 ? 30 : -30,
-        scale: 0.96,
-    }),
-    center: {
-        opacity: 1,
-        x: 0,
-        rotateY: 0,
-        scale: 1,
-    },
-    exit: (direction: number) => ({
-        opacity: 0,
-        x: direction > 0 ? -38 : 38,
-        rotateY: direction > 0 ? -30 : 30,
-        scale: 0.96,
-    }),
-};
 
 const CarouselCard = memo(({ item, onView }: { item: CarouselItemData; onView?: () => void }) => {
     const { t } = useTranslation();
@@ -343,7 +316,7 @@ return (
         <div className="h-full flex flex-col justify-between relative z-10 p-5 sm:p-6">
             {/* Top: icon yoki thumbnail */}
             {item.mainIcon ? (
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center [&_svg]:h-6 [&_svg]:w-6 [&_svg]:text-current ${
+                <div className={`relative z-20 hidden h-12 w-12 shrink-0 rounded-xl items-center justify-center text-white sm:flex ${
                     hasFeatureGradient
                         ? "border border-white/20 bg-white/15 text-white shadow-lg backdrop-blur-sm"
                         : "border border-[#cfe0f1] bg-[#eef7ff] text-[#0b4edb]"
@@ -364,7 +337,7 @@ return (
             )}
 
             {/* Bottom: title + sub */}
-            <div className={item.mediaUrl && !item.mainIcon ? "max-w-[72%]" : ""}>
+            <div className={`${item.mediaUrl && !item.mainIcon ? "max-w-[72%]" : ""} ${item.mainIcon ? "pt-16 sm:pt-0" : ""}`}>
                 <h3
                     className={`mb-2 text-lg font-semibold leading-tight sm:text-xl ${hasFeatureGradient ? "text-white" : "text-[#07182f]"}`}
                     style={item.textColor ? { color: item.textColor } : undefined}
@@ -386,25 +359,20 @@ return (
 
 const SectionTitle = memo(({
     children,
-    eyebrow,
     accessory,
 }: {
     children: React.ReactNode;
-    eyebrow?: string;
     accessory?: React.ReactNode;
 }) => {
     return (
-        <div className="mb-3 flex items-center justify-between gap-3">
-            <div className="min-w-0">
-                {eyebrow && (
-                    <p className="mb-1 text-[11px] font-semibold uppercase text-[#0b84e5]">
-                        {eyebrow}
-                    </p>
-                )}
-                <h2 className="text-lg font-semibold leading-tight tracking-normal text-[#07182f]">
+        <div className="mb-4 flex items-center gap-3">
+            <div className="inline-flex min-w-0 items-center gap-2 rounded-full border border-[#dbe8f4] bg-white/80 px-3 py-2 shadow-[0_10px_24px_rgba(15,47,87,0.08)] backdrop-blur-sm dark:border-white/10 dark:bg-[#102038]/72 dark:shadow-[0_12px_24px_rgba(2,10,20,0.24)]">
+                <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#0b4edb] shadow-[0_0_0_4px_rgba(11,78,219,0.14)] dark:bg-[#39C6FF] dark:shadow-[0_0_0_4px_rgba(57,198,255,0.12)]" />
+                <h2 className="truncate text-[1.02rem] font-semibold leading-tight tracking-normal text-[#07182f] dark:text-white sm:text-lg">
                     {children}
                 </h2>
             </div>
+            <div className="h-px flex-1 rounded-full bg-[linear-gradient(90deg,rgba(11,78,219,0.22),rgba(207,224,241,0.6),rgba(255,255,255,0))] dark:bg-[linear-gradient(90deg,rgba(57,198,255,0.26),rgba(143,160,188,0.18),rgba(255,255,255,0))]" />
             {accessory}
         </div>
     );
@@ -415,8 +383,6 @@ SectionTitle.displayName = "SectionTitle";
 const ImportantCarouselSection = ({
     sortedCarouselItems,
     boundedCarouselIndex,
-    carouselDirection,
-    activeCarouselItem,
     onStep,
     onSelect,
     onItemClick,
@@ -424,11 +390,12 @@ const ImportantCarouselSection = ({
     onTouchEnd,
     onPause,
     onResume,
+    isCubeAnimating,
+    cubeRotation,
+    onCubeTransitionEnd,
 }: {
     sortedCarouselItems: CarouselItemData[];
     boundedCarouselIndex: number;
-    carouselDirection: number;
-    activeCarouselItem?: CarouselItemData;
     onStep: (direction: 1 | -1) => void;
     onSelect: (index: number) => void;
     onItemClick: (item: CarouselItemData) => void;
@@ -436,31 +403,42 @@ const ImportantCarouselSection = ({
     onTouchEnd: (e: React.TouchEvent) => void;
     onPause: () => void;
     onResume: () => void;
+    isCubeAnimating: boolean;
+    cubeRotation: number;
+    onCubeTransitionEnd: () => void;
 }) => {
     const { t } = useTranslation();
+    const hasMultipleSlides = sortedCarouselItems.length > 1;
+    const totalSlides = sortedCarouselItems.length;
+    const cubeShellStyle = useMemo(
+        () =>
+            ({
+                ['--akb-cube-depth' as string]: 'clamp(6.8rem, 19vw, 9rem)',
+            }) as CSSProperties,
+        [],
+    );
+
+    const getItemAtOffset = useCallback(
+        (offset: number) => {
+            if (totalSlides === 0) return null;
+            const index = (boundedCarouselIndex + offset + totalSlides) % totalSlides;
+            return sortedCarouselItems[index];
+        },
+        [boundedCarouselIndex, sortedCarouselItems, totalSlides],
+    );
+
+    const frontItem = getItemAtOffset(0);
+    const rightItem = totalSlides > 1 ? getItemAtOffset(1) : null;
+    const backItem = totalSlides > 2 ? getItemAtOffset(2) : null;
+    const leftItem = totalSlides > 1 ? getItemAtOffset(-1) : null;
+    const mobileIconItem =
+        isCubeAnimating
+            ? (cubeRotation < 0 ? rightItem : leftItem) ?? frontItem
+            : frontItem;
 
     return (
         <section>
             <SectionTitle
-                eyebrow={t('dashboard.sections.info', 'Muhim ma\'lumotlar')}
-                accessory={
-                    <div className="hidden md:flex items-center gap-2">
-                        <button
-                            onClick={() => onStep(-1)}
-                            disabled={sortedCarouselItems.length <= 1}
-                            className="p-1.5 rounded-lg bg-white text-[#0b4edb] border border-[#dbe8f4] hover:bg-[#0b4edb] hover:text-white disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#0b4edb] transition-colors active:scale-95"
-                        >
-                            <ChevronLeft className="w-5 h-5" />
-                        </button>
-                        <button
-                            onClick={() => onStep(1)}
-                            disabled={sortedCarouselItems.length <= 1}
-                            className="p-1.5 rounded-lg bg-white text-[#0b4edb] border border-[#dbe8f4] hover:bg-[#0b4edb] hover:text-white disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#0b4edb] transition-colors active:scale-95"
-                        >
-                            <ChevronRight className="w-5 h-5" />
-                        </button>
-                    </div>
-                }
             >
                 {t('dashboard.sections.important')}
             </SectionTitle>
@@ -472,25 +450,112 @@ const ImportantCarouselSection = ({
                 onMouseEnter={onPause}
                 onMouseLeave={onResume}
             >
-                <div className="relative h-[168px] overflow-hidden rounded-lg border border-[#dbe8f4] bg-white shadow-sm sm:h-[196px] [perspective:1200px]">
-                    <AnimatePresence initial={false} custom={carouselDirection}>
-                        {activeCarouselItem && (
-                            <motion.button
+                <div
+                    className="relative h-[184px] overflow-hidden rounded-[22px] sm:h-[220px] [perspective:2200px]"
+                    style={cubeShellStyle}
+                >
+                    {mobileIconItem?.mainIcon && (
+                        <div className="absolute left-[calc(4.5%+1.1rem)] top-5 z-20 flex h-12 w-12 items-center justify-center rounded-xl border border-white/24 bg-white/18 text-white shadow-[0_10px_24px_rgba(15,47,87,0.18)] backdrop-blur-sm sm:hidden">
+                            {mobileIconItem.mainIcon}
+                        </div>
+                    )}
+                    <div
+                        className="absolute inset-0 [transform-style:preserve-3d]"
+                        style={{
+                            transform: `translateZ(calc(var(--akb-cube-depth) * -1)) rotateY(${cubeRotation}deg)`,
+                            transition: isCubeAnimating ? 'transform 620ms cubic-bezier(0.22, 0.7, 0.12, 1)' : 'none',
+                        }}
+                        onTransitionEnd={(event) => {
+                            if (
+                                event.target !== event.currentTarget ||
+                                event.propertyName !== 'transform' ||
+                                !isCubeAnimating
+                            ) {
+                                return;
+                            }
+
+                            onCubeTransitionEnd();
+                        }}
+                    >
+                        {frontItem && (
+                            <button
+                                key={`front-${frontItem.id}`}
                                 type="button"
-                                key={`${activeCarouselItem.fromApi ? "api" : "static"}-${activeCarouselItem.id}`}
-                                custom={carouselDirection}
-                                variants={cubeCardVariants}
-                                initial="enter"
-                                animate="center"
-                                exit="exit"
-                                transition={{ type: "spring", stiffness: 230, damping: 27, mass: 0.72 }}
-                                className="group absolute inset-0 h-full w-full text-left outline-none [transform-style:preserve-3d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                                onClick={() => onItemClick(activeCarouselItem)}
+                                className="group absolute inset-y-3 left-[4.5%] right-[4.5%] h-auto text-left outline-none [backface-visibility:hidden] [transform-style:preserve-3d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:inset-y-4 sm:left-[7%] sm:right-[7%]"
+                                style={{ transform: 'translateZ(var(--akb-cube-depth))' }}
+                                onClick={() => onItemClick(frontItem)}
                             >
-                                <CarouselCard item={activeCarouselItem} />
-                            </motion.button>
+                                <div className="relative h-full rounded-[22px] shadow-[0_24px_46px_rgba(15,47,87,0.16)]">
+                                    <CarouselCard item={frontItem} />
+                                </div>
+                            </button>
                         )}
-                    </AnimatePresence>
+
+                        {rightItem && (
+                            <div
+                                key={`right-${rightItem.id}`}
+                                aria-hidden="true"
+                                className="pointer-events-none absolute inset-y-3 left-[4.5%] right-[4.5%] h-auto opacity-90 [backface-visibility:hidden] sm:inset-y-4 sm:left-[7%] sm:right-[7%]"
+                                style={{ transform: 'rotateY(90deg) translateZ(var(--akb-cube-depth))' }}
+                            >
+                                <div className="relative h-full rounded-[22px] shadow-[0_20px_36px_rgba(15,47,87,0.12)]">
+                                    <div className="pointer-events-none absolute inset-0 rounded-[22px] bg-[#07182f]/5" />
+                                    <CarouselCard item={rightItem} />
+                                </div>
+                            </div>
+                        )}
+
+                        {backItem && (
+                            <div
+                                key={`back-${backItem.id}`}
+                                aria-hidden="true"
+                                className="pointer-events-none absolute inset-y-3 left-[4.5%] right-[4.5%] h-auto opacity-80 [backface-visibility:hidden] sm:inset-y-4 sm:left-[7%] sm:right-[7%]"
+                                style={{ transform: 'rotateY(180deg) translateZ(var(--akb-cube-depth))' }}
+                            >
+                                <div className="relative h-full rounded-[22px] shadow-[0_16px_30px_rgba(15,47,87,0.1)]">
+                                    <div className="pointer-events-none absolute inset-0 rounded-[22px] bg-[#07182f]/10" />
+                                    <CarouselCard item={backItem} />
+                                </div>
+                            </div>
+                        )}
+
+                        {leftItem && (
+                            <div
+                                key={`left-${leftItem.id}`}
+                                aria-hidden="true"
+                                className="pointer-events-none absolute inset-y-3 left-[4.5%] right-[4.5%] h-auto opacity-90 [backface-visibility:hidden] sm:inset-y-4 sm:left-[7%] sm:right-[7%]"
+                                style={{ transform: 'rotateY(-90deg) translateZ(var(--akb-cube-depth))' }}
+                            >
+                                <div className="relative h-full rounded-[22px] shadow-[0_20px_36px_rgba(15,47,87,0.12)]">
+                                    <div className="pointer-events-none absolute inset-0 rounded-[22px] bg-[#07182f]/5" />
+                                    <CarouselCard item={leftItem} />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {hasMultipleSlides && (
+                        <>
+                            <button
+                                type="button"
+                                aria-label={t('dashboard.carousel.previous', 'Oldingi')}
+                                disabled={isCubeAnimating}
+                                onClick={() => onStep(-1)}
+                                className="absolute left-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/45 bg-white/78 text-[#0b4edb] shadow-[0_10px_22px_rgba(15,47,87,0.12)] backdrop-blur-sm transition hover:bg-white disabled:opacity-40 md:flex"
+                            >
+                                <ChevronLeft className="h-5 w-5" />
+                            </button>
+                            <button
+                                type="button"
+                                aria-label={t('dashboard.carousel.next', 'Keyingi')}
+                                disabled={isCubeAnimating}
+                                onClick={() => onStep(1)}
+                                className="absolute right-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/45 bg-white/78 text-[#0b4edb] shadow-[0_10px_22px_rgba(15,47,87,0.12)] backdrop-blur-sm transition hover:bg-white disabled:opacity-40 md:flex"
+                            >
+                                <ChevronRight className="h-5 w-5" />
+                            </button>
+                        </>
+                    )}
                 </div>
 
                 {sortedCarouselItems.length > 1 && (
@@ -669,8 +734,10 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
     const carouselTouchStartY = useRef<number | null>(null);
     const viewedCarouselIdsRef = useRef<Set<number>>(new Set());
     const [activeCarouselIndex, setActiveCarouselIndex] = useState(0);
-    const [carouselDirection, setCarouselDirection] = useState(1);
     const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+    const [isCubeAnimating, setIsCubeAnimating] = useState(false);
+    const [cubeRotation, setCubeRotation] = useState(0);
+    const [cubeDirection, setCubeDirection] = useState<1 | -1>(1);
 
     const boundedCarouselIndex = sortedCarouselItems.length > 0
         ? Math.min(activeCarouselIndex, sortedCarouselItems.length - 1)
@@ -678,20 +745,43 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
     const activeCarouselItem = sortedCarouselItems[boundedCarouselIndex];
 
     const handleCarouselStep = useCallback((direction: 1 | -1) => {
-        if (sortedCarouselItems.length <= 1) {
+        if (sortedCarouselItems.length <= 1 || isCubeAnimating) {
             return;
         }
 
-        setCarouselDirection(direction);
+        setCubeDirection(direction);
+        setCubeRotation(direction === 1 ? -90 : 90);
+        setIsCubeAnimating(true);
+    }, [isCubeAnimating, sortedCarouselItems.length]);
+
+    const handleCubeTransitionEnd = useCallback(() => {
+        setIsCubeAnimating(false);
+        setCubeRotation(0);
         setActiveCarouselIndex((currentIndex) => {
-            return (currentIndex + direction + sortedCarouselItems.length) % sortedCarouselItems.length;
+            return (currentIndex + cubeDirection + sortedCarouselItems.length) % sortedCarouselItems.length;
         });
-    }, [sortedCarouselItems.length]);
+    }, [cubeDirection, sortedCarouselItems.length]);
 
     const handleCarouselSelect = useCallback((index: number) => {
-        setCarouselDirection(index > boundedCarouselIndex ? 1 : -1);
+        const nextIndex = sortedCarouselItems.length > 0
+            ? (boundedCarouselIndex + 1) % sortedCarouselItems.length
+            : 0;
+        const previousIndex = sortedCarouselItems.length > 0
+            ? (boundedCarouselIndex - 1 + sortedCarouselItems.length) % sortedCarouselItems.length
+            : 0;
+
+        if (index === nextIndex) {
+            handleCarouselStep(1);
+            return;
+        }
+
+        if (index === previousIndex) {
+            handleCarouselStep(-1);
+            return;
+        }
+
         setActiveCarouselIndex(index);
-    }, [boundedCarouselIndex]);
+    }, [boundedCarouselIndex, handleCarouselStep, sortedCarouselItems.length]);
 
     useEffect(() => {
         if (!activeCarouselItem?.fromApi || activeTab !== "home") {
@@ -843,8 +933,8 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
         >
             <UniqueBackground />
 
-            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-[60px]">
-                {activeTab !== "home" && <DashboardHeader name={profile?.full_name} />}
+            <div className="relative z-10 max-w-4xl mx-auto px-4 pt-[80px]">
+                {activeTab !== "home" && activeTab !== "track" && <DashboardHeader name={profile?.full_name} />}
 
                 {activeTab !== "home" && (
                     <HeaderTabs activeTab={activeTab} setActiveTab={handleSetActiveTab} />
@@ -880,8 +970,6 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                         <ImportantCarouselSection
                             sortedCarouselItems={sortedCarouselItems}
                             boundedCarouselIndex={boundedCarouselIndex}
-                            carouselDirection={carouselDirection}
-                            activeCarouselItem={activeCarouselItem}
                             onStep={handleCarouselStep}
                             onSelect={handleCarouselSelect}
                             onItemClick={handleCarouselItemClick}
@@ -889,12 +977,15 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                             onTouchEnd={onCarouselTouchEnd}
                             onPause={() => setIsCarouselPaused(true)}
                             onResume={() => setIsCarouselPaused(false)}
+                            isCubeAnimating={isCubeAnimating}
+                            cubeRotation={cubeRotation}
+                            onCubeTransitionEnd={handleCubeTransitionEnd}
                         />
 
                         <TrackCodeTab embedded onCargoClick={onNavigateToReports} />
 
                         <section>
-                            <SectionTitle eyebrow={t('dashboard.sections.priority', 'Asosiy yo\'nalishlar')}>
+                            <SectionTitle>
                                 {t('dashboard.sections.mainActions', 'Asosiy amallar')}
                             </SectionTitle>
 
@@ -916,7 +1007,7 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                         </section>
 
                         <section>
-                            <SectionTitle eyebrow={t('dashboard.sections.more', 'Qo\'shimcha xizmatlar')}>
+                            <SectionTitle>
                                 {t('dashboard.sections.services')}
                             </SectionTitle>
 
@@ -968,7 +1059,6 @@ export default function Dashboard({ onNavigateToReports, onNavigateToHistory }: 
                                 </p>
                             </div>
                         </section>
-
                     </div>
                 ) : activeTab === "track" ? (
                         <TrackCodeTab

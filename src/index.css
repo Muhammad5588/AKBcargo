@@ -255,6 +255,18 @@ html.customer-ui.dark {
     color: var(--akb-muted);
   }
 
+  .akb-background-shell {
+    contain: strict;
+    will-change: opacity;
+    transform: translateZ(0);
+  }
+
+  .akb-bg-static {
+    contain: layout paint;
+    backface-visibility: hidden;
+    will-change: opacity;
+  }
+
   html.customer-ui.dark [class~="bg-[#f4f8fc]"] { background-color: var(--akb-page-bg) !important; }
   html.customer-ui.dark [class~="bg-[#f8fbfe]"] { background-color: var(--akb-surface-alt) !important; }
   html.customer-ui.dark [class~="bg-[#f2f6fa]"] { background-color: var(--akb-surface-muted) !important; }
@@ -467,6 +479,16 @@ html.customer-ui.dark {
     }
   }
 
+  @keyframes akbGalaxyDriftFour {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate3d(-1.4rem, 1.25rem, 0) scale(1.05);
+    }
+  }
+
   @keyframes akbGalaxyStarFloatFar {
     0%, 100% {
       transform: translate3d(0, 0, 0) scale(1);
@@ -491,8 +513,46 @@ html.customer-ui.dark {
     }
   }
 
+  @keyframes akbGalaxyOutlineFloatOne {
+    0%, 100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.55;
+    }
+
+    50% {
+      transform: translate3d(0.9rem, 0.7rem, 0);
+      opacity: 0.72;
+    }
+  }
+
+  @keyframes akbGalaxyOutlineFloatTwo {
+    0%, 100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.48;
+    }
+
+    50% {
+      transform: translate3d(-0.8rem, 0.9rem, 0);
+      opacity: 0.62;
+    }
+  }
+
+  @keyframes akbGalaxyDotsFloat {
+    0%, 100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.28;
+    }
+
+    50% {
+      transform: translate3d(0.75rem, -0.6rem, 0);
+      opacity: 0.52;
+    }
+  }
+
   .akb-galaxy-stars,
-  .akb-galaxy-nebula {
+  .akb-galaxy-nebula,
+  .akb-galaxy-outline,
+  .akb-galaxy-dots {
     will-change: transform, opacity;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
@@ -528,10 +588,35 @@ html.customer-ui.dark {
     animation: akbGalaxyDriftThree 30s ease-in-out infinite;
   }
 
+  .akb-galaxy-nebula--four {
+    animation: akbGalaxyDriftFour 34s ease-in-out infinite;
+  }
+
+  .akb-galaxy-outline {
+    box-shadow: 0 0 28px rgba(47, 107, 255, 0.08);
+  }
+
+  .akb-galaxy-outline--one,
+  .akb-galaxy-outline--three {
+    animation: akbGalaxyOutlineFloatOne 30s ease-in-out infinite;
+  }
+
+  .akb-galaxy-outline--two,
+  .akb-galaxy-outline--four {
+    animation: akbGalaxyOutlineFloatTwo 34s ease-in-out infinite;
+  }
+
+  .akb-galaxy-dots--one,
+  .akb-galaxy-dots--two {
+    animation: akbGalaxyDotsFloat 24s ease-in-out infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .akb-light-blob,
     .akb-galaxy-stars,
-    .akb-galaxy-nebula {
+    .akb-galaxy-nebula,
+    .akb-galaxy-outline,
+    .akb-galaxy-dots {
       animation: none !important;
     }
   }

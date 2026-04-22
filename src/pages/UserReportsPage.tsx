@@ -442,28 +442,34 @@ export default function UserReportsPage() {
 
     if (isUserLoading) {
         return (
-            <div className="container max-w-md mx-auto p-4 pt-24 space-y-4 bg-[#f4f8fc]">
-                <Skeleton className="h-10 w-1/2 rounded-lg" />
-                <Skeleton className="h-32 w-full rounded-lg" />
-                <Skeleton className="h-32 w-full rounded-lg" />
+            <div className="min-h-screen bg-[#f4f8fc] text-[#07182f]">
+                <UniqueBackground />
+                <div className="container max-w-md mx-auto px-4 pt-20 space-y-4 relative z-10">
+                    <Skeleton className="h-10 w-1/2 rounded-lg" />
+                    <Skeleton className="h-32 w-full rounded-lg" />
+                    <Skeleton className="h-32 w-full rounded-lg" />
+                </div>
             </div>
         );
     }
 
     if (isUserError || !user) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] pt-24 text-center bg-[#f4f8fc]">
-                <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
-                <h3 className="text-lg font-bold">{t('reports.errorTitle')}</h3>
-                <Button onClick={() => window.location.reload()} className="mt-4" variant="outline">
-                    <RefreshCw className="w-4 h-4 mr-2" /> {t('reports.retry')}
-                </Button>
+            <div className="min-h-screen bg-[#f4f8fc] text-[#07182f]">
+                <UniqueBackground />
+                <div className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] px-4 pt-20 text-center">
+                    <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
+                    <h3 className="text-lg font-bold">{t('reports.errorTitle')}</h3>
+                    <Button onClick={() => window.location.reload()} className="mt-4" variant="outline">
+                        <RefreshCw className="w-4 h-4 mr-2" /> {t('reports.retry')}
+                    </Button>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#f4f8fc] text-[#07182f] font-sans transition-colors duration-300 pb-24 pt-6 md:pt-8">
+        <div className="min-h-screen bg-[#f4f8fc] text-[#07182f] font-sans transition-colors duration-300 pb-24 pt-20">
             <UniqueBackground />
 
             <div className="container max-w-lg mx-auto px-4 relative z-10">

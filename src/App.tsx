@@ -761,7 +761,7 @@ function AppContent() {
           className={`relative ${
             isUserPages
               ? "pb-0 md:pb-0 pt-0"
-              : isAdminLoginPage
+              : isAdminLoginPage || currentPage === "login"
                 ? "p-0"
                 : ["flights", "cargo-list", "cargo-add"].includes(currentPage)
                   ? "pt-20 pb-6"   // NavigationBar clearance only — inner pages control their own spacing

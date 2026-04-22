@@ -133,10 +133,15 @@ export default function TrackCodeTab({
 
             {/* Title & Cargo Navigation */}
             <div className={`flex flex-wrap items-center justify-between gap-3 px-1 ${embedded ? 'mb-2' : 'mb-4'}`}>
-                <h2 className="text-xl font-semibold flex items-center gap-2 text-[#07182f]">
-                    <span className="w-1 h-6 bg-[#0b4edb] rounded-full inline-block" />
-                    {t('tracking.title')}
-                </h2>
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                    <div className="inline-flex min-w-0 items-center gap-2 rounded-full border border-[#dbe8f4] bg-white/80 px-3 py-2 shadow-[0_10px_24px_rgba(15,47,87,0.08)] backdrop-blur-sm dark:border-white/10 dark:bg-[#102038]/72 dark:shadow-[0_12px_24px_rgba(2,10,20,0.24)]">
+                        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#0b4edb] shadow-[0_0_0_4px_rgba(11,78,219,0.14)] dark:bg-[#39C6FF] dark:shadow-[0_0_0_4px_rgba(57,198,255,0.12)]" />
+                        <h2 className="truncate text-base font-semibold leading-tight text-[#07182f] dark:text-white sm:text-lg">
+                            {t('tracking.title')}
+                        </h2>
+                    </div>
+                    <div className="hidden h-px flex-1 rounded-full bg-[linear-gradient(90deg,rgba(11,78,219,0.22),rgba(207,224,241,0.6),rgba(255,255,255,0))] dark:bg-[linear-gradient(90deg,rgba(57,198,255,0.26),rgba(143,160,188,0.18),rgba(255,255,255,0))] sm:block" />
+                </div>
 
                 {onCargoClick && (
                     <div className="ml-auto flex items-center gap-2">

@@ -12,7 +12,7 @@ export const QuickActions = memo(({ onWalletClick, onCardsClick, onPassportsClic
     const { t } = useTranslation();
 
     return (
-        <div className="grid grid-cols-1 gap-2 px-4 mb-6 md:mb-0 md:px-0 md:max-w-none md:gap-3 max-w-lg mx-auto md:mx-0">
+        <div className="grid w-full grid-cols-1 gap-2 md:mb-0 md:gap-3">
             <ActionButton
                 icon={<CreditCard className="h-5 w-5 text-[#0b4edb]" />}
                 label={t('profile.quickActions.payments')}

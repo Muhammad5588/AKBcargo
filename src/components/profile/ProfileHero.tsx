@@ -51,11 +51,38 @@ export const ProfileHero = memo(({ user, onBalanceClick }: ProfileHeroProps) => 
         return controls.stop;
     }, [primaryValue]);
 
-    const handleCopyId = () => {
-        navigator.clipboard.writeText(displayCode);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-        toast.success(t('profile.hero.idCopied'));
+    const fallbackCopyText = (text: string) => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        textarea.style.pointerEvents = 'none';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return successful;
+    };
+
+    const handleCopyId = async () => {
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(displayCode);
+            } else if (!fallbackCopyText(displayCode)) {
+                throw new Error('copy_failed');
+            }
+
+            setCopied(true);
+            window.setTimeout(() => setCopied(false), 2000);
+            toast.success(t('profile.hero.idCopied'));
+        } catch {
+            toast.error(
+                t('profile.hero.idCopyError', "ID nusxalanmadi. Qayta urinib ko'ring."),
+            );
+        }
     };
 
     return (

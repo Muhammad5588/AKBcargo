@@ -22,7 +22,6 @@ import {
   akbPrimaryButton,
   akbSurface,
 } from '@/components/user_panel/premium';
-import { AKBLogo } from '@/components/user_panel/AKBLogo';
 
 interface RegistrationFormProps {
   onNavigateToLogin?: () => void;
@@ -174,21 +173,12 @@ export default function RegistrationForm({ onNavigateToLogin }: RegistrationForm
       <div className="min-h-screen w-full bg-transparent px-4 py-5 pb-8 sm:px-6 sm:py-8">
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
           <header className="pt-1">
-            <div className="flex items-center justify-between gap-3">
-              <AKBLogo markClassName="h-12 w-12" textClassName="text-left" />
-              <div className="inline-flex items-center gap-1.5 rounded-lg bg-[#eef7ff] px-3 py-2 text-xs font-semibold text-[#0b4edb] dark:bg-[#11233b] dark:text-[#69a0ff]">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                Yangi hisob
-              </div>
-            </div>
-            <div className="mt-6">
-              <h1 className={`text-2xl ${akbHeading}`}>
-                {t('form.title')}
-              </h1>
-              <p className={`${akbMutedText} mt-2 text-sm leading-6`}>
-                AKB Cargo xizmatlaridan foydalanish uchun ma'lumotlarni to'ldiring.
-              </p>
-            </div>
+            <h1 className={`text-2xl ${akbHeading}`}>
+              {t('form.title')}
+            </h1>
+            <p className={`${akbMutedText} mt-2 text-sm leading-6`}>
+              AKB Cargo xizmatlaridan foydalanish uchun ma'lumotlarni to'ldiring.
+            </p>
           </header>
 
           <div className={`relative overflow-hidden p-5 sm:p-6 ${akbSurface}`}>
